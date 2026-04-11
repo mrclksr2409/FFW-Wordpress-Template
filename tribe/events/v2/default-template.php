@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 // Einzelne Terminseite → TEC's eigenes Rendering nutzen (Detail-Ansicht)
-if ( is_singular( 'tribe_events' ) || ( function_exists( 'tribe_is_event' ) && tribe_is_event() ) ) :
+if ( is_singular( 'tribe_events' ) ) :
 	if ( have_posts() ) : the_post(); ?>
 	<main id="primary" class="site-main tribe-events-wrapper">
 		<header class="page-header">
