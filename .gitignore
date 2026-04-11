@@ -38,9 +38,9 @@ Thumbs.db
 .env.local
 .env.*.local
 
-# Composer
+# Composer (root vendor/ ignorieren, aber inc/lib/ commiten — enthält Plugin Update Checker)
 vendor/
-composer.lock
+# composer.lock bewusst commitet für reproduzierbare Abhängigkeiten
 
 # OS
 .DS_Store

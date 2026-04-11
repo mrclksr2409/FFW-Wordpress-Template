@@ -94,7 +94,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	$einsatz_query = new WP_Query(
 		array(
 			'post_type'      => 'einsatz',
-			'posts_per_page' => 3,
+			'posts_per_page' => 4,
 			'post_status'    => 'publish',
 		)
 	);
@@ -110,11 +110,66 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				</div>
 			</div>
 
-			<div class="einsatz-grid">
+			<div class="ffw-events-list">
 				<?php
 				while ( $einsatz_query->have_posts() ) :
 					$einsatz_query->the_post();
-					get_template_part( 'template-parts/einsatz/einsatz-card' );
+					$e_id         = get_the_ID();
+					$alarmzeit    = get_post_meta( $e_id, 'einsatz_alarmzeit', true );
+					$einsatzort   = get_post_meta( $e_id, 'einsatz_einsatzort', true );
+					$fehlalarm    = get_post_meta( $e_id, 'einsatz_fehlalarm', true );
+					$einsatzarten = get_the_terms( $e_id, 'einsatzart' );
+					$fahrzeuge    = get_the_terms( $e_id, 'fahrzeug' );
+					$ts           = $alarmzeit ? strtotime( $alarmzeit ) : get_the_date( 'U' );
+				?>
+				<article class="ffw-event-card ffw-event-card--einsatz">
+					<div class="ffw-event-card__date">
+						<span class="ffw-event-card__day"><?php echo esc_html( date_i18n( 'j', $ts ) ); ?></span>
+						<span class="ffw-event-card__month"><?php echo esc_html( date_i18n( 'M Y', $ts ) ); ?></span>
+					</div>
+					<div class="ffw-event-card__body">
+						<h3 class="ffw-event-card__title">
+							<?php if ( $fehlalarm ) : ?>
+								<span class="einsatz-tag einsatz-tag--fehlalarm"><?php esc_html_e( 'Fehlalarm', 'ffw-theme' ); ?></span>
+							<?php endif; ?>
+							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+						</h3>
+						<div class="ffw-event-card__meta">
+							<?php if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) : ?>
+								<span class="ffw-event-card__type">
+									<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M8 1.5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9L4.4 12.5l.7-4L2.2 5.7l4-.6Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+									<?php echo esc_html( $einsatzarten[0]->name ); ?>
+								</span>
+							<?php endif; ?>
+							<?php if ( $alarmzeit ) : ?>
+								<span class="ffw-event-card__time">
+									<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.5V8l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+									<?php echo esc_html( date_i18n( 'H:i', strtotime( $alarmzeit ) ) ); ?>
+								</span>
+							<?php endif; ?>
+							<?php if ( $einsatzort ) : ?>
+								<span class="ffw-event-card__venue">
+									<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.485-2.015-4.5-4.5-4.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
+									<?php echo esc_html( $einsatzort ); ?>
+								</span>
+							<?php endif; ?>
+						</div>
+						<?php if ( ! empty( $fahrzeuge ) && ! is_wp_error( $fahrzeuge ) ) : ?>
+							<div class="ffw-event-card__cats">
+								<?php foreach ( array_slice( $fahrzeuge, 0, 3 ) as $fz ) : ?>
+									<span class="tag"><?php echo esc_html( $fz->name ); ?></span>
+								<?php endforeach; ?>
+								<?php if ( count( $fahrzeuge ) > 3 ) : ?>
+									<span class="tag">+<?php echo intval( count( $fahrzeuge ) - 3 ); ?></span>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+					</div>
+					<a href="<?php the_permalink(); ?>" class="ffw-event-card__link btn btn--outline btn--sm">
+						<?php esc_html_e( 'Bericht lesen', 'ffw-theme' ); ?>
+					</a>
+				</article>
+				<?php
 				endwhile;
 				wp_reset_postdata();
 				?>
@@ -528,6 +583,24 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 .ffw-event-card__link {
 	flex-shrink: 0;
 	white-space: nowrap;
+}
+
+/* Einsatz-Cards: dunklere Datumbox zur Unterscheidung von Event-Cards */
+.ffw-event-card--einsatz .ffw-event-card__date {
+	background: var(--ffw-text-secondary, #444);
+}
+
+.einsatz-tag--fehlalarm {
+	font-size: 0.7rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	background: #e0e0e0;
+	color: #666;
+	border-radius: 3px;
+	padding: 0.1rem 0.45rem;
+	vertical-align: middle;
+	margin-right: 0.4rem;
 }
 
 @media (max-width: 600px) {

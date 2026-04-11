@@ -18,3 +18,4 @@ require FFW_THEME_DIR . '/inc/widgets.php';
 require FFW_THEME_DIR . '/inc/elementor.php';
 require FFW_THEME_DIR . '/inc/customizer.php';
 require FFW_THEME_DIR . '/inc/template-functions.php';
+require FFW_THEME_DIR . '/inc/update-checker.php';
