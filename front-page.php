@@ -124,10 +124,10 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					if ( ! $excerpt ) {
 						$excerpt = wp_trim_words( get_the_content(), 20, '…' );
 					}
-					// Farbe der Einsatzart aus Term-Meta (Einsatzverwaltung speichert sie als 'color')
+					// Farbe der Einsatzart aus Term-Meta (Einsatzverwaltung: input name="typecolor")
 					$keyword_color = '';
 					if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) {
-						$keyword_color = get_term_meta( $einsatzarten[0]->term_id, 'color', true );
+						$keyword_color = get_term_meta( $einsatzarten[0]->term_id, 'typecolor', true );
 					}
 				?>
 				<article class="ffw-event-card ffw-event-card--einsatz">
