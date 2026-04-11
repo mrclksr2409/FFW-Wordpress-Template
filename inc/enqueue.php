@@ -53,6 +53,16 @@ function ffw_enqueue_assets() {
 		true
 	);
 
+	// Homepage-specific CSS
+	if ( is_front_page() ) {
+		wp_enqueue_style(
+			'ffw-home',
+			FFW_THEME_URI . '/assets/css/home.css',
+			array( 'ffw-style' ),
+			FFW_THEME_VERSION
+		);
+	}
+
 	// Comments
 	if ( is_singular() && comments_open() ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -69,6 +79,7 @@ function ffw_enqueue_conditional_assets() {
 		is_singular( 'einsatz' )
 		|| is_post_type_archive( 'einsatz' )
 		|| is_tax( array( 'einsatzart', 'fahrzeug', 'alarmierungsart', 'exteinsatzmittel' ) )
+		|| is_page_template( 'page-templates/template-fahrzeuge.php' )
 	);
 
 	if ( $is_einsatz_page ) {

@@ -49,6 +49,21 @@
 }
 
 /* ==========================================================================
+   Events Page Layout (custom template tribe/events/v2/default-template.php)
+   ========================================================================== */
+
+.events-view-toggle {
+	display: flex;
+	gap: var(--ffw-spacing-sm);
+	margin: var(--ffw-spacing-lg) 0 var(--ffw-spacing-md);
+}
+
+.events-empty {
+	padding: var(--ffw-spacing-xl) 0;
+	color: var(--ffw-text-muted);
+}
+
+/* ==========================================================================
    Global calendar container
    ========================================================================== */
 

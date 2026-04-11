@@ -50,14 +50,6 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 
 </main>
 
-<style>
-.archive-count {
-	font-size: 0.9rem;
-	color: var(--ffw-text-muted);
-	margin-bottom: var(--ffw-spacing-lg);
-}
-</style>
-
 <?php
 endif;
 get_footer();

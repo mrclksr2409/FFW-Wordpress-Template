@@ -27,43 +27,5 @@ get_header();
 	</div>
 </main>
 
-<style>
-.error-404 {
-	min-height: 60vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	padding: var(--ffw-spacing-xl) 0;
-}
-
-.error-404__number {
-	font-family: var(--ffw-font-heading);
-	font-size: clamp(6rem, 20vw, 12rem);
-	font-weight: 700;
-	color: var(--ffw-color-primary);
-	line-height: 1;
-	opacity: 0.3;
-	margin-bottom: var(--ffw-spacing-md);
-}
-
-.error-404__title {
-	font-size: 2rem;
-	margin-bottom: var(--ffw-spacing-md);
-}
-
-.error-404__message {
-	color: var(--ffw-text-muted);
-	max-width: 500px;
-	margin: 0 auto var(--ffw-spacing-lg);
-}
-
-.error-404__search {
-	margin-top: var(--ffw-spacing-lg);
-	max-width: 400px;
-	margin-left: auto;
-	margin-right: auto;
-}
-</style>
 <?php
 get_footer();

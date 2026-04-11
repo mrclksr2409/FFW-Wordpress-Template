@@ -612,4 +612,232 @@ label {
     color: var(--ffw-text-secondary);
 }
 
+/* ==========================================================================
+   Event Card Component — shared: homepage, einsatz archive, events page
+   ========================================================================== */
+
+.einsatz-month-heading {
+    font-family: var(--ffw-font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ffw-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: var(--ffw-spacing-xl) 0 var(--ffw-spacing-md);
+    padding-bottom: var(--ffw-spacing-sm);
+    border-bottom: 2px solid var(--ffw-color-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--ffw-spacing-md);
+}
+
+.einsatz-month-heading:first-of-type {
+    margin-top: var(--ffw-spacing-lg);
+}
+
+.ffw-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ffw-spacing-md);
+    margin-top: var(--ffw-spacing-lg);
+}
+
+.ffw-event-card {
+    display: flex;
+    align-items: center;
+    gap: var(--ffw-spacing-lg);
+    background: var(--ffw-bg-card);
+    border: 1px solid var(--ffw-border-color);
+    border-radius: var(--ffw-border-radius-lg);
+    padding: var(--ffw-spacing-md) var(--ffw-spacing-lg);
+    transition: box-shadow var(--ffw-transition), transform var(--ffw-transition);
+}
+
+.ffw-event-card:hover {
+    box-shadow: var(--ffw-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.ffw-event-card__date {
+    flex-shrink: 0;
+    text-align: center;
+    background: var(--ffw-color-primary);
+    color: #fff;
+    border-radius: var(--ffw-border-radius);
+    padding: var(--ffw-spacing-sm) var(--ffw-spacing-md);
+    min-width: 3.5rem;
+}
+
+.ffw-event-card__day {
+    display: block;
+    font-family: var(--ffw-font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.ffw-event-card__month {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
+    margin-top: 0.2rem;
+}
+
+.ffw-event-card__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.ffw-event-card__title {
+    font-family: var(--ffw-font-heading);
+    font-size: 1.1rem;
+    margin: 0 0 var(--ffw-spacing-xs);
+}
+
+.ffw-event-card__title a {
+    color: var(--ffw-text-primary);
+    text-decoration: none;
+}
+
+.ffw-event-card__title a:hover {
+    color: var(--ffw-color-primary);
+}
+
+.ffw-event-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ffw-spacing-md);
+    font-size: 0.85rem;
+    color: var(--ffw-text-muted);
+}
+
+.ffw-event-card__time,
+.ffw-event-card__venue {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.ffw-event-card__excerpt {
+    margin-top: var(--ffw-spacing-xs);
+    font-size: 0.875rem;
+    color: var(--ffw-text-muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ffw-event-card__cats {
+    margin-top: var(--ffw-spacing-xs);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.ffw-event-card__link {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Einsatz variant: keyword box instead of date */
+.ffw-event-card--einsatz .ffw-event-card__date {
+    background: var(--ffw-text-secondary, #444);
+}
+
+.ffw-event-card__date--keyword {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ffw-event-card__keyword {
+    display: block;
+    font-family: var(--ffw-font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    text-align: center;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+.einsatz-tag--fehlalarm {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: #e0e0e0;
+    color: #666;
+    border-radius: 3px;
+    padding: 0.1rem 0.45rem;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+}
+
+@media (max-width: 600px) {
+    .ffw-event-card {
+        flex-wrap: wrap;
+    }
+    .ffw-event-card__link {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   Archive Count
+   ========================================================================== */
+
+.archive-count {
+    font-size: 0.9rem;
+    color: var(--ffw-text-muted);
+    margin-bottom: var(--ffw-spacing-lg);
+}
+
+/* ==========================================================================
+   404 Page
+   ========================================================================== */
+
+.error-404 {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--ffw-spacing-xl) 0;
+}
+
+.error-404__number {
+    font-family: var(--ffw-font-heading);
+    font-size: clamp(6rem, 20vw, 12rem);
+    font-weight: 700;
+    color: var(--ffw-color-primary);
+    line-height: 1;
+    opacity: 0.3;
+    margin-bottom: var(--ffw-spacing-md);
+}
+
+.error-404__title {
+    font-size: 2rem;
+    margin-bottom: var(--ffw-spacing-md);
+}
+
+.error-404__message {
+    color: var(--ffw-text-muted);
+    max-width: 500px;
+    margin: 0 auto var(--ffw-spacing-lg);
+}
+
+.error-404__search {
+    margin-top: var(--ffw-spacing-lg);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .wp-block-separator { border-color: var(--ffw-border-color); }
