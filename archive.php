@@ -1,6 +1,6 @@
 <?php
 /**
- * FFW Theme — Archive template (categories, tags, dates, authors).
+ * FFW Theme — Archive template (Kategorien, Tags, Datum, Autor).
  */
 
 get_header();
@@ -14,12 +14,23 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 		<header class="page-header">
 			<div class="container">
 				<?php the_archive_title( '<h1 class="page-title">', '</h1>' ); ?>
-				<?php the_archive_description( '<div class="page-description">', '</div>' ); ?>
+				<?php the_archive_description( '<p class="page-description">', '</p>' ); ?>
 			</div>
 		</header>
 
 		<div class="container">
-			<div class="posts-grid">
+
+			<p class="archive-count">
+				<?php
+				printf(
+					/* translators: %d: number of posts */
+					esc_html( _n( '%d Beitrag', '%d Beiträge', (int) $wp_query->found_posts, 'ffw-theme' ) ),
+					(int) $wp_query->found_posts
+				);
+				?>
+			</p>
+
+			<div class="posts-grid posts-grid--3">
 				<?php
 				while ( have_posts() ) :
 					the_post();
@@ -38,6 +49,15 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	<?php endif; ?>
 
 </main>
+
+<style>
+.archive-count {
+	font-size: 0.9rem;
+	color: var(--ffw-text-muted);
+	margin-bottom: var(--ffw-spacing-lg);
+}
+</style>
+
 <?php
 endif;
 get_footer();

@@ -416,8 +416,15 @@ label {
 .page-header {
     background: var(--ffw-bg-deep);
     border-bottom: 1px solid var(--ffw-border-color);
-    padding: var(--ffw-spacing-xl) 0 var(--ffw-spacing-lg);
+    padding: var(--ffw-spacing-lg) 0;
     margin-bottom: var(--ffw-spacing-xl);
+    min-height: 9rem;
+    display: flex;
+    align-items: center;
+}
+
+.page-header > .container {
+    width: 100%;
 }
 
 .page-title {
