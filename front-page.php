@@ -41,6 +41,31 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	</section>
 
 	<!-- ===== STATS BAR ===== -->
+	<?php
+	// Auto: Fahrzeuge aus der 'fahrzeug'-Taxonomy zählen (Einsatzverwaltung)
+	$auto_vehicle_count = 0;
+	if ( taxonomy_exists( 'fahrzeug' ) ) {
+		$vehicle_terms = get_terms( array( 'taxonomy' => 'fahrzeug', 'hide_empty' => false ) );
+		if ( ! is_wp_error( $vehicle_terms ) ) {
+			$auto_vehicle_count = count( $vehicle_terms );
+		}
+	}
+
+	// Auto: Einsätze im aktuellen Jahr zählen (Einsatzverwaltung CPT 'einsatz')
+	$auto_year_count = 0;
+	if ( post_type_exists( 'einsatz' ) ) {
+		$year_query = new WP_Query( array(
+			'post_type'      => 'einsatz',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => false,
+			'date_query'     => array( array( 'year' => (int) date( 'Y' ) ) ),
+		) );
+		$auto_year_count = $year_query->found_posts;
+		wp_reset_postdata();
+	}
+	?>
 	<section class="stats-bar" aria-label="<?php esc_attr_e( 'Kurzübersicht', 'ffw-theme' ); ?>">
 		<div class="container">
 			<div class="stats-grid">
@@ -49,12 +74,12 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					<span class="stat-label"><?php esc_html_e( 'Aktive Mitglieder', 'ffw-theme' ); ?></span>
 				</div>
 				<div class="stat-item">
-					<span class="stat-number"><?php echo esc_html( get_theme_mod( 'ffw_stat_vehicles', '5' ) ); ?></span>
+					<span class="stat-number"><?php echo $auto_vehicle_count > 0 ? esc_html( $auto_vehicle_count ) : esc_html( get_theme_mod( 'ffw_stat_vehicles', '5' ) ); ?></span>
 					<span class="stat-label"><?php esc_html_e( 'Fahrzeuge', 'ffw-theme' ); ?></span>
 				</div>
 				<div class="stat-item">
-					<span class="stat-number"><?php echo esc_html( get_theme_mod( 'ffw_stat_operations', '100+' ) ); ?></span>
-					<span class="stat-label"><?php esc_html_e( 'Einsätze/Jahr', 'ffw-theme' ); ?></span>
+					<span class="stat-number"><?php echo $auto_year_count > 0 ? esc_html( $auto_year_count ) : esc_html( get_theme_mod( 'ffw_stat_operations', '100+' ) ); ?></span>
+					<span class="stat-label"><?php echo esc_html( sprintf( __( 'Einsätze %d', 'ffw-theme' ), (int) date( 'Y' ) ) ); ?></span>
 				</div>
 				<div class="stat-item">
 					<span class="stat-number">24/7</span>
@@ -144,8 +169,18 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	</section>
 	<?php endif; ?>
 
-	<!-- ===== EVENTS CALENDAR (The Events Calendar shortcode) ===== -->
-	<?php if ( function_exists( 'tribe_get_events' ) ) : ?>
+	<!-- ===== EVENTS CALENDAR (The Events Calendar PHP API) ===== -->
+	<?php
+	if ( function_exists( 'tribe_get_events' ) ) :
+		$upcoming_events = tribe_get_events( array(
+			'posts_per_page' => 4,
+			'ends_after'     => 'now',
+			'order'          => 'ASC',
+		) );
+	endif;
+
+	if ( ! empty( $upcoming_events ) ) :
+	?>
 	<section class="home-section home-section--events">
 		<div class="container">
 			<div class="section-heading">
@@ -154,7 +189,54 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					<h2><?php esc_html_e( 'Nächste Veranstaltungen', 'ffw-theme' ); ?></h2>
 				</div>
 			</div>
-			<?php echo do_shortcode( '[tribe_events view="list" limit="4"]' ); ?>
+
+			<div class="ffw-events-list">
+				<?php foreach ( $upcoming_events as $event ) :
+					$event_date  = tribe_get_start_date( $event->ID, false, 'j. F Y' );
+					$event_time  = tribe_get_start_date( $event->ID, false, 'H:i' );
+					$event_end   = tribe_get_end_date( $event->ID, false, 'H:i' );
+					$event_title = get_the_title( $event->ID );
+					$event_link  = tribe_get_event_link( $event->ID );
+					$event_venue = function_exists( 'tribe_get_venue' ) ? tribe_get_venue( $event->ID ) : '';
+					$event_cats  = get_the_terms( $event->ID, 'tribe_events_cat' );
+				?>
+				<article class="ffw-event-card">
+					<div class="ffw-event-card__date">
+						<span class="ffw-event-card__day"><?php echo esc_html( tribe_get_start_date( $event->ID, false, 'j' ) ); ?></span>
+						<span class="ffw-event-card__month"><?php echo esc_html( tribe_get_start_date( $event->ID, false, 'M Y' ) ); ?></span>
+					</div>
+					<div class="ffw-event-card__body">
+						<h3 class="ffw-event-card__title">
+							<a href="<?php echo esc_url( $event_link ); ?>"><?php echo esc_html( $event_title ); ?></a>
+						</h3>
+						<div class="ffw-event-card__meta">
+							<span class="ffw-event-card__time">
+								<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.5V8l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+								<?php echo esc_html( $event_time );
+								if ( $event_end && $event_end !== $event_time ) echo ' – ' . esc_html( $event_end ); ?>
+							</span>
+							<?php if ( $event_venue ) : ?>
+							<span class="ffw-event-card__venue">
+								<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.485-2.015-4.5-4.5-4.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
+								<?php echo esc_html( $event_venue ); ?>
+							</span>
+							<?php endif; ?>
+						</div>
+						<?php if ( ! empty( $event_cats ) && ! is_wp_error( $event_cats ) ) : ?>
+						<div class="ffw-event-card__cats">
+							<?php foreach ( $event_cats as $cat ) : ?>
+								<span class="tag"><?php echo esc_html( $cat->name ); ?></span>
+							<?php endforeach; ?>
+						</div>
+						<?php endif; ?>
+					</div>
+					<a href="<?php echo esc_url( $event_link ); ?>" class="ffw-event-card__link btn btn--outline btn--sm">
+						<?php esc_html_e( 'Details', 'ffw-theme' ); ?>
+					</a>
+				</article>
+				<?php endforeach; ?>
+			</div>
+
 			<div class="section-cta">
 				<a href="<?php echo esc_url( tribe_get_events_link() ); ?>" class="btn btn--outline">
 					<?php esc_html_e( 'Alle Termine anzeigen', 'ffw-theme' ); ?>
@@ -348,6 +430,114 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	.posts-grid--3 { grid-template-columns: 1fr; }
 	.stats-grid    { grid-template-columns: repeat(2, 1fr); }
 	.hero-actions  { flex-direction: column; }
+}
+
+/* Event Cards */
+.ffw-events-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--ffw-spacing-md);
+	margin-top: var(--ffw-spacing-lg);
+}
+
+.ffw-event-card {
+	display: flex;
+	align-items: center;
+	gap: var(--ffw-spacing-lg);
+	background: var(--ffw-bg-card);
+	border: 1px solid var(--ffw-border-color);
+	border-radius: var(--ffw-border-radius-lg);
+	padding: var(--ffw-spacing-md) var(--ffw-spacing-lg);
+	transition: box-shadow var(--ffw-transition), transform var(--ffw-transition);
+}
+
+.ffw-event-card:hover {
+	box-shadow: var(--ffw-shadow-hover);
+	transform: translateY(-2px);
+}
+
+.ffw-event-card__date {
+	flex-shrink: 0;
+	text-align: center;
+	background: var(--ffw-color-primary);
+	color: #fff;
+	border-radius: var(--ffw-border-radius);
+	padding: var(--ffw-spacing-sm) var(--ffw-spacing-md);
+	min-width: 3.5rem;
+}
+
+.ffw-event-card__day {
+	display: block;
+	font-family: var(--ffw-font-heading);
+	font-size: 1.8rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.ffw-event-card__month {
+	display: block;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	opacity: 0.9;
+	margin-top: 0.2rem;
+}
+
+.ffw-event-card__body {
+	flex: 1;
+	min-width: 0;
+}
+
+.ffw-event-card__title {
+	font-family: var(--ffw-font-heading);
+	font-size: 1.1rem;
+	margin: 0 0 var(--ffw-spacing-xs);
+}
+
+.ffw-event-card__title a {
+	color: var(--ffw-text-primary);
+	text-decoration: none;
+}
+
+.ffw-event-card__title a:hover {
+	color: var(--ffw-color-primary);
+}
+
+.ffw-event-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--ffw-spacing-md);
+	font-size: 0.85rem;
+	color: var(--ffw-text-muted);
+}
+
+.ffw-event-card__time,
+.ffw-event-card__venue {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+}
+
+.ffw-event-card__cats {
+	margin-top: var(--ffw-spacing-xs);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+}
+
+.ffw-event-card__link {
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+	.ffw-event-card {
+		flex-wrap: wrap;
+	}
+	.ffw-event-card__link {
+		width: 100%;
+		text-align: center;
+	}
 }
 </style>
 

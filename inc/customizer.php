@@ -227,16 +227,17 @@ function ffw_customize_register( $wp_customize ) {
 	$wp_customize->add_section(
 		'ffw_stats_section',
 		array(
-			'title'    => __( 'Startseite — Statistiken', 'ffw-theme' ),
-			'panel'    => 'ffw_theme_panel',
-			'priority' => 20,
+			'title'       => __( 'Startseite — Statistiken', 'ffw-theme' ),
+			'description' => __( 'Fahrzeuge und Einsätze/Jahr werden automatisch aus dem Einsatzverwaltung-Plugin gezählt, sobald es aktiv ist. Diese Felder sind dann nur der Fallback-Wert (z. B. vor dem ersten Einsatz). Die Mitgliederzahl muss manuell gepflegt werden.', 'ffw-theme' ),
+			'panel'       => 'ffw_theme_panel',
+			'priority'    => 20,
 		)
 	);
 
 	$stats = array(
-		'ffw_stat_members'    => array( 'label' => __( 'Mitglieder', 'ffw-theme' ),    'default' => '60+' ),
-		'ffw_stat_vehicles'   => array( 'label' => __( 'Fahrzeuge', 'ffw-theme' ),     'default' => '5' ),
-		'ffw_stat_operations' => array( 'label' => __( 'Einsätze/Jahr', 'ffw-theme' ), 'default' => '100+' ),
+		'ffw_stat_members'    => array( 'label' => __( 'Mitglieder (manuell)', 'ffw-theme' ),              'default' => '60+' ),
+		'ffw_stat_vehicles'   => array( 'label' => __( 'Fahrzeuge (Fallback wenn Plugin inaktiv)', 'ffw-theme' ),  'default' => '5' ),
+		'ffw_stat_operations' => array( 'label' => __( 'Einsätze/Jahr (Fallback wenn Plugin inaktiv)', 'ffw-theme' ), 'default' => '100+' ),
 	);
 
 	foreach ( $stats as $id => $stat ) {
