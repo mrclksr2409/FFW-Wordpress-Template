@@ -118,15 +118,20 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					$alarmzeit    = get_post_meta( $e_id, 'einsatz_alarmzeit', true );
 					$einsatzort   = get_post_meta( $e_id, 'einsatz_einsatzort', true );
 					$fehlalarm    = get_post_meta( $e_id, 'einsatz_fehlalarm', true );
-					$einsatzarten = get_the_terms( $e_id, 'einsatzart' );
-					$ts           = $alarmzeit ? strtotime( $alarmzeit ) : get_the_date( 'U' );
-					$excerpt      = get_the_excerpt();
+					$einsatzarten    = get_the_terms( $e_id, 'einsatzart' );
+					$ts              = $alarmzeit ? strtotime( $alarmzeit ) : get_the_date( 'U' );
+					$excerpt         = get_the_excerpt();
 					if ( ! $excerpt ) {
 						$excerpt = wp_trim_words( get_the_content(), 20, '…' );
 					}
+					// Farbe der Einsatzart aus Term-Meta (Einsatzverwaltung speichert sie als 'color')
+					$keyword_color = '';
+					if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) {
+						$keyword_color = get_term_meta( $einsatzarten[0]->term_id, 'color', true );
+					}
 				?>
 				<article class="ffw-event-card ffw-event-card--einsatz">
-					<div class="ffw-event-card__date ffw-event-card__date--keyword">
+					<div class="ffw-event-card__date ffw-event-card__date--keyword"<?php if ( $keyword_color ) : ?> style="background-color:<?php echo esc_attr( $keyword_color ); ?>;"<?php endif; ?>>
 						<?php if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) : ?>
 							<span class="ffw-event-card__keyword"><?php echo esc_html( $einsatzarten[0]->name ); ?></span>
 						<?php else : ?>
