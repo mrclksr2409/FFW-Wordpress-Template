@@ -467,26 +467,15 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	margin-top: var(--ffw-spacing-lg);
 }
 
-/* Posts Grid */
-.posts-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	gap: var(--ffw-spacing-lg);
-}
 
-.posts-grid--3 {
-	grid-template-columns: repeat(3, 1fr);
-}
 
 @media (max-width: 991px) {
-	.posts-grid--3 { grid-template-columns: repeat(2, 1fr); }
-	.stats-grid    { grid-template-columns: repeat(2, 1fr); }
+	.stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 575px) {
-	.posts-grid--3 { grid-template-columns: 1fr; }
-	.stats-grid    { grid-template-columns: repeat(2, 1fr); }
-	.hero-actions  { flex-direction: column; }
+	.stats-grid   { grid-template-columns: repeat(2, 1fr); }
+	.hero-actions { flex-direction: column; }
 }
 
 /* Event Cards */
