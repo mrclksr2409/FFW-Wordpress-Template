@@ -126,9 +126,12 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					}
 				?>
 				<article class="ffw-event-card ffw-event-card--einsatz">
-					<div class="ffw-event-card__date">
-						<span class="ffw-event-card__day"><?php echo esc_html( date_i18n( 'j', $ts ) ); ?></span>
-						<span class="ffw-event-card__month"><?php echo esc_html( date_i18n( 'M Y', $ts ) ); ?></span>
+					<div class="ffw-event-card__date ffw-event-card__date--keyword">
+						<?php if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) : ?>
+							<span class="ffw-event-card__keyword"><?php echo esc_html( $einsatzarten[0]->name ); ?></span>
+						<?php else : ?>
+							<span class="ffw-event-card__keyword">—</span>
+						<?php endif; ?>
 					</div>
 					<div class="ffw-event-card__body">
 						<h3 class="ffw-event-card__title">
@@ -138,18 +141,13 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 						</h3>
 						<div class="ffw-event-card__meta">
-							<?php if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) : ?>
-								<span class="ffw-event-card__type">
-									<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M8 1.5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9L4.4 12.5l.7-4L2.2 5.7l4-.6Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-									<?php echo esc_html( $einsatzarten[0]->name ); ?>
-								</span>
-							<?php endif; ?>
-							<?php if ( $alarmzeit ) : ?>
-								<span class="ffw-event-card__time">
-									<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.5V8l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-									<?php echo esc_html( date_i18n( 'H:i', strtotime( $alarmzeit ) ) ); ?>
-								</span>
-							<?php endif; ?>
+							<span class="ffw-event-card__time">
+								<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 2v3M10.5 2v3M2.5 7.5h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+								<?php echo esc_html( date_i18n( 'd.m.Y', $ts ) ); ?>
+								<?php if ( $alarmzeit ) : ?>
+									&nbsp;<?php echo esc_html( date_i18n( 'H:i', $ts ) ); ?> Uhr
+								<?php endif; ?>
+							</span>
 							<?php if ( $einsatzort ) : ?>
 								<span class="ffw-event-card__venue">
 									<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.485-2.015-4.5-4.5-4.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
@@ -592,9 +590,27 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	white-space: nowrap;
 }
 
-/* Einsatz-Cards: dunklere Datumbox zur Unterscheidung von Event-Cards */
+/* Einsatz-Cards: dunklere Box mit Stichwort statt Datum */
 .ffw-event-card--einsatz .ffw-event-card__date {
 	background: var(--ffw-text-secondary, #444);
+}
+
+.ffw-event-card__date--keyword {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ffw-event-card__keyword {
+	display: block;
+	font-family: var(--ffw-font-heading);
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #fff;
+	line-height: 1.1;
+	text-align: center;
+	word-break: break-word;
+	hyphens: auto;
 }
 
 .einsatz-tag--fehlalarm {
