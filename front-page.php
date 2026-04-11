@@ -267,7 +267,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	display: block;
 	width: 2px;
 	height: 40px;
-	background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4));
+	background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6));
 	margin: 0 auto;
 	animation: scrollHint 1.5s ease-in-out infinite;
 }

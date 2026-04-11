@@ -5,7 +5,7 @@
  * when placed at tribe/events/tribe-events.css in the active theme.
  *
  * It overrides the plugin's default CSS custom properties and component styles
- * to match the FFW dark theme.
+ * to match the FFW light theme.
  */
 
 /* ==========================================================================
@@ -17,25 +17,25 @@
 	--tec-color-accent-primary:                  #E30613;
 	--tec-color-accent-primary-hover:             #b0040f;
 	--tec-color-accent-primary-active:            #ff3040;
-	--tec-color-accent-primary-background:        rgba(227, 6, 19, 0.12);
-	--tec-color-accent-primary-multiday:          rgba(227, 6, 19, 0.24);
-	--tec-color-accent-primary-multiday-hover:    rgba(227, 6, 19, 0.34);
+	--tec-color-accent-primary-background:        rgba(227, 6, 19, 0.08);
+	--tec-color-accent-primary-multiday:          rgba(227, 6, 19, 0.18);
+	--tec-color-accent-primary-multiday-hover:    rgba(227, 6, 19, 0.28);
 
 	/* Text */
-	--tec-color-text-primary:                    #ffffff;
-	--tec-color-text-secondary:                  #cccccc;
-	--tec-color-text-disabled:                   #666666;
-	--tec-color-text-event-title:                #ffffff;
+	--tec-color-text-primary:                    #1a1a1a;
+	--tec-color-text-secondary:                  #444444;
+	--tec-color-text-disabled:                   #999999;
+	--tec-color-text-event-title:                #1a1a1a;
 
 	/* Backgrounds */
-	--tec-color-background-primary:              #1a1a1a;
-	--tec-color-background-secondary:            #242424;
-	--tec-color-background-events:               #1a1a1a;
-	--tec-color-background-widget:               #2d2d2d;
-	--tec-color-background-white:                #2d2d2d;
+	--tec-color-background-primary:              #f5f7f9;
+	--tec-color-background-secondary:            #eaecef;
+	--tec-color-background-events:               #f5f7f9;
+	--tec-color-background-widget:               #ffffff;
+	--tec-color-background-white:                #ffffff;
 
 	/* Borders */
-	--tec-color-border-default:                  #3a3a3a;
+	--tec-color-border-default:                  #dde1e7;
 	--tec-color-border-active:                   #E30613;
 
 	/* Buttons */
@@ -45,7 +45,7 @@
 
 	/* Links */
 	--tec-color-link-accent:                     #E30613;
-	--tec-color-link-accent-hover:               #ff3040;
+	--tec-color-link-accent-hover:               #b0040f;
 }
 
 /* ==========================================================================
@@ -57,8 +57,8 @@
 .tribe-events-calendar,
 #tribe-events,
 #tribe-events-content {
-	background-color: var(--ffw-bg-base, #1a1a1a) !important;
-	color: var(--ffw-text-primary, #fff) !important;
+	background-color: var(--ffw-bg-base, #f5f7f9) !important;
+	color: var(--ffw-text-primary, #1a1a1a) !important;
 }
 
 .tribe-common * {
@@ -74,9 +74,9 @@
 .tribe-events-c-view-selector__button,
 .tribe-events .tribe-events-c-nav__next,
 .tribe-events .tribe-events-c-nav__prev {
-	background-color: var(--ffw-bg-card, #2d2d2d) !important;
-	color: var(--ffw-text-secondary, #ccc) !important;
-	border: 1px solid var(--ffw-border-color, #3a3a3a) !important;
+	background-color: var(--ffw-bg-card, #ffffff) !important;
+	color: var(--ffw-text-secondary, #444444) !important;
+	border: 1px solid var(--ffw-border-color, #dde1e7) !important;
 	border-radius: 4px !important;
 }
 
@@ -94,16 +94,16 @@
    ========================================================================== */
 
 .tribe-events-calendar {
-	border-color: var(--ffw-border-color, #3a3a3a) !important;
+	border-color: var(--ffw-border-color, #dde1e7) !important;
 }
 
 .tribe-events-calendar td,
 .tribe-events-calendar th,
 .tribe-events .tribe-events-calendar-month__body-cell,
 .tribe-events .tribe-events-calendar-month__header-cell {
-	background: var(--ffw-bg-card, #2d2d2d) !important;
-	border-color: var(--ffw-border-color, #3a3a3a) !important;
-	color: var(--ffw-text-primary, #fff) !important;
+	background: var(--ffw-bg-card, #ffffff) !important;
+	border-color: var(--ffw-border-color, #dde1e7) !important;
+	color: var(--ffw-text-primary, #1a1a1a) !important;
 }
 
 .tribe-events .tribe-events-calendar-month__body-cell--current-month {

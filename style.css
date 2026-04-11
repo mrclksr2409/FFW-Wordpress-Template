@@ -3,19 +3,19 @@ Theme Name:  FFW Theme
 Theme URI:   https://github.com/mrclksr2409/FFW-Wordpress-Template
 Author:      Feuerwehr Bad Salzig
 Author URI:  https://feuerwehr-bad-salzig.de
-Description: Modernes, dunkles WordPress-Theme für die Feuerwehr. Kompatibel mit Einsatzverwaltung, The Events Calendar und Elementor.
-Version:     1.0.0
+Description: Modernes WordPress-Theme für die Feuerwehr mit hellem Design und roten Akzenten. Kompatibel mit Einsatzverwaltung, The Events Calendar und Elementor.
+Version:     1.1.0
 Requires at least: 6.0
 Tested up to:      6.5
 Requires PHP:      8.0
 License:     GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: ffw-theme
-Tags:        dark, custom-menu, custom-logo, featured-images, translation-ready, responsive-layout
+Tags:        light, custom-menu, custom-logo, featured-images, translation-ready, responsive-layout
 */
 
 /* ==========================================================================
-   CSS Custom Properties — Dark Fire Department Theme
+   CSS Custom Properties — Light Fire Department Theme
    ========================================================================== */
 
 :root {
@@ -23,23 +23,23 @@ Tags:        dark, custom-menu, custom-logo, featured-images, translation-ready,
     --ffw-color-primary:        #E30613;
     --ffw-color-primary-dark:   #b0040f;
     --ffw-color-primary-light:  #ff3040;
-    --ffw-color-primary-alpha:  rgba(227, 6, 19, 0.15);
+    --ffw-color-primary-alpha:  rgba(227, 6, 19, 0.12);
 
-    /* Background Scale */
-    --ffw-bg-deep:              #0e0e0e;
-    --ffw-bg-base:              #1a1a1a;
-    --ffw-bg-raised:            #242424;
-    --ffw-bg-card:              #2d2d2d;
-    --ffw-bg-overlay:           rgba(0, 0, 0, 0.75);
+    /* Background Scale (hell) */
+    --ffw-bg-deep:              #eef0f3;
+    --ffw-bg-base:              #f5f7f9;
+    --ffw-bg-raised:            #eaecef;
+    --ffw-bg-card:              #ffffff;
+    --ffw-bg-overlay:           rgba(0, 0, 0, 0.65);
 
     /* Text */
-    --ffw-text-primary:         #ffffff;
-    --ffw-text-secondary:       #cccccc;
-    --ffw-text-muted:           #888888;
+    --ffw-text-primary:         #1a1a1a;
+    --ffw-text-secondary:       #444444;
+    --ffw-text-muted:           #777777;
     --ffw-text-on-red:          #ffffff;
 
     /* Borders */
-    --ffw-border-color:         #3a3a3a;
+    --ffw-border-color:         #dde1e7;
     --ffw-border-radius:        6px;
     --ffw-border-radius-lg:     12px;
     --ffw-border-radius-xl:     20px;
@@ -66,9 +66,9 @@ Tags:        dark, custom-menu, custom-logo, featured-images, translation-ready,
     --ffw-transition-slow:      0.4s ease-in-out;
 
     /* Shadows */
-    --ffw-shadow-card:          0 2px 12px rgba(0, 0, 0, 0.5);
-    --ffw-shadow-hover:         0 6px 24px rgba(227, 6, 19, 0.25);
-    --ffw-shadow-header:        0 2px 16px rgba(0, 0, 0, 0.6);
+    --ffw-shadow-card:          0 2px 12px rgba(0, 0, 0, 0.08);
+    --ffw-shadow-hover:         0 6px 24px rgba(227, 6, 19, 0.18);
+    --ffw-shadow-header:        0 2px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* ==========================================================================
@@ -211,7 +211,7 @@ thead th {
 
 tbody tr { background: var(--ffw-bg-card); }
 tbody tr:nth-child(even) { background: var(--ffw-bg-raised); }
-tbody tr:hover { background: var(--ffw-bg-overlay); }
+tbody tr:hover { background: var(--ffw-color-primary-alpha); }
 
 /* ==========================================================================
    Layout Utilities
