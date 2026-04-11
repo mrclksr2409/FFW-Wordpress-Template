@@ -119,8 +119,11 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					$einsatzort   = get_post_meta( $e_id, 'einsatz_einsatzort', true );
 					$fehlalarm    = get_post_meta( $e_id, 'einsatz_fehlalarm', true );
 					$einsatzarten = get_the_terms( $e_id, 'einsatzart' );
-					$fahrzeuge    = get_the_terms( $e_id, 'fahrzeug' );
 					$ts           = $alarmzeit ? strtotime( $alarmzeit ) : get_the_date( 'U' );
+					$excerpt      = get_the_excerpt();
+					if ( ! $excerpt ) {
+						$excerpt = wp_trim_words( get_the_content(), 20, '…' );
+					}
 				?>
 				<article class="ffw-event-card ffw-event-card--einsatz">
 					<div class="ffw-event-card__date">
@@ -154,15 +157,8 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 								</span>
 							<?php endif; ?>
 						</div>
-						<?php if ( ! empty( $fahrzeuge ) && ! is_wp_error( $fahrzeuge ) ) : ?>
-							<div class="ffw-event-card__cats">
-								<?php foreach ( array_slice( $fahrzeuge, 0, 3 ) as $fz ) : ?>
-									<span class="tag"><?php echo esc_html( $fz->name ); ?></span>
-								<?php endforeach; ?>
-								<?php if ( count( $fahrzeuge ) > 3 ) : ?>
-									<span class="tag">+<?php echo intval( count( $fahrzeuge ) - 3 ); ?></span>
-								<?php endif; ?>
-							</div>
+						<?php if ( $excerpt ) : ?>
+							<p class="ffw-event-card__excerpt"><?php echo esc_html( $excerpt ); ?></p>
 						<?php endif; ?>
 					</div>
 					<a href="<?php the_permalink(); ?>" class="ffw-event-card__link btn btn--outline btn--sm">
@@ -571,6 +567,17 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	display: flex;
 	align-items: center;
 	gap: 0.3rem;
+}
+
+.ffw-event-card__excerpt {
+	margin-top: var(--ffw-spacing-xs);
+	font-size: 0.875rem;
+	color: var(--ffw-text-muted);
+	line-height: 1.5;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .ffw-event-card__cats {
