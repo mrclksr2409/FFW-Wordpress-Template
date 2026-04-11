@@ -11,19 +11,21 @@
 get_header();
 ?>
 <main id="primary" class="site-main fahrzeuge-page">
+
+	<?php while ( have_posts() ) : the_post(); ?>
+	<header class="page-header">
+		<div class="container">
+			<h1 class="page-title"><?php the_title(); ?></h1>
+		</div>
+	</header>
+
 	<div class="container">
-
-		<?php while ( have_posts() ) : the_post(); ?>
-			<header class="page-header">
-				<h1 class="page-title"><?php the_title(); ?></h1>
-			</header>
-
-			<?php if ( get_the_content() ) : ?>
-				<div class="entry-content fahrzeuge-intro">
-					<?php the_content(); ?>
-				</div>
-			<?php endif; ?>
-		<?php endwhile; ?>
+		<?php if ( get_the_content() ) : ?>
+			<div class="entry-content fahrzeuge-intro">
+				<?php the_content(); ?>
+			</div>
+		<?php endif; ?>
+	<?php endwhile; ?>
 
 		<?php
 		// Display vehicles from the 'fahrzeug' taxonomy (registered by Einsatzverwaltung)

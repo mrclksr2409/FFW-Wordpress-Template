@@ -10,9 +10,9 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	$current_year = get_query_var( 'year' ) ? intval( get_query_var( 'year' ) ) : intval( date( 'Y' ) );
 ?>
 <main id="primary" class="site-main einsatz-archive">
-	<div class="container">
 
-		<header class="page-header einsatz-archive__header">
+	<header class="page-header einsatz-archive__header">
+		<div class="container">
 			<h1 class="page-title">
 				<?php esc_html_e( 'Einsätze', 'ffw-theme' ); ?>
 				<?php if ( get_query_var( 'year' ) ) : ?>
@@ -20,7 +20,10 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				<?php endif; ?>
 			</h1>
 			<p class="page-description"><?php esc_html_e( 'Übersicht aller Feuerwehreinsätze', 'ffw-theme' ); ?></p>
-		</header>
+		</div>
+	</header>
+
+	<div class="container">
 
 		<?php
 		// Year navigation — The Einsatzverwaltung plugin provides [einsatzjahre] shortcode

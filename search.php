@@ -6,8 +6,9 @@
 get_header();
 ?>
 <main id="primary" class="site-main">
-	<div class="container">
-		<header class="page-header">
+
+	<header class="page-header">
+		<div class="container">
 			<h1 class="page-title">
 				<?php
 				printf(
@@ -16,8 +17,10 @@ get_header();
 				);
 				?>
 			</h1>
-		</header>
+		</div>
+	</header>
 
+	<div class="container">
 		<?php if ( have_posts() ) : ?>
 			<div class="posts-grid">
 				<?php
@@ -32,6 +35,7 @@ get_header();
 			<?php get_template_part( 'template-parts/content', 'none' ); ?>
 		<?php endif; ?>
 	</div>
+
 </main>
 <?php
 get_footer();

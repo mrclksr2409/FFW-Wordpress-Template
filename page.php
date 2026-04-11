@@ -8,19 +8,19 @@ get_header();
 if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'single' ) ) :
 ?>
 <main id="primary" class="site-main">
-	<div class="container">
-		<div class="content-area">
-			<?php
-			while ( have_posts() ) :
-				the_post();
-				?>
-				<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
-					<?php if ( ! is_front_page() ) : ?>
-						<header class="entry-header page-header">
-							<?php the_title( '<h1 class="entry-title page-title">', '</h1>' ); ?>
-						</header>
-					<?php endif; ?>
+	<?php while ( have_posts() ) : the_post(); ?>
 
+		<?php if ( ! is_front_page() ) : ?>
+		<header class="page-header">
+			<div class="container">
+				<?php the_title( '<h1 class="entry-title page-title">', '</h1>' ); ?>
+			</div>
+		</header>
+		<?php endif; ?>
+
+		<div class="container">
+			<div class="content-area">
+				<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-content' ); ?>>
 					<div class="entry-content">
 						<?php
 						the_content();
@@ -37,10 +37,10 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				<?php if ( comments_open() || get_comments_number() ) : ?>
 					<?php comments_template(); ?>
 				<?php endif; ?>
-
-			<?php endwhile; ?>
+			</div>
 		</div>
-	</div>
+
+	<?php endwhile; ?>
 </main>
 <?php
 endif;
