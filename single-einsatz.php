@@ -7,10 +7,44 @@
 get_header();
 
 if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'single' ) ) :
+
+	while ( have_posts() ) :
+		the_post();
+
+		// Collect data for page-header subtitle
+		$post_id      = get_the_ID();
+		$alarmzeit    = get_post_meta( $post_id, 'einsatz_alarmzeit', true );
+		$einsatzarten = get_the_terms( $post_id, 'einsatzart' );
+		$fehlalarm    = get_post_meta( $post_id, 'einsatz_fehlalarm', true );
+
+		$header_date = $alarmzeit
+			? date_i18n( get_option( 'date_format' ), strtotime( $alarmzeit ) )
+			: get_the_date();
+
+		$einsatzart_name = ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) )
+			? esc_html( $einsatzarten[0]->name )
+			: '';
 ?>
 <main id="primary" class="site-main einsatz-single">
+
+	<header class="page-header">
+		<div class="container">
+			<p class="page-description">
+				<span class="badge"><?php esc_html_e( 'Einsatzbericht', 'ffw-theme' ); ?></span>
+				<?php if ( $fehlalarm ) : ?>
+					<span class="badge badge--muted"><?php esc_html_e( 'Fehlalarm', 'ffw-theme' ); ?></span>
+				<?php endif; ?>
+				<?php if ( $einsatzart_name ) : ?>
+					<span class="page-header__sep">&mdash;</span>
+					<span><?php echo $einsatzart_name; ?></span>
+				<?php endif; ?>
+			</p>
+			<h1 class="page-title"><?php the_title(); ?></h1>
+			<p class="page-description"><?php echo esc_html( $header_date ); ?></p>
+		</div>
+	</header>
+
 	<div class="container">
-		<?php while ( have_posts() ) : the_post(); ?>
 
 		<nav class="breadcrumb" aria-label="<?php esc_attr_e( 'Breadcrumb', 'ffw-theme' ); ?>">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Start', 'ffw-theme' ); ?></a>
@@ -22,11 +56,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'einsatz-report' ); ?>>
 
-			<header class="einsatz-report__header">
-				<span class="badge"><?php esc_html_e( 'Einsatzbericht', 'ffw-theme' ); ?></span>
-				<h1 class="einsatz-report__title"><?php the_title(); ?></h1>
-				<?php get_template_part( 'template-parts/einsatz/einsatz-meta' ); ?>
-			</header>
+			<?php get_template_part( 'template-parts/einsatz/einsatz-meta' ); ?>
 
 			<?php if ( has_post_thumbnail() ) : ?>
 				<div class="einsatz-report__image">
@@ -44,10 +74,10 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				<?php
 				the_post_navigation(
 					array(
-						'prev_text'          => '<span class="nav-subtitle">' . esc_html__( 'Vorheriger Einsatz', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
-						'next_text'          => '<span class="nav-subtitle">' . esc_html__( 'Nächster Einsatz', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
-						'in_same_term'       => false,
-						'taxonomy'           => 'einsatzart',
+						'prev_text'    => '<span class="nav-subtitle">' . esc_html__( 'Vorheriger Einsatz', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
+						'next_text'    => '<span class="nav-subtitle">' . esc_html__( 'Nächster Einsatz', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
+						'in_same_term' => false,
+						'taxonomy'     => 'einsatzart',
 					)
 				);
 				?>
@@ -57,11 +87,10 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 			</footer>
 		</article>
 
-		<?php endwhile; ?>
 	</div>
 </main>
-
-
 <?php
+	endwhile;
+
 endif;
 get_footer();

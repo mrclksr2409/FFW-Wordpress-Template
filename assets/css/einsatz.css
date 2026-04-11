@@ -238,6 +238,19 @@
 	gap: 0.4rem;
 }
 
+.einsatz-fahrzeuge__unit-label {
+	font-size: 0.72rem;
+	font-weight: 700;
+	color: var(--ffw-text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	margin: var(--ffw-spacing-sm) 0 0.35rem;
+}
+
+.einsatz-fahrzeuge__group {
+	margin-bottom: var(--ffw-spacing-sm);
+}
+
 /* --------------------------------------------------------------------------
    Einsatz Archive
    -------------------------------------------------------------------------- */
@@ -386,7 +399,6 @@ table.einsatzliste a:hover,
 
 .einsatz-single .container {
 	max-width: 900px;
-	padding-top: var(--ffw-spacing-lg);
 	padding-bottom: var(--ffw-spacing-xl);
 }
 
