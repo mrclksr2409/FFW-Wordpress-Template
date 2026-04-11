@@ -214,11 +214,14 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				?>
 			</div>
 
+			<?php $posts_page_id = (int) get_option( 'page_for_posts' );
+			if ( $posts_page_id ) : ?>
 			<div class="section-cta">
-				<a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>" class="btn btn--outline">
+				<a href="<?php echo esc_url( get_permalink( $posts_page_id ) ); ?>" class="btn btn--outline">
 					<?php esc_html_e( 'Alle Neuigkeiten', 'ffw-theme' ); ?>
 				</a>
 			</div>
+			<?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>
@@ -328,7 +331,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 /* Hero */
 .hero-section {
 	position: relative;
-	min-height: 85vh;
+	min-height: 55vh;
 	display: flex;
 	align-items: center;
 	background: var(--ffw-bg-deep);
