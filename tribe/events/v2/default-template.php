@@ -2,6 +2,7 @@
 /**
  * FFW Theme — The Events Calendar default template override.
  * Custom events list with month groupings and ffw-event-card layout.
+ * Single event pages are rendered via TEC's own view to preserve detail pages.
  *
  * @package FFW Theme
  */
@@ -11,6 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+// Einzelne Terminseite → TEC's eigenes Rendering nutzen (Detail-Ansicht)
+if ( is_singular( 'tribe_events' ) || ( function_exists( 'tribe_is_event' ) && tribe_is_event() ) ) :
+	if ( have_posts() ) : the_post(); ?>
+	<main id="primary" class="site-main tribe-events-wrapper">
+		<header class="page-header">
+			<div class="container">
+				<h1 class="page-title"><?php the_title(); ?></h1>
+			</div>
+		</header>
+		<div class="container">
+			<?php tribe_events_before_html(); ?>
+			<?php tribe_get_view(); ?>
+			<?php tribe_events_after_html(); ?>
+		</div>
+	</main>
+	<?php endif;
+	get_footer();
+	return;
+endif;
 
 // Vergangene oder kommende Termine anzeigen?
 $show_past = isset( $_GET['past'] ) && '1' === $_GET['past'];
