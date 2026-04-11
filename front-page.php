@@ -42,15 +42,6 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 
 	<!-- ===== STATS BAR ===== -->
 	<?php
-	// Auto: Fahrzeuge aus der 'fahrzeug'-Taxonomy zählen (Einsatzverwaltung)
-	$auto_vehicle_count = 0;
-	if ( taxonomy_exists( 'fahrzeug' ) ) {
-		$vehicle_terms = get_terms( array( 'taxonomy' => 'fahrzeug', 'hide_empty' => false ) );
-		if ( ! is_wp_error( $vehicle_terms ) ) {
-			$auto_vehicle_count = count( $vehicle_terms );
-		}
-	}
-
 	// Auto: Einsätze im aktuellen Jahr zählen (Einsatzverwaltung CPT 'einsatz')
 	$auto_year_count = 0;
 	if ( post_type_exists( 'einsatz' ) ) {
@@ -74,7 +65,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					<span class="stat-label"><?php esc_html_e( 'Aktive Mitglieder', 'ffw-theme' ); ?></span>
 				</div>
 				<div class="stat-item">
-					<span class="stat-number"><?php echo $auto_vehicle_count > 0 ? esc_html( $auto_vehicle_count ) : esc_html( get_theme_mod( 'ffw_stat_vehicles', '5' ) ); ?></span>
+					<span class="stat-number"><?php echo esc_html( get_theme_mod( 'ffw_stat_vehicles', '5' ) ); ?></span>
 					<span class="stat-label"><?php esc_html_e( 'Fahrzeuge', 'ffw-theme' ); ?></span>
 				</div>
 				<div class="stat-item">
