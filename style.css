@@ -498,6 +498,27 @@ label {
 .alignwide  { margin-left: calc(-1 * var(--ffw-spacing-lg)); margin-right: calc(-1 * var(--ffw-spacing-lg)); }
 .alignfull  { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
 
+.section-cta {
+    text-align: center;
+    margin-top: var(--ffw-spacing-lg);
+}
+
+/* Cards and buttons inside entry-content (e.g. via shortcode) must not inherit
+   the entry-content link styles (underline, primary color). */
+.entry-content .btn,
+.entry-content .btn:hover {
+    text-decoration: none;
+}
+
+.entry-content .card__title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.entry-content .card__title a:hover {
+    color: var(--ffw-color-primary);
+}
+
 /* ==========================================================================
    Pagination
    ========================================================================== */
