@@ -26,22 +26,12 @@ $contact_email   = get_theme_mod( 'ffw_contact_email', '' );
 		</address>
 	<?php endif; ?>
 
-	<?php if ( $contact_phone ) : ?>
+	<?php if ( $contact_phone && $contact_phone !== '112' ) : ?>
 		<p class="footer-phone">
-			<span class="footer-contact-label"><?php esc_html_e( 'Notruf:', 'ffw-theme' ); ?></span>
-			<a href="tel:112"><strong>112</strong></a>
-			<?php if ( $contact_phone !== '112' ) : ?>
-				<br>
-				<span class="footer-contact-label"><?php esc_html_e( 'Telefon:', 'ffw-theme' ); ?></span>
-				<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $contact_phone ) ); ?>">
-					<?php echo esc_html( $contact_phone ); ?>
-				</a>
-			<?php endif; ?>
-		</p>
-	<?php else : ?>
-		<p class="footer-phone">
-			<span class="footer-contact-label"><?php esc_html_e( 'Notruf:', 'ffw-theme' ); ?></span>
-			<a href="tel:112"><strong>112</strong></a>
+			<span class="footer-contact-label"><?php esc_html_e( 'Telefon:', 'ffw-theme' ); ?></span>
+			<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $contact_phone ) ); ?>">
+				<?php echo esc_html( $contact_phone ); ?>
+			</a>
 		</p>
 	<?php endif; ?>
 

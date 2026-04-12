@@ -51,26 +51,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endif; ?>
 
 		<?php
-		the_post_navigation(
-			array(
-				'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Vorheriger Beitrag', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
-				'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Nächster Beitrag', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
-			)
+		edit_post_link(
+			esc_html__( 'Beitrag bearbeiten', 'ffw-theme' ),
+			'<span class="post-edit-link">',
+			'</span>'
 		);
 		?>
-
-		<div class="post-report__actions">
-			<a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/' ) ); ?>" class="btn btn--ghost">
-				&larr; <?php esc_html_e( 'Alle Beiträge', 'ffw-theme' ); ?>
-			</a>
-			<?php
-			edit_post_link(
-				esc_html__( 'Beitrag bearbeiten', 'ffw-theme' ),
-				'<span class="post-edit-link">',
-				'</span>'
-			);
-			?>
-		</div>
 
 	</footer>
 

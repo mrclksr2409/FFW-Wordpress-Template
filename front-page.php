@@ -30,9 +30,6 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 						<?php echo esc_html( $hero_cta_text ); ?>
 					</a>
 				<?php endif; ?>
-				<a href="tel:112" class="btn btn--outline btn--lg">
-					<?php esc_html_e( 'Notruf 112', 'ffw-theme' ); ?>
-				</a>
 			</div>
 		</div>
 		<div class="hero-scroll-hint" aria-hidden="true">

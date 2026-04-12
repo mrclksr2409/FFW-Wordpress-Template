@@ -468,6 +468,11 @@ label {
    Entry Content (WordPress default content area)
    ========================================================================== */
 
+.content-area {
+    padding-top: var(--ffw-spacing-xl);
+    padding-bottom: var(--ffw-spacing-xl);
+}
+
 .entry-content {
     color: var(--ffw-text-secondary);
     font-size: 1.05rem;

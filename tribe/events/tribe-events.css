@@ -52,10 +52,27 @@
    Events Page Layout (custom template tribe/events/v2/default-template.php)
    ========================================================================== */
 
-.events-view-toggle {
+/* Page-header layout with download button */
+.page-header__inner {
 	display: flex;
-	gap: var(--ffw-spacing-sm);
-	margin: var(--ffw-spacing-lg) 0 var(--ffw-spacing-md);
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: var(--ffw-spacing-lg);
+	flex-wrap: wrap;
+}
+
+/* Events list container: top/bottom spacing */
+.events-list-container {
+	padding-top: var(--ffw-spacing-xl);
+	padding-bottom: var(--ffw-spacing-xl);
+}
+
+/* Hide navigation on single event pages */
+.tribe-events-single .tribe-events-nav-pagination,
+.tribe-events-single .tribe-events-single__nav,
+.tribe-events-single .tribe-events-c-nav,
+.tribe-events-single nav.tribe-events-nav-pagination {
+	display: none !important;
 }
 
 .events-empty {

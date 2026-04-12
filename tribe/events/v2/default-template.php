@@ -33,23 +33,12 @@ if ( is_singular( 'tribe_events' ) ) :
 	return;
 endif;
 
-// Vergangene oder kommende Termine anzeigen?
-$show_past = isset( $_GET['past'] ) && '1' === $_GET['past'];
-
 if ( function_exists( 'tribe_get_events' ) ) {
-	if ( $show_past ) {
-		$events = tribe_get_events( array(
-			'posts_per_page' => 100,
-			'ends_before'    => 'now',
-			'order'          => 'DESC',
-		) );
-	} else {
-		$events = tribe_get_events( array(
-			'posts_per_page' => 100,
-			'ends_after'     => 'now',
-			'order'          => 'ASC',
-		) );
-	}
+	$events = tribe_get_events( array(
+		'posts_per_page' => 100,
+		'ends_after'     => 'now',
+		'order'          => 'ASC',
+	) );
 } else {
 	$events = array();
 }
@@ -58,24 +47,22 @@ if ( function_exists( 'tribe_get_events' ) ) {
 
 	<header class="page-header">
 		<div class="container">
-			<h1 class="page-title"><?php esc_html_e( 'Termine & Veranstaltungen', 'ffw-theme' ); ?></h1>
-			<p class="page-description"><?php esc_html_e( 'Übungen, Veranstaltungen und Termine der Feuerwehr', 'ffw-theme' ); ?></p>
+			<div class="page-header__inner">
+				<div>
+					<h1 class="page-title"><?php esc_html_e( 'Termine & Veranstaltungen', 'ffw-theme' ); ?></h1>
+					<p class="page-description"><?php esc_html_e( 'Übungen, Veranstaltungen und Termine der Feuerwehr', 'ffw-theme' ); ?></p>
+				</div>
+				<?php if ( function_exists( 'tribe_get_ical_link' ) ) : ?>
+				<a href="<?php echo esc_url( tribe_get_ical_link() ); ?>" class="btn btn--outline btn--sm" download>
+					<svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="M8 1v9M4.5 6.5 8 10l3.5-3.5M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					<?php esc_html_e( 'Kalender herunterladen', 'ffw-theme' ); ?>
+				</a>
+				<?php endif; ?>
+			</div>
 		</div>
 	</header>
 
-	<div class="container">
-
-		<!-- Kommende / Vergangene Umschalter -->
-		<div class="events-view-toggle">
-			<a href="<?php echo esc_url( tribe_get_events_link() ); ?>"
-			   class="btn btn--sm <?php echo ! $show_past ? 'btn--primary' : 'btn--outline'; ?>">
-				<?php esc_html_e( 'Kommende Termine', 'ffw-theme' ); ?>
-			</a>
-			<a href="<?php echo esc_url( add_query_arg( 'past', '1', tribe_get_events_link() ) ); ?>"
-			   class="btn btn--sm <?php echo $show_past ? 'btn--primary' : 'btn--outline'; ?>">
-				<?php esc_html_e( 'Vergangene Termine', 'ffw-theme' ); ?>
-			</a>
-		</div>
+	<div class="container events-list-container">
 
 		<?php if ( ! empty( $events ) ) : ?>
 
@@ -146,11 +133,7 @@ if ( function_exists( 'tribe_get_events' ) ) {
 
 		<?php else : ?>
 			<div class="events-empty">
-				<?php if ( $show_past ) : ?>
-					<p><?php esc_html_e( 'Keine vergangenen Termine vorhanden.', 'ffw-theme' ); ?></p>
-				<?php else : ?>
-					<p><?php esc_html_e( 'Aktuell sind keine Termine geplant.', 'ffw-theme' ); ?></p>
-				<?php endif; ?>
+				<p><?php esc_html_e( 'Aktuell sind keine Termine geplant.', 'ffw-theme' ); ?></p>
 			</div>
 		<?php endif; ?>
 
