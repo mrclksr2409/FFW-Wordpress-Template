@@ -1,0 +1,365 @@
+/**
+ * FFW Theme — The Events Calendar CSS Override
+ *
+ * This file is automatically discovered and loaded by The Events Calendar plugin
+ * when placed at tribe/events/tribe-events.css in the active theme.
+ *
+ * It overrides the plugin's default CSS custom properties and component styles
+ * to match the FFW light theme.
+ */
+
+/* ==========================================================================
+   Override TEC CSS Custom Properties
+   ========================================================================== */
+
+:root {
+	/* Accent & brand */
+	--tec-color-accent-primary:                  #E30613;
+	--tec-color-accent-primary-hover:             #b0040f;
+	--tec-color-accent-primary-active:            #ff3040;
+	--tec-color-accent-primary-background:        rgba(227, 6, 19, 0.08);
+	--tec-color-accent-primary-multiday:          rgba(227, 6, 19, 0.18);
+	--tec-color-accent-primary-multiday-hover:    rgba(227, 6, 19, 0.28);
+
+	/* Text */
+	--tec-color-text-primary:                    #1a1a1a;
+	--tec-color-text-secondary:                  #444444;
+	--tec-color-text-disabled:                   #999999;
+	--tec-color-text-event-title:                #1a1a1a;
+
+	/* Backgrounds */
+	--tec-color-background-primary:              #f5f7f9;
+	--tec-color-background-secondary:            #eaecef;
+	--tec-color-background-events:               #f5f7f9;
+	--tec-color-background-widget:               #ffffff;
+	--tec-color-background-white:                #ffffff;
+
+	/* Borders */
+	--tec-color-border-default:                  #dde1e7;
+	--tec-color-border-active:                   #E30613;
+
+	/* Buttons */
+	--tec-color-button-primary:                  #E30613;
+	--tec-color-button-primary-hover:             #b0040f;
+	--tec-color-button-primary-text:              #ffffff;
+
+	/* Links */
+	--tec-color-link-accent:                     #E30613;
+	--tec-color-link-accent-hover:               #b0040f;
+}
+
+/* ==========================================================================
+   Events Page Layout (custom template tribe/events/v2/default-template.php)
+   ========================================================================== */
+
+.events-view-toggle {
+	display: flex;
+	gap: var(--ffw-spacing-sm);
+	margin: var(--ffw-spacing-lg) 0 var(--ffw-spacing-md);
+}
+
+.events-empty {
+	padding: var(--ffw-spacing-xl) 0;
+	color: var(--ffw-text-muted);
+}
+
+/* ==========================================================================
+   Global calendar container
+   ========================================================================== */
+
+.tribe-events,
+.tribe-common,
+.tribe-events-calendar,
+#tribe-events,
+#tribe-events-content {
+	background-color: var(--ffw-bg-base, #f5f7f9) !important;
+	color: var(--ffw-text-primary, #1a1a1a) !important;
+}
+
+.tribe-common * {
+	color: inherit;
+}
+
+/* ==========================================================================
+   Navigation (prev/next, view selector)
+   ========================================================================== */
+
+.tribe-events-c-nav__list-item-link,
+.tribe-common-c-btn,
+.tribe-events-c-view-selector__button,
+.tribe-events .tribe-events-c-nav__next,
+.tribe-events .tribe-events-c-nav__prev {
+	background-color: var(--ffw-bg-card, #ffffff) !important;
+	color: var(--ffw-text-secondary, #444444) !important;
+	border: 1px solid var(--ffw-border-color, #dde1e7) !important;
+	border-radius: 4px !important;
+}
+
+.tribe-common-c-btn:hover,
+.tribe-events-c-nav__list-item-link:hover,
+.tribe-events .tribe-events-c-nav__next:hover,
+.tribe-events .tribe-events-c-nav__prev:hover {
+	background-color: var(--ffw-color-primary, #E30613) !important;
+	border-color: var(--ffw-color-primary, #E30613) !important;
+	color: #fff !important;
+}
+
+/* ==========================================================================
+   Month grid calendar
+   ========================================================================== */
+
+.tribe-events-calendar {
+	border-color: var(--ffw-border-color, #dde1e7) !important;
+}
+
+.tribe-events-calendar td,
+.tribe-events-calendar th,
+.tribe-events .tribe-events-calendar-month__body-cell,
+.tribe-events .tribe-events-calendar-month__header-cell {
+	background: var(--ffw-bg-card, #ffffff) !important;
+	border-color: var(--ffw-border-color, #dde1e7) !important;
+	color: var(--ffw-text-primary, #1a1a1a) !important;
+}
+
+.tribe-events .tribe-events-calendar-month__body-cell--current-month {
+	background: var(--ffw-bg-raised, #242424) !important;
+}
+
+.tribe-events .tribe-events-calendar-month__body-cell--other-month {
+	background: var(--ffw-bg-deep, #0e0e0e) !important;
+	opacity: 0.6;
+}
+
+/* Today highlight */
+.tribe-events .tribe-events-calendar-month__body-cell--today,
+.tribe-events-calendar .tribe-events-present td {
+	background: rgba(227, 6, 19, 0.1) !important;
+	border-color: var(--ffw-color-primary, #E30613) !important;
+}
+
+.tribe-events .tribe-events-calendar-month__body-cell-date-link--today {
+	background: var(--ffw-color-primary, #E30613) !important;
+	color: #fff !important;
+	border-radius: 50%;
+}
+
+/* ==========================================================================
+   Event titles and links
+   ========================================================================== */
+
+.tribe-events .tribe-events-calendar-month__calendar-event-title-link,
+.tribe-events .tribe-events-calendar-list__event-title-link,
+.tribe-event-url,
+.tribe-events a {
+	color: var(--ffw-color-primary, #E30613) !important;
+}
+
+.tribe-events .tribe-events-calendar-month__calendar-event-title-link:hover,
+.tribe-events .tribe-events-calendar-list__event-title-link:hover,
+.tribe-event-url:hover {
+	color: var(--ffw-color-primary-light, #ff3040) !important;
+}
+
+/* ==========================================================================
+   List view
+   ========================================================================== */
+
+.tribe-events .tribe-events-calendar-list__event-row,
+.tribe-events-calendar-list__event-article {
+	border-bottom: 1px solid var(--ffw-border-color, #3a3a3a) !important;
+	background: transparent !important;
+	padding: var(--ffw-spacing-lg, 2rem) 0 !important;
+}
+
+.tribe-events .tribe-events-calendar-list__event-date-tag-daynum {
+	color: var(--ffw-color-primary, #E30613) !important;
+	font-family: var(--ffw-font-heading, 'Oswald', sans-serif) !important;
+}
+
+.tribe-events .tribe-events-calendar-list__event-date-tag-month {
+	color: var(--ffw-text-muted, #888) !important;
+}
+
+/* ==========================================================================
+   Custom FFW Event Card (from tribe/events/v2/list/event.php override)
+   ========================================================================== */
+
+.ffw-event-card {
+	display: flex;
+	gap: var(--ffw-spacing-lg);
+	padding: var(--ffw-spacing-lg) 0;
+	border-bottom: 1px solid var(--ffw-border-color);
+	background: transparent !important;
+}
+
+.ffw-event-card__date-badge {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 60px;
+	min-width: 60px;
+	background: var(--ffw-color-primary);
+	border-radius: var(--ffw-border-radius);
+	padding: 0.5rem;
+	text-align: center;
+}
+
+.ffw-event-card__day {
+	font-family: var(--ffw-font-heading);
+	font-size: 1.75rem;
+	font-weight: 700;
+	color: #fff;
+	line-height: 1;
+}
+
+.ffw-event-card__month {
+	font-size: 0.7rem;
+	color: rgba(255, 255, 255, 0.85);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.ffw-event-card__body {
+	flex: 1;
+	min-width: 0;
+}
+
+.ffw-event-card__title {
+	font-family: var(--ffw-font-heading);
+	font-size: 1.2rem;
+	margin-bottom: 0.35rem;
+}
+
+.ffw-event-card__title a {
+	color: var(--ffw-text-primary) !important;
+	text-decoration: none;
+	transition: color var(--ffw-transition);
+}
+
+.ffw-event-card__title a:hover {
+	color: var(--ffw-color-primary) !important;
+}
+
+.ffw-event-card__time {
+	font-size: 0.875rem;
+	color: var(--ffw-text-muted);
+	margin-bottom: 0.35rem;
+}
+
+.ffw-event-card__venue {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+	font-size: 0.875rem;
+	color: var(--ffw-text-muted);
+	font-style: normal;
+	margin-bottom: var(--ffw-spacing-sm);
+}
+
+.ffw-event-card__venue svg {
+	color: var(--ffw-color-primary);
+}
+
+.ffw-event-card__image {
+	display: none;
+}
+
+.ffw-event-card__actions {
+	margin-top: var(--ffw-spacing-sm);
+}
+
+/* ==========================================================================
+   Single Event page
+   ========================================================================== */
+
+.tribe-events-single {
+	background: var(--ffw-bg-base) !important;
+	color: var(--ffw-text-primary) !important;
+}
+
+.tribe-events-single .tribe-events-single-section {
+	border-color: var(--ffw-border-color) !important;
+}
+
+.tribe-events-schedule,
+.tribe-events .tribe-event-date-start,
+.tribe-events .tribe-event-date-end {
+	color: var(--ffw-text-secondary) !important;
+}
+
+.tribe-venue,
+.tribe-organizer {
+	background: var(--ffw-bg-card) !important;
+	border: 1px solid var(--ffw-border-color) !important;
+	border-radius: var(--ffw-border-radius) !important;
+	color: var(--ffw-text-secondary) !important;
+	padding: var(--ffw-spacing-md) !important;
+}
+
+/* ==========================================================================
+   Datepicker
+   ========================================================================== */
+
+.datepicker,
+.tribe-events .datepicker {
+	background: var(--ffw-bg-card) !important;
+	border: 1px solid var(--ffw-border-color) !important;
+	border-radius: var(--ffw-border-radius) !important;
+	color: var(--ffw-text-primary) !important;
+}
+
+.datepicker td,
+.datepicker th {
+	color: var(--ffw-text-secondary) !important;
+}
+
+.datepicker td.active,
+.datepicker td.active:hover,
+.datepicker .day.active {
+	background: var(--ffw-color-primary) !important;
+	color: #fff !important;
+}
+
+/* ==========================================================================
+   Search / Filter bar
+   ========================================================================== */
+
+.tribe-events-filters-form,
+.tribe-events-bar {
+	background: var(--ffw-bg-raised) !important;
+	border: 1px solid var(--ffw-border-color) !important;
+	border-radius: var(--ffw-border-radius-lg) !important;
+}
+
+.tribe-events-bar input,
+.tribe-events-bar select,
+.tribe-events-filters-form input,
+.tribe-events-filters-form select {
+	background: var(--ffw-bg-card) !important;
+	border-color: var(--ffw-border-color) !important;
+	color: var(--ffw-text-primary) !important;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 767px) {
+	.ffw-event-card {
+		flex-direction: column;
+	}
+
+	.ffw-event-card__date-badge {
+		flex-direction: row;
+		width: auto;
+		gap: 0.5rem;
+		padding: 0.4rem 0.8rem;
+		border-radius: 4px;
+		align-self: flex-start;
+	}
+
+	.ffw-event-card__day {
+		font-size: 1.2rem;
+	}
+}
