@@ -13,6 +13,7 @@ define( 'FFW_THEME_DIR', get_template_directory() );
 define( 'FFW_THEME_URI', get_template_directory_uri() );
 
 require FFW_THEME_DIR . '/inc/theme-setup.php';
+require FFW_THEME_DIR . '/inc/mega-menu.php';
 require FFW_THEME_DIR . '/inc/enqueue.php';
 require FFW_THEME_DIR . '/inc/widgets.php';
 require FFW_THEME_DIR . '/inc/elementor.php';

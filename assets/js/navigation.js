@@ -67,13 +67,18 @@
 	}
 
 	// -------------------------------------------------------------------------
-	// Sub-menu keyboard accessibility
+	// Sub-menu & Mega-Menu keyboard / hover accessibility
 	// -------------------------------------------------------------------------
 	var menuItems = document.querySelectorAll( '.primary-nav > li' );
 
 	menuItems.forEach( function ( item ) {
-		var subMenu = item.querySelector( 'ul' );
-		if ( !subMenu ) return;
+		// Regular dropdown: child <ul>
+		// Mega menu: child .mega-menu-panel
+		var subMenu   = item.querySelector( 'ul' );
+		var megaPanel = item.querySelector( '.mega-menu-panel' );
+		var panel     = megaPanel || subMenu;
+
+		if ( !panel ) return;
 
 		var link = item.querySelector( 'a' );
 		if ( link ) {
@@ -81,25 +86,35 @@
 			link.setAttribute( 'aria-expanded', 'false' );
 		}
 
-		item.addEventListener( 'mouseenter', function () {
-			subMenu.style.display = 'block';
+		function openPanel() {
+			if ( megaPanel ) {
+				megaPanel.style.display = 'block';
+			} else {
+				subMenu.style.display = 'block';
+			}
 			if ( link ) link.setAttribute( 'aria-expanded', 'true' );
-		} );
+		}
 
-		item.addEventListener( 'mouseleave', function () {
-			subMenu.style.display = '';
+		function closePanel() {
+			if ( megaPanel ) {
+				megaPanel.style.display = '';
+			} else {
+				subMenu.style.display = '';
+			}
 			if ( link ) link.setAttribute( 'aria-expanded', 'false' );
-		} );
+		}
 
-		// Keyboard focus management
+		item.addEventListener( 'mouseenter', openPanel );
+		item.addEventListener( 'mouseleave', closePanel );
+
+		// Keyboard focus management: close when focus leaves the item entirely
 		var allLinks = item.querySelectorAll( 'a' );
 		var lastLink = allLinks[ allLinks.length - 1 ];
 
 		if ( lastLink ) {
 			lastLink.addEventListener( 'blur', function ( e ) {
 				if ( !item.contains( e.relatedTarget ) ) {
-					subMenu.style.display = '';
-					if ( link ) link.setAttribute( 'aria-expanded', 'false' );
+					closePanel();
 				}
 			} );
 		}
