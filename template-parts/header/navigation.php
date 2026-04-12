@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'menu_class'     => 'primary-nav',
 				'container'      => false,
 				'fallback_cb'    => 'ffw_fallback_menu',
+				'walker'         => new FFW_Mega_Menu_Walker(),
 			)
 		);
 		?>

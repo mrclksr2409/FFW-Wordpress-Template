@@ -35,6 +35,14 @@ function ffw_enqueue_assets() {
 		FFW_THEME_VERSION
 	);
 
+	// Mega Menu CSS (Fahrzeuge)
+	wp_enqueue_style(
+		'ffw-mega-menu',
+		FFW_THEME_URI . '/assets/css/mega-menu.css',
+		array( 'ffw-navigation' ),
+		FFW_THEME_VERSION
+	);
+
 	// Navigation JS (mobile hamburger + sticky header)
 	wp_enqueue_script(
 		'ffw-navigation-js',
