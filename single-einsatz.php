@@ -22,13 +22,13 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	<div class="container">
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'einsatz-report' ); ?>>
 
-			<?php get_template_part( 'template-parts/einsatz/einsatz-meta' ); ?>
-
 			<?php if ( has_post_thumbnail() ) : ?>
 				<div class="einsatz-report__image">
 					<?php the_post_thumbnail( 'ffw-hero' ); ?>
 				</div>
 			<?php endif; ?>
+
+			<?php get_template_part( 'template-parts/einsatz/einsatz-meta' ); ?>
 
 			<?php if ( get_the_content() ) : ?>
 				<div class="einsatz-report__content entry-content">

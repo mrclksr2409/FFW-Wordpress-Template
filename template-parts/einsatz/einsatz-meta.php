@@ -127,8 +127,9 @@ $has_unit_grouping = ! empty( array_filter( array_keys( $vehicles_by_unit ), fn(
 
 	<dl class="einsatz-meta">
 
-		<?php if ( $alarmzeit ) :
-			$ts = strtotime( $alarmzeit );
+		<?php
+		$ts           = $alarmzeit ? strtotime( $alarmzeit ) : null;
+		$display_date = $ts ? date_i18n( get_option( 'date_format' ), $ts ) : get_the_date();
 		?>
 		<div class="einsatz-meta__item">
 			<dt>
@@ -137,9 +138,10 @@ $has_unit_grouping = ! empty( array_filter( array_keys( $vehicles_by_unit ), fn(
 				</svg>
 				<?php esc_html_e( 'Datum', 'ffw-theme' ); ?>
 			</dt>
-			<dd><?php echo esc_html( date_i18n( get_option( 'date_format' ), $ts ) ); ?></dd>
+			<dd><?php echo esc_html( $display_date ); ?></dd>
 		</div>
 
+		<?php if ( $ts ) : ?>
 		<div class="einsatz-meta__item">
 			<dt>
 				<svg class="einsatz-meta__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

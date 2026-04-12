@@ -157,3 +157,26 @@ function ffw_navigation_markup_template( $template ) {
 	return '<nav class="navigation %1$s" role="navigation" aria-label="%2$s">%3$s</nav>';
 }
 add_filter( 'navigation_markup_template', 'ffw_navigation_markup_template' );
+
+/**
+ * Remove the Einsatzverwaltung plugin's auto-appended report details block
+ * on single einsatz pages, since the theme provides its own styled meta box.
+ */
+add_action( 'template_redirect', function() {
+	if ( ! is_singular( 'einsatz' ) ) {
+		return;
+	}
+	global $wp_filter;
+	if ( ! isset( $wp_filter['the_content'] ) ) {
+		return;
+	}
+	foreach ( $wp_filter['the_content']->callbacks as $priority => $callbacks ) {
+		foreach ( $callbacks as $callback ) {
+			$fn = $callback['function'];
+			if ( is_array( $fn ) && is_object( $fn[0] )
+				&& method_exists( $fn[0], 'filterSingleEinsatz' ) ) {
+				remove_filter( 'the_content', $fn, $priority );
+			}
+		}
+	}
+} );
