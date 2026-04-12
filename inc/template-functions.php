@@ -161,6 +161,9 @@ add_filter( 'navigation_markup_template', 'ffw_navigation_markup_template' );
 /**
  * Remove the Einsatzverwaltung plugin's auto-appended report details block
  * on single einsatz pages, since the theme provides its own styled meta box.
+ *
+ * Priority 20 ensures this runs after the plugin has registered its filters.
+ * The check uses the class namespace so it works regardless of exact method name.
  */
 add_action( 'template_redirect', function() {
 	if ( ! is_singular( 'einsatz' ) ) {
@@ -173,10 +176,14 @@ add_action( 'template_redirect', function() {
 	foreach ( $wp_filter['the_content']->callbacks as $priority => $callbacks ) {
 		foreach ( $callbacks as $callback ) {
 			$fn = $callback['function'];
-			if ( is_array( $fn ) && is_object( $fn[0] )
-				&& method_exists( $fn[0], 'filterSingleEinsatz' ) ) {
+			if ( ! is_array( $fn ) || ! is_object( $fn[0] ) ) {
+				continue;
+			}
+			$class = get_class( $fn[0] );
+			if ( false !== stripos( $class, 'einsatzverwaltung' )
+				|| method_exists( $fn[0], 'filterSingleEinsatz' ) ) {
 				remove_filter( 'the_content', $fn, $priority );
 			}
 		}
 	}
-} );
+}, 20 );
