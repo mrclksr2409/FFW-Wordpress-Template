@@ -14,10 +14,10 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 <main id="primary" class="site-main layout-full-width">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-			<?php if ( get_the_title() && ! is_page() ) : ?>
-				<header class="entry-header page-header">
+			<?php if ( get_the_title() ) : ?>
+				<header class="page-header">
 					<div class="container">
-						<?php the_title( '<h1 class="entry-title page-title">', '</h1>' ); ?>
+						<?php the_title( '<h1 class="page-title">', '</h1>' ); ?>
 					</div>
 				</header>
 			<?php endif; ?>
