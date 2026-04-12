@@ -11,32 +11,14 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 		the_post();
 
 		// Meta for page-header
-		$content     = get_the_content();
-		$word_count  = str_word_count( wp_strip_all_tags( $content ) );
-		$read_time   = max( 1, (int) ceil( $word_count / 200 ) );
-		$categories  = get_the_category();
-		$primary_cat = ! empty( $categories ) ? $categories[0] : null;
+		$content    = get_the_content();
+		$word_count = str_word_count( wp_strip_all_tags( $content ) );
+		$read_time  = max( 1, (int) ceil( $word_count / 200 ) );
 ?>
 <main id="primary" class="site-main">
 
 	<header class="page-header">
 		<div class="container">
-
-			<nav class="breadcrumb" aria-label="<?php esc_attr_e( 'Breadcrumb', 'ffw-theme' ); ?>">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Startseite', 'ffw-theme' ); ?></a>
-				<?php if ( $primary_cat ) : ?>
-					<span aria-hidden="true">›</span>
-					<a href="<?php echo esc_url( get_category_link( $primary_cat->term_id ) ); ?>"><?php echo esc_html( $primary_cat->name ); ?></a>
-				<?php endif; ?>
-				<span aria-hidden="true">›</span>
-				<span aria-current="page"><?php the_title(); ?></span>
-			</nav>
-
-			<?php if ( $primary_cat ) : ?>
-				<a href="<?php echo esc_url( get_category_link( $primary_cat->term_id ) ); ?>" class="badge post-cat-badge">
-					<?php echo esc_html( $primary_cat->name ); ?>
-				</a>
-			<?php endif; ?>
 
 			<h1 class="page-title"><?php the_title(); ?></h1>
 
