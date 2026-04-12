@@ -22,35 +22,65 @@ $fahrzeuge         = get_the_terms( $post_id, 'fahrzeug' );
 $einsatzarten      = get_the_terms( $post_id, 'einsatzart' );
 $alarmierungsarten = get_the_terms( $post_id, 'alarmierungsart' );
 
-// Group vehicles by evw_unit (term meta on each fahrzeug term)
-$vehicles_by_unit = array();
-$unit_labels      = array();
+// ------------------------------------------------------------------
+// Group vehicles by evw_unit
+//
+// Both 'fahrzeug' and 'evw_unit' are taxonomies on the 'einsatz' CPT.
+// The association between a specific fahrzeug term and its evw_unit is
+// stored as term meta on the fahrzeug term by the Einsatzverwaltung
+// plugin. We try the common meta keys the plugin may use.
+// ------------------------------------------------------------------
+
+// Build a lookup map of evw_unit terms on this post (term_id => WP_Term)
+$units_on_post = array();
+$einheiten     = get_the_terms( $post_id, 'evw_unit' );
+if ( ! empty( $einheiten ) && ! is_wp_error( $einheiten ) ) {
+	foreach ( $einheiten as $unit ) {
+		$units_on_post[ $unit->term_id ] = $unit;
+	}
+}
+
+$vehicles_by_unit = array(); // unit_term_id => fahrzeug[]  (key 0 = ungrouped)
+$unit_labels      = array(); // unit_term_id => unit name
 
 if ( ! empty( $fahrzeuge ) && ! is_wp_error( $fahrzeuge ) ) {
-	foreach ( $fahrzeuge as $fahrzeug ) {
-		$unit_id = (int) get_term_meta( $fahrzeug->term_id, 'evw_unit', true );
+	// Term meta keys Einsatzverwaltung may use for the unit association
+	$candidate_keys = array( 'unit', 'evw_unit', 'fahrzeug_unit', 'einheit' );
 
-		if ( $unit_id ) {
-			$unit_term = get_term( $unit_id, 'evw_unit' );
-			if ( $unit_term && ! is_wp_error( $unit_term ) ) {
-				$key                   = $unit_term->term_id;
-				$unit_labels[ $key ]   = $unit_term->name;
-				$vehicles_by_unit[ $key ][] = $fahrzeug;
-				continue;
+	foreach ( $fahrzeuge as $fahrzeug ) {
+		$matched_unit_id = 0;
+
+		foreach ( $candidate_keys as $meta_key ) {
+			$val = get_term_meta( $fahrzeug->term_id, $meta_key, true );
+			if ( $val ) {
+				$val = (int) $val;
+				// Accept only if it actually appears as a unit on this post
+				if ( $val > 0 && isset( $units_on_post[ $val ] ) ) {
+					$matched_unit_id = $val;
+					break;
+				}
 			}
 		}
 
-		// No unit found — put in bucket 0 (ungrouped)
-		$vehicles_by_unit[0][] = $fahrzeug;
+		if ( $matched_unit_id ) {
+			$unit_labels[ $matched_unit_id ]      = $units_on_post[ $matched_unit_id ]->name;
+			$vehicles_by_unit[ $matched_unit_id ][] = $fahrzeug;
+		} else {
+			$vehicles_by_unit[0][] = $fahrzeug;
+		}
 	}
 
-	// Sort: named units first (sorted by label), ungrouped last
-	uksort( $vehicles_by_unit, function( $a, $b ) use ( $unit_labels ) {
+	// Sort: named units alphabetically, ungrouped (0) always last
+	uksort( $vehicles_by_unit, function ( $a, $b ) use ( $unit_labels ) {
 		if ( $a === 0 ) return 1;
 		if ( $b === 0 ) return -1;
 		return strcmp( $unit_labels[ $a ] ?? '', $unit_labels[ $b ] ?? '' );
 	} );
 }
+
+// Show unit headings only when at least 2 distinct named units exist
+$has_unit_grouping = count( array_filter( array_keys( $vehicles_by_unit ), fn( $k ) => $k !== 0 ) ) >= 1
+	&& ( count( $vehicles_by_unit ) > 1 || ! isset( $vehicles_by_unit[0] ) );
 ?>
 <div class="einsatz-meta-wrapper">
 
@@ -166,15 +196,15 @@ if ( ! empty( $fahrzeuge ) && ! is_wp_error( $fahrzeuge ) ) {
 		<div class="einsatz-fahrzeuge">
 			<p class="einsatz-fahrzeuge__label"><?php esc_html_e( 'Eingesetzte Fahrzeuge', 'ffw-theme' ); ?></p>
 
-			<?php foreach ( $vehicles_by_unit as $unit_id => $unit_vehicles ) :
-				$show_unit_heading = count( $vehicles_by_unit ) > 1 && $unit_id !== 0 && isset( $unit_labels[ $unit_id ] );
+			<?php foreach ( $vehicles_by_unit as $bucket_id => $bucket_vehicles ) :
+				$show_heading = $has_unit_grouping && $bucket_id !== 0 && isset( $unit_labels[ $bucket_id ] );
 			?>
-				<?php if ( $show_unit_heading ) : ?>
-					<p class="einsatz-fahrzeuge__unit-label"><?php echo esc_html( $unit_labels[ $unit_id ] ); ?></p>
+				<?php if ( $show_heading ) : ?>
+					<p class="einsatz-fahrzeuge__unit-label"><?php echo esc_html( $unit_labels[ $bucket_id ] ); ?></p>
 				<?php endif; ?>
 
 				<div class="einsatz-tags einsatz-fahrzeuge__group">
-					<?php foreach ( $unit_vehicles as $fahrzeug ) : ?>
+					<?php foreach ( $bucket_vehicles as $fahrzeug ) : ?>
 						<a href="<?php echo esc_url( get_term_link( $fahrzeug ) ); ?>" class="einsatz-tag">
 							<?php echo esc_html( $fahrzeug->name ); ?>
 						</a>

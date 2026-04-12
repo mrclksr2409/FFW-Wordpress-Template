@@ -398,7 +398,6 @@ table.einsatzliste a:hover,
    -------------------------------------------------------------------------- */
 
 .einsatz-single .container {
-	max-width: 900px;
 	padding-bottom: var(--ffw-spacing-xl);
 }
 
