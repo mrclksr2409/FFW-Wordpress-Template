@@ -36,21 +36,6 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				</div>
 			<?php endif; ?>
 
-			<footer class="einsatz-report__footer">
-				<?php
-				the_post_navigation(
-					array(
-						'prev_text'    => '<span class="nav-subtitle">' . esc_html__( 'Vorheriger Einsatz', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
-						'next_text'    => '<span class="nav-subtitle">' . esc_html__( 'Nächster Einsatz', 'ffw-theme' ) . '</span> <span class="nav-title">%title</span>',
-						'in_same_term' => false,
-						'taxonomy'     => 'einsatzart',
-					)
-				);
-				?>
-				<a href="<?php echo esc_url( get_post_type_archive_link( 'einsatz' ) ); ?>" class="btn btn--ghost">
-					&larr; <?php esc_html_e( 'Alle Einsätze', 'ffw-theme' ); ?>
-				</a>
-			</footer>
 		</article>
 	</div>
 

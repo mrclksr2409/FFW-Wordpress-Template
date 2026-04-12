@@ -68,8 +68,4 @@ $twitter   = get_theme_mod( 'ffw_social_twitter', '' );
 		</ul>
 	<?php endif; ?>
 
-	<div class="footer-emergency">
-		<p class="footer-emergency__label"><?php esc_html_e( 'Im Notfall:', 'ffw-theme' ); ?></p>
-		<a href="tel:112" class="footer-emergency__number">112</a>
-	</div>
 </div>
