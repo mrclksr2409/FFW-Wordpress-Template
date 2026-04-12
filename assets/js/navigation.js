@@ -72,21 +72,22 @@
 	var menuItems = document.querySelectorAll( '.primary-nav > li' );
 
 	menuItems.forEach( function ( item ) {
-		// Regular dropdown: child <ul>
-		// Mega menu: child .mega-menu-panel
+		// Regular dropdown uses a child <ul>; mega menu uses .mega-menu-panel.
 		var subMenu   = item.querySelector( 'ul' );
 		var megaPanel = item.querySelector( '.mega-menu-panel' );
-		var panel     = megaPanel || subMenu;
 
-		if ( !panel ) return;
+		if ( !megaPanel && !subMenu ) return;
 
-		var link = item.querySelector( 'a' );
+		var link         = item.querySelector( 'a' );
+		var closeTimeout = null;
+
 		if ( link ) {
 			link.setAttribute( 'aria-haspopup', 'true' );
 			link.setAttribute( 'aria-expanded', 'false' );
 		}
 
-		function openPanel() {
+		// Show panel immediately.
+		function doOpen() {
 			if ( megaPanel ) {
 				megaPanel.style.display = 'block';
 			} else {
@@ -95,7 +96,8 @@
 			if ( link ) link.setAttribute( 'aria-expanded', 'true' );
 		}
 
-		function closePanel() {
+		// Hide panel immediately (used by keyboard blur).
+		function doClose() {
 			if ( megaPanel ) {
 				megaPanel.style.display = '';
 			} else {
@@ -104,17 +106,45 @@
 			if ( link ) link.setAttribute( 'aria-expanded', 'false' );
 		}
 
+		// Cancel any pending close and open the panel right away.
+		function openPanel() {
+			clearTimeout( closeTimeout );
+			doOpen();
+		}
+
+		// For mega menus: delay closing so the cursor can travel across the
+		// visual gap between the <li> boundary and the panel.  The panel's own
+		// mouseenter will cancel the timeout if the cursor reaches it in time.
+		function closePanel() {
+			clearTimeout( closeTimeout );
+			if ( megaPanel ) {
+				closeTimeout = setTimeout( doClose, 120 );
+			} else {
+				doClose();
+			}
+		}
+
+		// Trigger item (the <li>) — covers the link and any inline content.
 		item.addEventListener( 'mouseenter', openPanel );
 		item.addEventListener( 'mouseleave', closePanel );
 
-		// Keyboard focus management: close when focus leaves the item entirely
+		// The mega-menu panel itself is absolutely positioned and therefore
+		// outside the <li>'s layout box.  We must listen on the panel too so
+		// entering it cancels the close timeout.
+		if ( megaPanel ) {
+			megaPanel.addEventListener( 'mouseenter', openPanel );
+			megaPanel.addEventListener( 'mouseleave', closePanel );
+		}
+
+		// Keyboard: close immediately when focus leaves the entire item tree.
 		var allLinks = item.querySelectorAll( 'a' );
 		var lastLink = allLinks[ allLinks.length - 1 ];
 
 		if ( lastLink ) {
 			lastLink.addEventListener( 'blur', function ( e ) {
 				if ( !item.contains( e.relatedTarget ) ) {
-					closePanel();
+					clearTimeout( closeTimeout );
+					doClose();
 				}
 			} );
 		}
