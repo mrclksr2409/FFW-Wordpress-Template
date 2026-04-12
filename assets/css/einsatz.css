@@ -157,6 +157,24 @@
 	border: 1px solid var(--ffw-border-color);
 }
 
+.einsatz-tag--outline {
+	background: transparent;
+	color: var(--ffw-text-secondary);
+	border: 1px solid var(--ffw-border-color);
+}
+
+.einsatz-tag--outline:hover {
+	background: var(--ffw-bg-raised);
+	color: var(--ffw-text-primary);
+	text-decoration: none;
+}
+
+.einsatz-fahrzeuge--ext {
+	margin-top: var(--ffw-spacing-md);
+	padding-top: var(--ffw-spacing-md);
+	border-top: 1px solid var(--ffw-border-color);
+}
+
 /* --------------------------------------------------------------------------
    Einsatz Meta (DL on single report)
    -------------------------------------------------------------------------- */

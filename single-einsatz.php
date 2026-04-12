@@ -10,20 +10,12 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 
 	while ( have_posts() ) :
 		the_post();
-
-		$post_id   = get_the_ID();
-		$alarmzeit = get_post_meta( $post_id, 'einsatz_alarmzeit', true );
-
-		$header_date = $alarmzeit
-			? date_i18n( get_option( 'date_format' ), strtotime( $alarmzeit ) )
-			: get_the_date();
 ?>
 <main id="primary" class="site-main einsatz-single">
 
 	<header class="page-header">
 		<div class="container">
 			<h1 class="page-title"><?php the_title(); ?></h1>
-			<p class="page-description"><?php echo esc_html( $header_date ); ?></p>
 		</div>
 	</header>
 
