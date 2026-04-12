@@ -71,6 +71,16 @@ function ffw_enqueue_assets() {
 		);
 	}
 
+	// Single post CSS (standard WordPress posts only)
+	if ( is_singular( 'post' ) ) {
+		wp_enqueue_style(
+			'ffw-single',
+			FFW_THEME_URI . '/assets/css/single.css',
+			array( 'ffw-style' ),
+			FFW_THEME_VERSION
+		);
+	}
+
 	// Comments
 	if ( is_singular() && comments_open() ) {
 		wp_enqueue_script( 'comment-reply' );
