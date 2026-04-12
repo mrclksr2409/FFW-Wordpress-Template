@@ -13,7 +13,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 		<?php if ( ! is_front_page() ) : ?>
 		<header class="page-header">
 			<div class="container">
-				<?php the_title( '<h1 class="entry-title page-title">', '</h1>' ); ?>
+				<?php the_title( '<h1 class="page-title">', '</h1>' ); ?>
 			</div>
 		</header>
 		<?php endif; ?>

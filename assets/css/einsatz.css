@@ -415,7 +415,7 @@ table.einsatzliste a:hover,
    Single Einsatz Report
    -------------------------------------------------------------------------- */
 
-.einsatz-single .container {
+.einsatz-single > .container {
 	padding-bottom: var(--ffw-spacing-xl);
 }
 
