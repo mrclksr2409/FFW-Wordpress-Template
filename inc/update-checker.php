@@ -26,5 +26,4 @@ $ffw_update_checker = PucFactory::buildUpdateChecker(
 	'ffw-theme'
 );
 
-// Updates aus dem main-Branch beziehen
-$ffw_update_checker->setBranch( 'main' );
+// Updates auf Basis von GitHub-Releases beziehen (stabiles Release-Tag wird genutzt)
