@@ -76,7 +76,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 						echo '</div>'; // vorherigen Monatsblock schließen
 					}
 					$active_month = $month_key;
-					echo '<h2 class="einsatz-month-heading">' . esc_html( date_i18n( 'F Y', $ts ) ) . '</h2>';
+					echo '<h2 class="ffw-month-heading">' . esc_html( date_i18n( 'F Y', $ts ) ) . '</h2>';
 					echo '<div class="ffw-events-list">';
 				}
 			?>

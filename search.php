@@ -22,7 +22,7 @@ get_header();
 
 	<div class="container">
 		<?php if ( have_posts() ) : ?>
-			<div class="posts-grid">
+			<div class="posts-grid posts-grid--3">
 				<?php
 				while ( have_posts() ) :
 					the_post();

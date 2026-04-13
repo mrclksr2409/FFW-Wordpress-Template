@@ -6,6 +6,8 @@
  */
 
 get_header();
+
+if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'archive' ) ) :
 ?>
 <main id="primary" class="site-main">
 
@@ -44,4 +46,5 @@ get_header();
 
 </main>
 <?php
+endif;
 get_footer();

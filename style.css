@@ -1760,7 +1760,7 @@ table.einsatzliste a:hover,
    tribe/events/tribe-events.css mit abweichender HTML-Struktur.
    ========================================================================== */
 
-.einsatz-month-heading {
+.ffw-month-heading {
     font-family: var(--ffw-font-heading);
     font-size: 1.2rem;
     font-weight: 600;
@@ -1775,7 +1775,7 @@ table.einsatzliste a:hover,
     gap: var(--ffw-spacing-md);
 }
 
-.einsatz-month-heading:first-of-type { margin-top: var(--ffw-spacing-lg); }
+.ffw-month-heading:first-of-type { margin-top: var(--ffw-spacing-lg); }
 
 .ffw-events-list { display: flex; flex-direction: column; gap: var(--ffw-spacing-md); margin-top: var(--ffw-spacing-lg); }
 
