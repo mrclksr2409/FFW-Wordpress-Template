@@ -15,42 +15,46 @@ Tags:        light, custom-menu, custom-logo, featured-images, translation-ready
 */
 
 /* ==========================================================================
-   CSS Custom Properties — Light Fire Department Theme
+   1. CSS Custom Properties (Design Tokens)
    ========================================================================== */
 
 :root {
-    /* Brand Colors */
+    /* Markenfarben */
     --ffw-color-primary:        #E30613;
     --ffw-color-primary-dark:   #b0040f;
     --ffw-color-primary-light:  #ff3040;
     --ffw-color-primary-alpha:  rgba(227, 6, 19, 0.12);
 
-    /* Background Scale (hell) */
+    /* Neutral (Fehlalarm, deaktivierte Elemente) */
+    --ffw-color-neutral-bg:     #e0e0e0;
+    --ffw-color-neutral-text:   #666666;
+
+    /* Hintergrund-Skala (hell) */
     --ffw-bg-deep:              #eef0f3;
     --ffw-bg-base:              #f5f7f9;
     --ffw-bg-raised:            #eaecef;
     --ffw-bg-card:              #ffffff;
     --ffw-bg-overlay:           rgba(0, 0, 0, 0.65);
 
-    /* Text */
+    /* Textfarben */
     --ffw-text-primary:         #1a1a1a;
     --ffw-text-secondary:       #444444;
     --ffw-text-muted:           #777777;
     --ffw-text-on-red:          #ffffff;
 
-    /* Borders */
+    /* Rahmen & Radien */
     --ffw-border-color:         #dde1e7;
     --ffw-border-radius:        6px;
     --ffw-border-radius-lg:     12px;
     --ffw-border-radius-xl:     20px;
 
-    /* Typography */
+    /* Typographie */
     --ffw-font-sans:            'Inter', 'Helvetica Neue', Arial, sans-serif;
     --ffw-font-heading:         'Oswald', 'Impact', var(--ffw-font-sans);
     --ffw-font-size-base:       16px;
     --ffw-line-height:          1.6;
 
-    /* Spacing */
+    /* Abstände */
     --ffw-spacing-xs:           0.25rem;
     --ffw-spacing-sm:           0.5rem;
     --ffw-spacing-md:           1rem;
@@ -61,18 +65,25 @@ Tags:        light, custom-menu, custom-logo, featured-images, translation-ready
     --ffw-container-width:      1200px;
     --ffw-header-height:        72px;
 
-    /* Transitions */
+    /* Z-Index-Skala */
+    --ffw-z-skip:               100000;
+    --ffw-z-header:             1000;
+    --ffw-z-mobile-menu:        999;
+    --ffw-z-mega-menu:          200;
+    --ffw-z-dropdown:           100;
+
+    /* Animationen */
     --ffw-transition:           0.2s ease-in-out;
     --ffw-transition-slow:      0.4s ease-in-out;
 
-    /* Shadows */
+    /* Schatten */
     --ffw-shadow-card:          0 2px 12px rgba(0, 0, 0, 0.08);
     --ffw-shadow-hover:         0 6px 24px rgba(227, 6, 19, 0.18);
     --ffw-shadow-header:        0 2px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* ==========================================================================
-   Base Reset & Global Styles
+   2. Base Reset & globale Styles
    ========================================================================== */
 
 *,
@@ -98,7 +109,16 @@ body {
     min-height: 100vh;
 }
 
-/* Links */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ==========================================================================
+   3. Typographie
+   ========================================================================== */
+
 a {
     color: var(--ffw-color-primary);
     text-decoration: none;
@@ -111,7 +131,6 @@ a:focus {
     text-decoration: underline;
 }
 
-/* Headings */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--ffw-font-heading);
     font-weight: 600;
@@ -127,7 +146,6 @@ h4 { font-size: 1.25rem; }
 h5 { font-size: 1.1rem; }
 h6 { font-size: 1rem; }
 
-/* Paragraphs & text */
 p {
     margin-bottom: var(--ffw-spacing-md);
     color: var(--ffw-text-secondary);
@@ -135,14 +153,6 @@ p {
 
 p:last-child { margin-bottom: 0; }
 
-/* Images */
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Lists */
 ul, ol {
     padding-left: 1.5rem;
     margin-bottom: var(--ffw-spacing-md);
@@ -151,7 +161,6 @@ ul, ol {
 
 li { margin-bottom: var(--ffw-spacing-xs); }
 
-/* Blockquote */
 blockquote {
     border-left: 4px solid var(--ffw-color-primary);
     padding: var(--ffw-spacing-md) var(--ffw-spacing-lg);
@@ -162,7 +171,6 @@ blockquote {
     color: var(--ffw-text-secondary);
 }
 
-/* Code */
 code, pre {
     font-family: 'Courier New', Courier, monospace;
     background: var(--ffw-bg-card);
@@ -178,14 +186,12 @@ pre {
     margin-bottom: var(--ffw-spacing-md);
 }
 
-/* HR */
 hr {
     border: none;
     border-top: 1px solid var(--ffw-border-color);
     margin: var(--ffw-spacing-lg) 0;
 }
 
-/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -214,7 +220,7 @@ tbody tr:nth-child(even) { background: var(--ffw-bg-raised); }
 tbody tr:hover { background: var(--ffw-color-primary-alpha); }
 
 /* ==========================================================================
-   Layout Utilities
+   4. Layout
    ========================================================================== */
 
 .container {
@@ -231,12 +237,10 @@ tbody tr:hover { background: var(--ffw-color-primary-alpha); }
     min-height: 100vh;
 }
 
-.site-content {
-    flex: 1;
-}
+.site-content { flex: 1; }
 
 /* ==========================================================================
-   Buttons
+   5. Buttons
    ========================================================================== */
 
 .btn {
@@ -270,7 +274,7 @@ tbody tr:hover { background: var(--ffw-color-primary-alpha); }
 .btn--primary:hover {
     background: var(--ffw-color-primary-dark);
     border-color: var(--ffw-color-primary-dark);
-    color: #fff;
+    color: var(--ffw-text-on-red);
     box-shadow: var(--ffw-shadow-hover);
 }
 
@@ -298,7 +302,7 @@ tbody tr:hover { background: var(--ffw-color-primary-alpha); }
 .btn--lg { padding: 0.9rem 2rem; font-size: 1.05rem; }
 
 /* ==========================================================================
-   Cards
+   6. Cards
    ========================================================================== */
 
 .card {
@@ -342,19 +346,14 @@ tbody tr:hover { background: var(--ffw-color-primary-alpha); }
 
 .card__excerpt { color: var(--ffw-text-secondary); font-size: 0.95rem; }
 
-/* ==========================================================================
-   Posts Grid
-   ========================================================================== */
-
+/* Beitrags-Grid */
 .posts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--ffw-spacing-lg);
 }
 
-.posts-grid--3 {
-    grid-template-columns: repeat(3, 1fr);
-}
+.posts-grid--3 { grid-template-columns: repeat(3, 1fr); }
 
 @media (max-width: 991px) {
     .posts-grid--3 { grid-template-columns: repeat(2, 1fr); }
@@ -365,34 +364,7 @@ tbody tr:hover { background: var(--ffw-color-primary-alpha); }
 }
 
 /* ==========================================================================
-   Section Headings
-   ========================================================================== */
-
-.section-heading {
-    display: flex;
-    align-items: center;
-    gap: var(--ffw-spacing-md);
-    margin-bottom: var(--ffw-spacing-lg);
-}
-
-.section-heading::after {
-    content: '';
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(to right, var(--ffw-color-primary), transparent);
-}
-
-.section-heading .section-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ffw-color-primary);
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-/* ==========================================================================
-   Forms
+   7. Formulare
    ========================================================================== */
 
 input[type="text"],
@@ -432,7 +404,757 @@ label {
 }
 
 /* ==========================================================================
-   Page Header
+   8. Badges & Tags
+   ========================================================================== */
+
+.badge {
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    background: var(--ffw-color-primary);
+    color: var(--ffw-text-on-red);
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* Neutrales Badge (Fehlalarm, inaktiv) */
+.badge--muted {
+    background: var(--ffw-color-neutral-bg);
+    color: var(--ffw-color-neutral-text);
+}
+
+/* Einsatz-Tags (Fahrzeuge-Badges) */
+.einsatz-tag {
+    display: inline-block;
+    background: var(--ffw-color-primary);
+    color: var(--ffw-text-on-red);
+    padding: 0.25em 0.65em;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: background-color var(--ffw-transition);
+}
+
+.einsatz-tag:hover {
+    background: var(--ffw-color-primary-dark);
+    color: var(--ffw-text-on-red);
+    text-decoration: none;
+}
+
+.einsatz-tag--sm { font-size: 0.7rem; padding: 0.2em 0.5em; }
+
+.einsatz-tag--more {
+    background: var(--ffw-bg-raised);
+    color: var(--ffw-text-muted);
+    border: 1px solid var(--ffw-border-color);
+}
+
+.einsatz-tag--outline {
+    background: transparent;
+    color: var(--ffw-text-secondary);
+    border: 1px solid var(--ffw-border-color);
+}
+
+.einsatz-tag--outline:hover {
+    background: var(--ffw-bg-raised);
+    color: var(--ffw-text-primary);
+    text-decoration: none;
+}
+
+/* Fehlalarm-Tag (Inline in Kartentitel) */
+.einsatz-tag--fehlalarm {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--ffw-color-neutral-bg);
+    color: var(--ffw-color-neutral-text);
+    border-radius: 3px;
+    padding: 0.1rem 0.45rem;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+}
+
+/* ==========================================================================
+   9. Utility Classes
+   ========================================================================== */
+
+.text-red   { color: var(--ffw-color-primary); }
+.text-muted { color: var(--ffw-text-muted); }
+.text-small { font-size: 0.875rem; }
+.text-upper { text-transform: uppercase; letter-spacing: 0.05em; }
+.page-header__sep { opacity: 0.5; margin: 0 0.25em; }
+
+/* ==========================================================================
+   10. Barrierefreiheit
+   ========================================================================== */
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+.skip-link:focus {
+    clip: auto !important;
+    clip-path: none;
+    display: block;
+    height: auto;
+    left: 0;
+    top: 0;
+    width: auto;
+    z-index: var(--ffw-z-skip);
+    background: var(--ffw-color-primary);
+    color: var(--ffw-text-on-red);
+    padding: 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   11. WordPress Core
+   ========================================================================== */
+
+.wp-caption { max-width: 100%; }
+.wp-caption-text { font-size: 0.875rem; color: var(--ffw-text-muted); text-align: center; padding-top: 0.5rem; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--ffw-spacing-sm); }
+.gallery-item img { border-radius: var(--ffw-border-radius); }
+.wp-block-image img { border-radius: var(--ffw-border-radius); }
+.wp-block-separator { border-color: var(--ffw-border-color); }
+
+.wp-block-quote {
+    border-left: 4px solid var(--ffw-color-primary);
+    background: var(--ffw-bg-card);
+    padding: var(--ffw-spacing-md) var(--ffw-spacing-lg);
+}
+
+.wp-block-code,
+.wp-block-preformatted {
+    background: var(--ffw-bg-card);
+    border: 1px solid var(--ffw-border-color);
+    color: var(--ffw-text-secondary);
+}
+
+/* ==========================================================================
+   12. Site Header & Haupt-Navigation (Desktop)
+   ========================================================================== */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--ffw-z-header);
+    background-color: var(--ffw-bg-deep);
+    border-bottom: 2px solid var(--ffw-color-primary);
+    height: var(--ffw-header-height);
+    display: flex;
+    align-items: center;
+    transition: box-shadow var(--ffw-transition);
+}
+
+.site-header.is-scrolled { box-shadow: var(--ffw-shadow-header); }
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--ffw-spacing-lg);
+}
+
+/* Site Branding */
+.site-branding {
+    display: flex;
+    align-items: center;
+    gap: var(--ffw-spacing-md);
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.site-logo a,
+.site-logo img { display: block; }
+
+.site-logo img {
+    height: 48px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+.site-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.site-title {
+    font-family: var(--ffw-font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.site-title a {
+    color: var(--ffw-text-primary);
+    text-decoration: none;
+    transition: color var(--ffw-transition);
+}
+
+.site-title a:hover {
+    color: var(--ffw-color-primary);
+    text-decoration: none;
+}
+
+.site-description {
+    font-size: 0.7rem;
+    color: var(--ffw-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+}
+
+/* Haupt-Navigation */
+.main-navigation {
+    display: flex;
+    align-items: center;
+}
+
+.primary-menu-container {
+    display: flex;
+    align-items: center;
+}
+
+.primary-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.25rem;
+}
+
+.primary-nav > li { position: relative; }
+
+.primary-nav > li > a {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.85rem;
+    color: var(--ffw-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border-radius: var(--ffw-border-radius);
+    text-decoration: none;
+    transition: color var(--ffw-transition), background-color var(--ffw-transition);
+    white-space: nowrap;
+}
+
+.primary-nav > li > a:hover,
+.primary-nav > li.current-menu-item > a,
+.primary-nav > li.current-menu-ancestor > a {
+    color: var(--ffw-text-primary);
+    background: rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+}
+
+.primary-nav > li.current-menu-item > a { color: var(--ffw-color-primary); }
+
+/* Dropdown-Untermenüs */
+.primary-nav .sub-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: var(--ffw-bg-card);
+    border: 1px solid var(--ffw-border-color);
+    border-top: 2px solid var(--ffw-color-primary);
+    border-radius: 0 0 var(--ffw-border-radius) var(--ffw-border-radius);
+    box-shadow: var(--ffw-shadow-card);
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    display: none;
+    z-index: var(--ffw-z-dropdown);
+}
+
+.primary-nav li:hover > .sub-menu,
+.primary-nav li:focus-within > .sub-menu { display: block; }
+
+.primary-nav .sub-menu a {
+    display: block;
+    padding: 0.55rem 1.2rem;
+    color: var(--ffw-text-secondary);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color var(--ffw-transition), background-color var(--ffw-transition);
+}
+
+.primary-nav .sub-menu a:hover {
+    color: var(--ffw-text-primary);
+    background: rgba(0, 0, 0, 0.04);
+    text-decoration: none;
+}
+
+.primary-nav .sub-menu .current-menu-item a { color: var(--ffw-color-primary); }
+
+/* ==========================================================================
+   13. Hamburger Toggle
+   ========================================================================== */
+
+.menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--ffw-border-color);
+    border-radius: var(--ffw-border-radius);
+    color: var(--ffw-text-secondary);
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    font-family: var(--ffw-font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: border-color var(--ffw-transition), color var(--ffw-transition);
+}
+
+.menu-toggle:hover {
+    border-color: var(--ffw-color-primary);
+    color: var(--ffw-text-primary);
+}
+
+.hamburger-box {
+    width: 22px;
+    height: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform var(--ffw-transition), opacity var(--ffw-transition);
+}
+
+.hamburger-inner {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background-color var(--ffw-transition);
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+}
+
+.hamburger-inner::before { top: -6px; }
+.hamburger-inner::after  { bottom: -6px; }
+
+/* Hamburger → X-Animation */
+.menu-toggle.is-open .hamburger-inner { background: transparent; }
+.menu-toggle.is-open .hamburger-inner::before { top: 0; transform: rotate(45deg); }
+.menu-toggle.is-open .hamburger-inner::after  { bottom: 0; transform: rotate(-45deg); }
+
+/* ==========================================================================
+   14. Mobile Navigation (≤991px)
+   ========================================================================== */
+
+@media (max-width: 991px) {
+    .menu-toggle { display: flex; }
+
+    .primary-menu-container {
+        position: fixed;
+        top: var(--ffw-header-height);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--ffw-bg-deep);
+        border-top: 1px solid var(--ffw-border-color);
+        overflow-y: auto;
+        padding: var(--ffw-spacing-lg);
+        transform: translateX(100%);
+        transition: transform var(--ffw-transition-slow);
+        z-index: var(--ffw-z-mobile-menu);
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .primary-menu-container.is-open { transform: translateX(0); }
+
+    .primary-nav { flex-direction: column; width: 100%; gap: 0; }
+    .primary-nav > li { width: 100%; border-bottom: 1px solid var(--ffw-border-color); }
+    .primary-nav > li:last-child { border-bottom: none; }
+    .primary-nav > li > a { padding: 1rem 0.5rem; font-size: 1.05rem; width: 100%; border-radius: 0; }
+
+    .primary-nav .sub-menu {
+        position: static;
+        display: block;
+        border: none;
+        border-top: 1px solid var(--ffw-border-color);
+        border-radius: 0;
+        box-shadow: none;
+        background: var(--ffw-bg-raised);
+        padding: 0;
+    }
+
+    .primary-nav .sub-menu a { padding: 0.75rem 1.5rem; }
+
+    body.menu-open { overflow: hidden; }
+}
+
+/* ==========================================================================
+   15. Desktop Navigation (≥992px)
+   ========================================================================== */
+
+@media (min-width: 992px) {
+    .menu-toggle { display: none; }
+}
+
+/* ==========================================================================
+   16. Mega Menu — Fahrzeuge
+   ========================================================================== */
+
+/*
+ * Top-Level-Elemente mit WP-Klasse "mega-menu" erhalten vom Walker zusätzlich
+ * "has-mega-menu". Kinder werden als .mega-menu-card im .mega-menu-panel
+ * gerendert. Das Panel ist relativ zu .site-header (sticky) absolut positioniert.
+ */
+
+.primary-nav > li.has-mega-menu { position: static; }
+.primary-nav > li.has-mega-menu > a { gap: 0.3rem; }
+
+.mega-menu-chevron {
+    display: inline-block;
+    vertical-align: middle;
+    transition: transform var(--ffw-transition);
+    flex-shrink: 0;
+}
+
+.primary-nav > li.has-mega-menu:hover > a .mega-menu-chevron,
+.primary-nav > li.has-mega-menu:focus-within > a .mega-menu-chevron {
+    transform: rotate(180deg);
+}
+
+.primary-nav > li.has-mega-menu.current-menu-ancestor > a { color: var(--ffw-color-primary); }
+
+/* Mega Menu Panel */
+.mega-menu-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--ffw-bg-card);
+    border-top: 2px solid var(--ffw-color-primary);
+    border-bottom: 1px solid var(--ffw-border-color);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    z-index: var(--ffw-z-mega-menu);
+    display: none;
+    padding: var(--ffw-spacing-lg) 0;
+}
+
+.primary-nav > li.has-mega-menu:hover .mega-menu-panel,
+.primary-nav > li.has-mega-menu:focus-within .mega-menu-panel { display: block; }
+
+/* Karten-Grid */
+.mega-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--ffw-spacing-md);
+    max-width: var(--ffw-container-width);
+    margin: 0 auto;
+    padding: 0 var(--ffw-spacing-lg);
+}
+
+/* Fahrzeug-Karte */
+.mega-menu-card {
+    border-radius: var(--ffw-border-radius);
+    overflow: hidden;
+    background: var(--ffw-bg-raised);
+    border: 1px solid var(--ffw-border-color);
+    transition: transform var(--ffw-transition), box-shadow var(--ffw-transition),
+        border-color var(--ffw-transition);
+}
+
+.mega-menu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+    border-color: var(--ffw-color-primary);
+}
+
+.mega-menu-card--active { border-color: var(--ffw-color-primary); }
+
+.mega-menu-card__link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+.mega-menu-card__link:hover { text-decoration: none; }
+
+.mega-menu-card__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    transition: opacity var(--ffw-transition);
+}
+
+.mega-menu-card:hover .mega-menu-card__image { opacity: 0.9; }
+
+.mega-menu-card__image--placeholder {
+    aspect-ratio: 3 / 2;
+    background: var(--ffw-bg-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mega-menu-card__placeholder-icon {
+    width: 48px;
+    height: auto;
+    opacity: 0.25;
+    color: var(--ffw-text-secondary);
+}
+
+.mega-menu-card__title {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ffw-text-primary);
+    text-align: center;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--ffw-transition);
+}
+
+.mega-menu-card:hover .mega-menu-card__title,
+.mega-menu-card--active .mega-menu-card__title { color: var(--ffw-color-primary); }
+
+/* Mega Menu Mobile (≤991px) */
+@media (max-width: 991px) {
+    .mega-menu-panel {
+        position: static;
+        display: block;
+        border: none;
+        border-top: 1px solid var(--ffw-border-color);
+        border-bottom: none;
+        box-shadow: none;
+        padding: 0;
+        background: var(--ffw-bg-raised);
+    }
+
+    .mega-menu-grid { display: flex; flex-direction: column; gap: 0; padding: 0; margin: 0; max-width: none; }
+
+    .mega-menu-card {
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid var(--ffw-border-color);
+        background: transparent;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .mega-menu-card:last-child { border-bottom: none; }
+    .mega-menu-card__link { flex-direction: row; align-items: center; gap: var(--ffw-spacing-sm); padding: 0.75rem 1.5rem; }
+    .mega-menu-card__image,
+    .mega-menu-card__image--placeholder { display: none; }
+    .mega-menu-card__title { padding: 0; text-align: left; font-size: 0.9rem; font-weight: 500; white-space: normal; color: var(--ffw-text-secondary); }
+    .mega-menu-card:hover .mega-menu-card__title { color: var(--ffw-text-primary); }
+    .mega-menu-chevron { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mega-menu-card,
+    .mega-menu-card__image,
+    .mega-menu-chevron { transition: none; }
+    .mega-menu-card:hover { transform: none; }
+}
+
+/* ==========================================================================
+   17. Site Footer
+   ========================================================================== */
+
+.site-footer {
+    background: var(--ffw-bg-deep);
+    border-top: 2px solid var(--ffw-color-primary);
+    margin-top: auto;
+}
+
+.footer-widgets { padding: var(--ffw-spacing-xl) 0 var(--ffw-spacing-lg); }
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: var(--ffw-spacing-xl);
+}
+
+.footer-widget-title {
+    font-family: var(--ffw-font-heading);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ffw-color-primary);
+    margin-bottom: var(--ffw-spacing-md);
+    padding-bottom: var(--ffw-spacing-sm);
+    border-bottom: 1px solid var(--ffw-border-color);
+}
+
+.footer-logo img { height: 56px; width: auto; margin-bottom: var(--ffw-spacing-md); }
+
+.footer-address {
+    color: var(--ffw-text-muted);
+    font-size: 0.9rem;
+    font-style: normal;
+    line-height: 1.7;
+    margin-bottom: var(--ffw-spacing-md);
+}
+
+.footer-phone,
+.footer-email { font-size: 0.9rem; color: var(--ffw-text-muted); margin-bottom: var(--ffw-spacing-sm); }
+
+.footer-phone a,
+.footer-email a { color: var(--ffw-text-secondary); }
+
+.footer-phone a:hover,
+.footer-email a:hover { color: var(--ffw-color-primary); }
+
+.footer-contact-label {
+    color: var(--ffw-text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 0.3rem;
+}
+
+.footer-menu-list { list-style: none; margin: 0; padding: 0; }
+.footer-menu-list li { margin-bottom: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
+
+.footer-menu-list a {
+    display: block;
+    padding: 0.45rem 0;
+    color: var(--ffw-text-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color var(--ffw-transition), padding-left var(--ffw-transition);
+}
+
+.footer-menu-list a:hover { color: var(--ffw-color-primary); padding-left: 0.5rem; text-decoration: none; }
+
+/* Social Links */
+.social-links {
+    list-style: none;
+    margin: 0 0 var(--ffw-spacing-lg);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ffw-spacing-sm);
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--ffw-text-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color var(--ffw-transition);
+}
+
+.social-link:hover { color: var(--ffw-color-primary); text-decoration: none; }
+
+/* Notrufnummer */
+.footer-emergency {
+    background: var(--ffw-color-primary-alpha);
+    border: 1px solid rgba(227, 6, 19, 0.3);
+    border-radius: var(--ffw-border-radius);
+    padding: var(--ffw-spacing-md);
+    text-align: center;
+    margin-top: var(--ffw-spacing-lg);
+}
+
+.footer-emergency__label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ffw-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.footer-emergency__number {
+    font-family: var(--ffw-font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--ffw-color-primary);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    line-height: 1;
+}
+
+/* Footer-Navigation */
+.footer-nav { display: flex; list-style: none; margin: 0; padding: 0; gap: var(--ffw-spacing-md); flex-wrap: wrap; }
+.footer-nav a { color: var(--ffw-text-muted); font-size: 0.8rem; text-decoration: none; transition: color var(--ffw-transition); }
+.footer-nav a:hover { color: var(--ffw-color-primary); text-decoration: none; }
+
+/* Footer-Bottom-Leiste */
+.footer-bottom {
+    background: rgba(0, 0, 0, 0.05);
+    border-top: 1px solid var(--ffw-border-color);
+    padding: var(--ffw-spacing-md) 0;
+}
+
+.footer-bottom .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--ffw-spacing-md);
+}
+
+.footer-copy { font-size: 0.8rem; color: var(--ffw-text-muted); margin: 0; }
+.footer-copy a { color: var(--ffw-text-muted); }
+.footer-copy a:hover { color: var(--ffw-color-primary); text-decoration: none; }
+
+@media (max-width: 767px) {
+    .footer-grid { grid-template-columns: 1fr; gap: var(--ffw-spacing-lg); }
+    .footer-bottom .container { flex-direction: column; text-align: center; }
+    .footer-nav { justify-content: center; }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-col--brand { grid-column: 1 / -1; }
+}
+
+/* ==========================================================================
+   18. Page Header
    ========================================================================== */
 
 .page-header {
@@ -445,8 +1167,14 @@ label {
     align-items: center;
 }
 
-.page-header > .container {
-    width: 100%;
+.page-header > .container { width: 100%; }
+
+.page-header__inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--ffw-spacing-lg);
+    flex-wrap: wrap;
 }
 
 .page-title {
@@ -456,16 +1184,11 @@ label {
     margin-bottom: var(--ffw-spacing-sm);
 }
 
-.page-description {
-    color: var(--ffw-text-muted);
-    font-size: 1.1rem;
-    margin-bottom: 0.4rem;
-}
-
+.page-description { color: var(--ffw-text-muted); font-size: 1.1rem; margin-bottom: 0.4rem; }
 .page-description:last-child { margin-bottom: 0; }
 
 /* ==========================================================================
-   Entry Content (WordPress default content area)
+   19. Entry Content (WordPress-Inhaltsbereich)
    ========================================================================== */
 
 .content-area {
@@ -482,56 +1205,57 @@ label {
 .entry-content h1,
 .entry-content h2,
 .entry-content h3,
-.entry-content h4 {
-    margin-top: var(--ffw-spacing-lg);
-    margin-bottom: var(--ffw-spacing-md);
-}
+.entry-content h4 { margin-top: var(--ffw-spacing-lg); margin-bottom: var(--ffw-spacing-md); }
 
-.entry-content a {
-    color: var(--ffw-color-primary);
-    text-decoration: underline;
-}
-
+.entry-content a { color: var(--ffw-color-primary); text-decoration: underline; }
 .entry-content ul,
-.entry-content ol {
-    margin-bottom: var(--ffw-spacing-md);
-}
+.entry-content ol { margin-bottom: var(--ffw-spacing-md); }
+.entry-content img { border-radius: var(--ffw-border-radius); margin: var(--ffw-spacing-md) 0; }
 
-.entry-content img {
-    border-radius: var(--ffw-border-radius);
-    margin: var(--ffw-spacing-md) 0;
-}
-
-/* Gutenberg alignments */
+/* Gutenberg-Ausrichtungsklassen */
 .alignleft  { float: left; margin-right: var(--ffw-spacing-lg); }
 .alignright { float: right; margin-left: var(--ffw-spacing-lg); }
 .aligncenter { margin: 0 auto var(--ffw-spacing-md); text-align: center; }
 .alignwide  { margin-left: calc(-1 * var(--ffw-spacing-lg)); margin-right: calc(-1 * var(--ffw-spacing-lg)); }
 .alignfull  { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
 
-.section-cta {
-    text-align: center;
-    margin-top: var(--ffw-spacing-lg);
-}
+.section-cta { text-align: center; margin-top: var(--ffw-spacing-lg); }
 
-/* Cards and buttons inside entry-content (e.g. via shortcode) must not inherit
-   the entry-content link styles (underline, primary color). */
+/* Buttons und Karten im Entry Content erben keine Link-Underlines */
 .entry-content .btn,
-.entry-content .btn:hover {
-    text-decoration: none;
+.entry-content .btn:hover { text-decoration: none; }
+.entry-content .card__title a { color: inherit; text-decoration: none; }
+.entry-content .card__title a:hover { color: var(--ffw-color-primary); }
+
+/* ==========================================================================
+   20. Abschnittsüberschriften
+   ========================================================================== */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--ffw-spacing-md);
+    margin-bottom: var(--ffw-spacing-lg);
 }
 
-.entry-content .card__title a {
-    color: inherit;
-    text-decoration: none;
+.section-heading::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--ffw-color-primary), transparent);
 }
 
-.entry-content .card__title a:hover {
+.section-heading .section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: var(--ffw-color-primary);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
 }
 
 /* ==========================================================================
-   Pagination
+   21. Seitennummerierung & Navigations-Links
    ========================================================================== */
 
 .nav-links,
@@ -567,95 +1291,473 @@ label {
 .page-numbers.current {
     background: var(--ffw-color-primary);
     border-color: var(--ffw-color-primary);
-    color: #fff;
+    color: var(--ffw-text-on-red);
+}
+
+/* Nav-Links im Einsatz-Bericht und Beitragsnavigation (vertikal) */
+.einsatz-report__footer .nav-links,
+.post-navigation .nav-links {
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0;
 }
 
 /* ==========================================================================
-   Screen Reader & Accessibility
+   22. Breadcrumb
    ========================================================================== */
 
-.screen-reader-text {
-    clip: rect(1px, 1px, 1px, 1px);
-    clip-path: inset(50%);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-    word-wrap: normal !important;
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--ffw-text-muted);
+    margin-bottom: var(--ffw-spacing-lg);
 }
 
-.skip-link:focus {
-    clip: auto !important;
-    clip-path: none;
-    display: block;
-    height: auto;
-    left: 0;
-    top: 0;
-    width: auto;
-    z-index: 100000;
+.breadcrumb a { color: var(--ffw-text-muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--ffw-color-primary); }
+
+/* ==========================================================================
+   23. Archiv-Zähler
+   ========================================================================== */
+
+.archive-count { font-size: 0.9rem; color: var(--ffw-text-muted); margin-bottom: var(--ffw-spacing-lg); }
+
+/* ==========================================================================
+   24. Startseite
+   ========================================================================== */
+
+.hero-section {
+    position: relative;
+    min-height: 55vh;
+    display: flex;
+    align-items: center;
+    background: var(--ffw-bg-deep);
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.85) 0%,
+        rgba(0, 0, 0, 0.5) 60%,
+        rgba(227, 6, 19, 0.2) 100%
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--ffw-spacing-xl);
+    padding-bottom: var(--ffw-spacing-xl);
+}
+
+.hero-badge {
+    display: inline-block;
     background: var(--ffw-color-primary);
-    color: #fff;
-    padding: 1rem;
-    font-size: 1rem;
+    color: var(--ffw-text-on-red);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 3px;
+    margin-bottom: var(--ffw-spacing-md);
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-family: var(--ffw-font-heading);
+    font-weight: 700;
+    color: var(--ffw-text-on-red);
+    margin-bottom: var(--ffw-spacing-md);
+    max-width: 700px;
+    line-height: 1.05;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--ffw-spacing-lg);
+    max-width: 550px;
+}
+
+.hero-actions { display: flex; gap: var(--ffw-spacing-md); flex-wrap: wrap; }
+
+.hero-scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); }
+
+.hero-scroll-hint span {
+    display: block;
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.6));
+    margin: 0 auto;
+    animation: scrollHint 1.5s ease-in-out infinite;
+}
+
+@keyframes scrollHint {
+    0%, 100% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+    50%       { opacity: 1; transform: scaleY(1); }
+}
+
+.stats-bar { background: var(--ffw-color-primary); padding: var(--ffw-spacing-lg) 0; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ffw-spacing-md); text-align: center; }
+
+.stat-item { padding: var(--ffw-spacing-sm); }
+.stat-number { display: block; font-family: var(--ffw-font-heading); font-size: 2rem; font-weight: 700; color: var(--ffw-text-on-red); line-height: 1; }
+.stat-label { display: block; font-size: 0.8rem; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem; }
+
+.home-section { padding: var(--ffw-spacing-xl) 0; }
+.home-section--news { background: var(--ffw-bg-raised); }
+.home-section--events { background: var(--ffw-bg-deep); }
+
+@media (max-width: 991px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 575px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-actions { flex-direction: column; }
+}
+
+/* ==========================================================================
+   25. Einzelner Beitrag
+   ========================================================================== */
+
+.post-author-link { color: var(--ffw-text-muted); text-decoration: none; transition: color var(--ffw-transition); }
+.post-author-link:hover { color: var(--ffw-color-primary); }
+
+.site-main > .container { padding-bottom: var(--ffw-spacing-xl); }
+
+.post-report__image { margin-bottom: var(--ffw-spacing-lg); }
+.post-report__image img { width: 100%; max-height: 500px; object-fit: cover; border-radius: var(--ffw-border-radius-lg); }
+.post-report__content { margin-top: var(--ffw-spacing-lg); }
+
+.post-report__footer {
+    margin-top: var(--ffw-spacing-xl);
+    padding-top: var(--ffw-spacing-lg);
+    border-top: 1px solid var(--ffw-border-color);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ffw-spacing-lg);
+}
+
+.post-report__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--ffw-spacing-md);
+}
+
+.post-edit-link { font-size: 0.85rem; color: var(--ffw-text-muted); }
+.post-edit-link a { color: var(--ffw-text-muted); text-decoration: none; transition: color var(--ffw-transition); }
+.post-edit-link a:hover { color: var(--ffw-color-primary); }
+
+.post-tags { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; }
+.post-tags__label { font-size: 0.75rem; font-weight: 700; color: var(--ffw-text-muted); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+.post-tags__list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.post-tags__list a {
+    display: inline-block;
+    padding: 0.2em 0.65em;
+    background: var(--ffw-bg-raised);
+    border: 1px solid var(--ffw-border-color);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--ffw-text-secondary);
+    text-decoration: none;
+    transition: border-color var(--ffw-transition), color var(--ffw-transition), background var(--ffw-transition);
+}
+
+.post-tags__list a:hover {
+    border-color: var(--ffw-color-primary);
+    color: var(--ffw-color-primary);
+    background: var(--ffw-color-primary-alpha);
     text-decoration: none;
 }
 
+/* Beitragsnavigation */
+.post-navigation .nav-subtitle { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ffw-color-primary); display: block; }
+.post-navigation .nav-title { color: var(--ffw-text-primary); font-weight: 600; }
+.post-navigation a { text-decoration: none; color: var(--ffw-text-primary); transition: color var(--ffw-transition); }
+.post-navigation a:hover { color: var(--ffw-color-primary); text-decoration: none; }
+
+.post-comments-section { margin-top: var(--ffw-spacing-lg); padding-top: var(--ffw-spacing-lg); border-top: 1px solid var(--ffw-border-color); }
+
+@media (max-width: 767px) {
+    .post-report__image img { max-height: 320px; border-radius: var(--ffw-border-radius); }
+    .post-report__actions { flex-direction: column; align-items: flex-start; }
+}
+
 /* ==========================================================================
-   Utility classes
+   26. Einsatz-Plugin
    ========================================================================== */
 
-.text-red   { color: var(--ffw-color-primary); }
-.text-muted { color: var(--ffw-text-muted); }
-.text-small { font-size: 0.875rem; }
-.text-upper { text-transform: uppercase; letter-spacing: 0.05em; }
+/* --- 26a. Einsatz-Karten ------------------------------------------------- */
 
-.badge {
-    display: inline-block;
-    padding: 0.2em 0.6em;
-    background: var(--ffw-color-primary);
-    color: #fff;
-    border-radius: 3px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+.einsatz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--ffw-spacing-lg);
+    margin: var(--ffw-spacing-lg) 0;
 }
 
-.badge--muted {
-    background: #e0e0e0;
-    color: #555;
-}
-
-.page-header__sep {
-    opacity: 0.5;
-    margin: 0 0.25em;
-}
-
-/* WordPress Core */
-.wp-caption { max-width: 100%; }
-.wp-caption-text { font-size: 0.875rem; color: var(--ffw-text-muted); text-align: center; padding-top: 0.5rem; }
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--ffw-spacing-sm); }
-.gallery-item img { border-radius: var(--ffw-border-radius); }
-.wp-block-image img { border-radius: var(--ffw-border-radius); }
-
-/* Gutenberg blocks dark overrides */
-.wp-block-quote {
-    border-left: 4px solid var(--ffw-color-primary);
-    background: var(--ffw-bg-card);
-    padding: var(--ffw-spacing-md) var(--ffw-spacing-lg);
-}
-
-.wp-block-code,
-.wp-block-preformatted {
+.einsatz-card {
     background: var(--ffw-bg-card);
     border: 1px solid var(--ffw-border-color);
+    border-left: 4px solid var(--ffw-color-primary);
+    border-radius: var(--ffw-border-radius-lg);
+    padding: var(--ffw-spacing-lg);
+    position: relative;
+    transition: box-shadow var(--ffw-transition), transform var(--ffw-transition);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ffw-spacing-sm);
+}
+
+.einsatz-card:hover { box-shadow: var(--ffw-shadow-hover); transform: translateY(-3px); }
+
+.einsatz-card__fehlalarm {
+    position: absolute;
+    top: var(--ffw-spacing-md);
+    right: var(--ffw-spacing-md);
+    background: var(--ffw-color-neutral-bg);
+    color: var(--ffw-color-neutral-text);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2em 0.6em;
+    border-radius: 3px;
+}
+
+.einsatz-card__header { display: flex; align-items: center; justify-content: space-between; gap: var(--ffw-spacing-sm); }
+.einsatz-card__date { font-family: var(--ffw-font-heading); font-size: 0.85rem; font-weight: 600; color: var(--ffw-color-primary); letter-spacing: 0.03em; }
+.einsatz-card__type { font-size: 0.72rem; color: var(--ffw-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.einsatz-card__title { font-family: var(--ffw-font-heading); font-size: 1.15rem; margin: 0; line-height: 1.25; }
+.einsatz-card__title a { color: var(--ffw-text-primary); text-decoration: none; transition: color var(--ffw-transition); }
+.einsatz-card__title a:hover { color: var(--ffw-color-primary); }
+
+.einsatz-card__location { display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; color: var(--ffw-text-muted); margin: 0; }
+.einsatz-card__location svg { flex-shrink: 0; color: var(--ffw-color-primary); }
+.einsatz-card__vehicles { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: var(--ffw-spacing-xs); }
+
+.einsatz-card__link {
+    font-size: 0.85rem;
+    color: var(--ffw-color-primary);
+    text-decoration: none;
+    margin-top: auto;
+    padding-top: var(--ffw-spacing-sm);
+    border-top: 1px solid var(--ffw-border-color);
+    transition: color var(--ffw-transition);
+    font-weight: 500;
+}
+
+.einsatz-card__link:hover { color: var(--ffw-color-primary-light); text-decoration: none; }
+
+/* --- 26b. Einsatz-Meta (DL auf Einzelseite) ------------------------------ */
+
+.einsatz-meta-wrapper {
+    background: var(--ffw-bg-raised);
+    border-radius: var(--ffw-border-radius-lg);
+    padding: var(--ffw-spacing-lg);
+    margin: var(--ffw-spacing-lg) 0;
+    border: 1px solid var(--ffw-border-color);
+}
+
+.einsatz-fehlalarm-badge {
+    display: inline-block;
+    background: var(--ffw-color-neutral-bg);
+    color: var(--ffw-color-neutral-text);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.35em 0.9em;
+    border-radius: 4px;
+    margin-bottom: var(--ffw-spacing-md);
+}
+
+.einsatz-meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--ffw-spacing-md) var(--ffw-spacing-lg); }
+.einsatz-meta__item { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.einsatz-meta dt {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ffw-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.einsatz-meta__icon { color: var(--ffw-color-primary); flex-shrink: 0; }
+.einsatz-meta dd { font-size: 1rem; color: var(--ffw-text-primary); font-weight: 500; margin: 0; }
+
+.einsatz-fahrzeuge { margin-top: var(--ffw-spacing-lg); padding-top: var(--ffw-spacing-md); border-top: 1px solid var(--ffw-border-color); }
+.einsatz-fahrzeuge--ext { margin-top: var(--ffw-spacing-md); padding-top: var(--ffw-spacing-md); border-top: 1px solid var(--ffw-border-color); }
+.einsatz-fahrzeuge__label { font-size: 0.75rem; font-weight: 700; color: var(--ffw-text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--ffw-spacing-sm); }
+.einsatz-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.einsatz-fahrzeuge__unit-label { font-size: 0.72rem; font-weight: 700; color: var(--ffw-text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin: var(--ffw-spacing-sm) 0 0.35rem; }
+.einsatz-fahrzeuge__group { margin-bottom: var(--ffw-spacing-sm); }
+
+/* --- 26c. Einsatz-Archiv ------------------------------------------------- */
+
+.einsatz-archive__header { padding: var(--ffw-spacing-lg) 0 var(--ffw-spacing-md); }
+.page-title__year { color: var(--ffw-color-primary); margin-left: 0.3em; }
+.einsatz-archive__stats { margin-bottom: var(--ffw-spacing-md); }
+.einsatz-archive__count { font-size: 0.875rem; color: var(--ffw-text-muted); margin: 0; }
+.einsatz-archive__empty { text-align: center; padding: var(--ffw-spacing-xl); color: var(--ffw-text-muted); }
+
+.einsatz-year-nav { margin-bottom: var(--ffw-spacing-lg); }
+
+.einsatz-year-nav a,
+.einsatz-year-nav .einsatz-jahresarchiv a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.9rem;
+    background: var(--ffw-bg-card);
+    border: 1px solid var(--ffw-border-color);
+    border-radius: var(--ffw-border-radius);
     color: var(--ffw-text-secondary);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all var(--ffw-transition);
+    margin: 0 0.2rem 0.4rem;
+}
+
+.einsatz-year-nav a:hover,
+.einsatz-year-nav a.active,
+.einsatz-year-nav .current {
+    background: var(--ffw-color-primary);
+    border-color: var(--ffw-color-primary);
+    color: var(--ffw-text-on-red);
+    text-decoration: none;
+}
+
+/* --- 26d. Einsatzliste-Tabelle ([einsatzliste]-Shortcode) ---------------- */
+
+table.einsatzliste,
+.einsatz-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: var(--ffw-spacing-lg) 0;
+    color: var(--ffw-text-primary);
+}
+
+table.einsatzliste thead,
+.einsatz-list-table thead { background: var(--ffw-color-primary); }
+
+table.einsatzliste thead th,
+.einsatz-list-table thead th {
+    color: var(--ffw-text-on-red);
+    font-family: var(--ffw-font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    padding: 0.75rem 1rem;
+    border: none;
+}
+
+table.einsatzliste tbody tr,
+.einsatz-list-table tbody tr { background: var(--ffw-bg-card); border-bottom: 1px solid var(--ffw-border-color); }
+
+table.einsatzliste tbody tr:nth-child(even),
+.einsatz-list-table tbody tr:nth-child(even) { background: var(--ffw-bg-raised); }
+
+table.einsatzliste tbody tr:hover,
+.einsatz-list-table tbody tr:hover { background: var(--ffw-color-primary-alpha); }
+
+table.einsatzliste td,
+.einsatz-list-table td { padding: 0.65rem 1rem; color: var(--ffw-text-secondary); vertical-align: middle; }
+
+table.einsatzliste a,
+.einsatz-list-table a { color: var(--ffw-color-primary); text-decoration: none; }
+
+table.einsatzliste a:hover,
+.einsatz-list-table a:hover { color: var(--ffw-color-primary-light); text-decoration: underline; }
+
+@media (max-width: 767px) {
+    .einsatz-meta { grid-template-columns: 1fr; }
+    table.einsatzliste,
+    .einsatz-list-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* --- 26e. Einzelner Einsatzbericht --------------------------------------- */
+
+.einsatz-single > .container { padding-bottom: var(--ffw-spacing-xl); }
+
+.einsatz-report__header { margin-bottom: var(--ffw-spacing-lg); }
+.einsatz-report__header .badge { margin-bottom: var(--ffw-spacing-sm); }
+.einsatz-report__title { font-size: clamp(1.8rem, 4vw, 2.5rem); margin: var(--ffw-spacing-sm) 0 var(--ffw-spacing-lg); }
+.einsatz-report__image { margin-bottom: var(--ffw-spacing-lg); }
+.einsatz-report__image img { width: 100%; max-height: 500px; object-fit: cover; border-radius: var(--ffw-border-radius-lg); }
+.einsatz-report__content { margin-top: var(--ffw-spacing-lg); }
+
+.einsatz-report__footer {
+    margin-top: var(--ffw-spacing-xl);
+    padding-top: var(--ffw-spacing-lg);
+    border-top: 1px solid var(--ffw-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--ffw-spacing-md);
+}
+
+/* Nav-Labels (gemeinsam für Einsatz- und Beitragsnavigation) */
+.nav-subtitle { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ffw-text-muted); display: block; }
+.nav-title { color: var(--ffw-text-primary); font-weight: 600; }
+
+/* --- 26f. Fahrzeuge-Seite ------------------------------------------------ */
+
+.fahrzeuge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--ffw-spacing-lg); margin-top: var(--ffw-spacing-lg); }
+
+.fahrzeug-card {
+    background: var(--ffw-bg-card);
+    border: 1px solid var(--ffw-border-color);
+    border-radius: var(--ffw-border-radius-lg);
+    overflow: hidden;
+    transition: box-shadow var(--ffw-transition), transform var(--ffw-transition);
+}
+
+.fahrzeug-card:hover { box-shadow: var(--ffw-shadow-hover); transform: translateY(-3px); }
+
+.fahrzeug-card__image img,
+.fahrzeug-card__image svg { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+.fahrzeug-card__image--placeholder { background: var(--ffw-bg-raised); display: flex; align-items: center; justify-content: center; height: 200px; }
+.fahrzeug-card__image--placeholder svg { width: auto; height: 80px; }
+
+.fahrzeug-card__body { padding: var(--ffw-spacing-lg); }
+.fahrzeug-card__name { font-family: var(--ffw-font-heading); font-size: 1.3rem; margin-bottom: var(--ffw-spacing-sm); color: var(--ffw-text-primary); }
+.fahrzeug-card__desc { font-size: 0.9rem; color: var(--ffw-text-muted); margin-bottom: var(--ffw-spacing-md); }
+.fahrzeug-card__stats { font-size: 0.8rem; color: var(--ffw-color-primary); font-weight: 600; margin-bottom: var(--ffw-spacing-md); }
+.fahrzeuge-intro { margin-bottom: var(--ffw-spacing-lg); }
+
+.admin-notice {
+    background: var(--ffw-color-primary-alpha);
+    border: 1px solid rgba(227, 6, 19, 0.3);
+    border-radius: var(--ffw-border-radius);
+    padding: var(--ffw-spacing-md);
+    color: var(--ffw-text-secondary);
+    font-size: 0.9rem;
 }
 
 /* ==========================================================================
-   Event Card Component — shared: homepage, einsatz archive, events page
+   27. Gemeinsame Veranstaltungskarte
+   Verwendet auf: Startseite, Einsatz-Archiv.
+   Hinweis: The Events Calendar hat eine eigene Implementierung in
+   tribe/events/tribe-events.css mit abweichender HTML-Struktur.
    ========================================================================== */
 
 .einsatz-month-heading {
@@ -673,16 +1775,9 @@ label {
     gap: var(--ffw-spacing-md);
 }
 
-.einsatz-month-heading:first-of-type {
-    margin-top: var(--ffw-spacing-lg);
-}
+.einsatz-month-heading:first-of-type { margin-top: var(--ffw-spacing-lg); }
 
-.ffw-events-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ffw-spacing-md);
-    margin-top: var(--ffw-spacing-lg);
-}
+.ffw-events-list { display: flex; flex-direction: column; gap: var(--ffw-spacing-md); margin-top: var(--ffw-spacing-lg); }
 
 .ffw-event-card {
     display: flex;
@@ -695,72 +1790,28 @@ label {
     transition: box-shadow var(--ffw-transition), transform var(--ffw-transition);
 }
 
-.ffw-event-card:hover {
-    box-shadow: var(--ffw-shadow-hover);
-    transform: translateY(-2px);
-}
+.ffw-event-card:hover { box-shadow: var(--ffw-shadow-hover); transform: translateY(-2px); }
 
 .ffw-event-card__date {
     flex-shrink: 0;
     text-align: center;
     background: var(--ffw-color-primary);
-    color: #fff;
+    color: var(--ffw-text-on-red);
     border-radius: var(--ffw-border-radius);
     padding: var(--ffw-spacing-sm) var(--ffw-spacing-md);
     min-width: 3.5rem;
 }
 
-.ffw-event-card__day {
-    display: block;
-    font-family: var(--ffw-font-heading);
-    font-size: 1.8rem;
-    font-weight: 700;
-    line-height: 1;
-}
+.ffw-event-card__day { display: block; font-family: var(--ffw-font-heading); font-size: 1.8rem; font-weight: 700; line-height: 1; }
+.ffw-event-card__month { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; margin-top: 0.2rem; }
+.ffw-event-card__body { flex: 1; min-width: 0; }
+.ffw-event-card__title { font-family: var(--ffw-font-heading); font-size: 1.1rem; margin: 0 0 var(--ffw-spacing-xs); }
+.ffw-event-card__title a { color: var(--ffw-text-primary); text-decoration: none; }
+.ffw-event-card__title a:hover { color: var(--ffw-color-primary); }
 
-.ffw-event-card__month {
-    display: block;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.9;
-    margin-top: 0.2rem;
-}
-
-.ffw-event-card__body {
-    flex: 1;
-    min-width: 0;
-}
-
-.ffw-event-card__title {
-    font-family: var(--ffw-font-heading);
-    font-size: 1.1rem;
-    margin: 0 0 var(--ffw-spacing-xs);
-}
-
-.ffw-event-card__title a {
-    color: var(--ffw-text-primary);
-    text-decoration: none;
-}
-
-.ffw-event-card__title a:hover {
-    color: var(--ffw-color-primary);
-}
-
-.ffw-event-card__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--ffw-spacing-md);
-    font-size: 0.85rem;
-    color: var(--ffw-text-muted);
-}
-
+.ffw-event-card__meta { display: flex; flex-wrap: wrap; gap: var(--ffw-spacing-md); font-size: 0.85rem; color: var(--ffw-text-muted); }
 .ffw-event-card__time,
-.ffw-event-card__venue {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
+.ffw-event-card__venue { display: flex; align-items: center; gap: 0.3rem; }
 
 .ffw-event-card__excerpt {
     margin-top: var(--ffw-spacing-xs);
@@ -773,113 +1824,25 @@ label {
     overflow: hidden;
 }
 
-.ffw-event-card__cats {
-    margin-top: var(--ffw-spacing-xs);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-}
+.ffw-event-card__cats { margin-top: var(--ffw-spacing-xs); display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ffw-event-card__link { flex-shrink: 0; white-space: nowrap; }
 
-.ffw-event-card__link {
-    flex-shrink: 0;
-    white-space: nowrap;
-}
-
-/* Einsatz variant: keyword box instead of date */
-.ffw-event-card--einsatz .ffw-event-card__date {
-    background: var(--ffw-text-secondary, #444);
-}
-
-.ffw-event-card__date--keyword {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.ffw-event-card__keyword {
-    display: block;
-    font-family: var(--ffw-font-heading);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.1;
-    text-align: center;
-    word-break: break-word;
-    hyphens: auto;
-}
-
-.einsatz-tag--fehlalarm {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    background: #e0e0e0;
-    color: #666;
-    border-radius: 3px;
-    padding: 0.1rem 0.45rem;
-    vertical-align: middle;
-    margin-right: 0.4rem;
-}
+/* Einsatz-Variante: Stichwort statt Datum */
+.ffw-event-card--einsatz .ffw-event-card__date { background: var(--ffw-text-secondary); }
+.ffw-event-card__date--keyword { display: flex; align-items: center; justify-content: center; }
+.ffw-event-card__keyword { display: block; font-family: var(--ffw-font-heading); font-size: 1.25rem; font-weight: 700; color: var(--ffw-text-on-red); line-height: 1.1; text-align: center; word-break: break-word; hyphens: auto; }
 
 @media (max-width: 600px) {
-    .ffw-event-card {
-        flex-wrap: wrap;
-    }
-    .ffw-event-card__link {
-        width: 100%;
-        text-align: center;
-    }
+    .ffw-event-card { flex-wrap: wrap; }
+    .ffw-event-card__link { width: 100%; text-align: center; }
 }
 
 /* ==========================================================================
-   Archive Count
+   28. Fehlerseite 404
    ========================================================================== */
 
-.archive-count {
-    font-size: 0.9rem;
-    color: var(--ffw-text-muted);
-    margin-bottom: var(--ffw-spacing-lg);
-}
-
-/* ==========================================================================
-   404 Page
-   ========================================================================== */
-
-.error-404 {
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: var(--ffw-spacing-xl) 0;
-}
-
-.error-404__number {
-    font-family: var(--ffw-font-heading);
-    font-size: clamp(6rem, 20vw, 12rem);
-    font-weight: 700;
-    color: var(--ffw-color-primary);
-    line-height: 1;
-    opacity: 0.3;
-    margin-bottom: var(--ffw-spacing-md);
-}
-
-.error-404__title {
-    font-size: 2rem;
-    margin-bottom: var(--ffw-spacing-md);
-}
-
-.error-404__message {
-    color: var(--ffw-text-muted);
-    max-width: 500px;
-    margin: 0 auto var(--ffw-spacing-lg);
-}
-
-.error-404__search {
-    margin-top: var(--ffw-spacing-lg);
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.wp-block-separator { border-color: var(--ffw-border-color); }
+.error-404 { min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: var(--ffw-spacing-xl) 0; }
+.error-404__number { font-family: var(--ffw-font-heading); font-size: clamp(6rem, 20vw, 12rem); font-weight: 700; color: var(--ffw-color-primary); line-height: 1; opacity: 0.3; margin-bottom: var(--ffw-spacing-md); }
+.error-404__title { font-size: 2rem; margin-bottom: var(--ffw-spacing-md); }
+.error-404__message { color: var(--ffw-text-muted); max-width: 500px; margin: 0 auto var(--ffw-spacing-lg); }
+.error-404__search { margin-top: var(--ffw-spacing-lg); max-width: 400px; margin-left: auto; margin-right: auto; }

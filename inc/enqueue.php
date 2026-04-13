@@ -1,6 +1,9 @@
 <?php
 /**
  * FFW Theme — Scripts & Styles Enqueueing
+ *
+ * Alle Theme-Styles sind in einer einzigen style.css konsolidiert.
+ * tribe/events/tribe-events.css wird automatisch vom TEC-Plugin geladen.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -8,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueue global theme assets.
+ * Enqueue theme assets.
  */
 function ffw_enqueue_assets() {
 	// Google Fonts: Inter + Oswald
@@ -19,27 +22,11 @@ function ffw_enqueue_assets() {
 		null
 	);
 
-	// Main theme stylesheet (style.css)
+	// Konsolidiertes Theme-Stylesheet (style.css)
 	wp_enqueue_style(
 		'ffw-style',
 		get_stylesheet_uri(),
 		array( 'ffw-google-fonts' ),
-		FFW_THEME_VERSION
-	);
-
-	// Navigation CSS
-	wp_enqueue_style(
-		'ffw-navigation',
-		FFW_THEME_URI . '/assets/css/navigation.css',
-		array( 'ffw-style' ),
-		FFW_THEME_VERSION
-	);
-
-	// Mega Menu CSS (Fahrzeuge)
-	wp_enqueue_style(
-		'ffw-mega-menu',
-		FFW_THEME_URI . '/assets/css/mega-menu.css',
-		array( 'ffw-navigation' ),
 		FFW_THEME_VERSION
 	);
 
@@ -61,55 +48,12 @@ function ffw_enqueue_assets() {
 		true
 	);
 
-	// Homepage-specific CSS
-	if ( is_front_page() ) {
-		wp_enqueue_style(
-			'ffw-home',
-			FFW_THEME_URI . '/assets/css/home.css',
-			array( 'ffw-style' ),
-			FFW_THEME_VERSION
-		);
-	}
-
-	// Single post CSS (standard WordPress posts only)
-	if ( is_singular( 'post' ) ) {
-		wp_enqueue_style(
-			'ffw-single',
-			FFW_THEME_URI . '/assets/css/single.css',
-			array( 'ffw-style' ),
-			FFW_THEME_VERSION
-		);
-	}
-
-	// Comments
+	// Kommentar-Reply-Script
 	if ( is_singular() && comments_open() ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'ffw_enqueue_assets' );
-
-/**
- * Conditionally enqueue plugin-specific stylesheets.
- */
-function ffw_enqueue_conditional_assets() {
-	// Einsatzverwaltung styles — only on einsatz post type pages and taxonomies
-	$is_einsatz_page = (
-		is_singular( 'einsatz' )
-		|| is_post_type_archive( 'einsatz' )
-		|| is_tax( array( 'einsatzart', 'fahrzeug', 'alarmierungsart', 'exteinsatzmittel' ) )
-		|| is_page_template( 'page-templates/template-fahrzeuge.php' )
-	);
-
-	if ( $is_einsatz_page ) {
-		wp_enqueue_style(
-			'ffw-einsatz',
-			FFW_THEME_URI . '/assets/css/einsatz.css',
-			array( 'ffw-style' ),
-			FFW_THEME_VERSION
-		);
-	}
-}
-add_action( 'wp_enqueue_scripts', 'ffw_enqueue_conditional_assets' );
 
 /**
  * Add preconnect for Google Fonts performance.

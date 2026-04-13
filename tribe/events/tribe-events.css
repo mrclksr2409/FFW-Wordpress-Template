@@ -139,11 +139,11 @@
 }
 
 .tribe-events .tribe-events-calendar-month__body-cell--current-month {
-	background: var(--ffw-bg-raised, #242424) !important;
+	background: var(--ffw-bg-raised, #eaecef) !important;
 }
 
 .tribe-events .tribe-events-calendar-month__body-cell--other-month {
-	background: var(--ffw-bg-deep, #0e0e0e) !important;
+	background: var(--ffw-bg-deep, #eef0f3) !important;
 	opacity: 0.6;
 }
 
@@ -183,7 +183,7 @@
 
 .tribe-events .tribe-events-calendar-list__event-row,
 .tribe-events-calendar-list__event-article {
-	border-bottom: 1px solid var(--ffw-border-color, #3a3a3a) !important;
+	border-bottom: 1px solid var(--ffw-border-color, #dde1e7) !important;
 	background: transparent !important;
 	padding: var(--ffw-spacing-lg, 2rem) 0 !important;
 }
