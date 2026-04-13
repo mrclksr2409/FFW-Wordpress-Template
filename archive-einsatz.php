@@ -11,7 +11,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 ?>
 <main id="primary" class="site-main einsatz-archive">
 
-	<header class="page-header einsatz-archive__header">
+	<header class="page-header">
 		<div class="container">
 			<h1 class="page-title">
 				<?php esc_html_e( 'Einsätze', 'ffw-theme' ); ?>
