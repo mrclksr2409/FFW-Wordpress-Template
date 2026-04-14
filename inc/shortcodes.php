@@ -97,3 +97,120 @@ function ffw_posts_shortcode( $atts ) {
 	return ob_get_clean();
 }
 add_shortcode( 'ffw_posts', 'ffw_posts_shortcode' );
+
+/**
+ * Shortcode: Child-Pages-Karten
+ *
+ * Listet alle direkten Unterseiten der aktuellen (oder angegebenen) Seite
+ * als Karten auf – identisches Layout wie die Fahrzeug-Boxen im Mega-Menü.
+ *
+ * Verwendung:
+ *   [ffw_child_pages]
+ *   [ffw_child_pages parent="42"]
+ *   [ffw_child_pages more_text="Alle Fahrzeuge" more_url="/fahrzeuge/"]
+ *
+ * Parameter:
+ *   parent    — ID der Elternseite (0 = aktuelle Seite)
+ *   more_text — Text des optionalen Buttons unter dem Grid (leer = kein Button)
+ *   more_url  — URL des Buttons
+ */
+function ffw_child_pages_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		array(
+			'parent'    => 0,
+			'more_text' => '',
+			'more_url'  => '',
+		),
+		$atts,
+		'ffw_child_pages'
+	);
+
+	$parent_id = (int) $atts['parent'];
+	if ( ! $parent_id ) {
+		$parent_id = (int) get_the_ID();
+	}
+
+	if ( ! $parent_id ) {
+		return '';
+	}
+
+	$query = new WP_Query(
+		array(
+			'post_type'      => 'page',
+			'post_status'    => 'publish',
+			'post_parent'    => $parent_id,
+			'posts_per_page' => -1,
+			'orderby'        => 'menu_order title',
+			'order'          => 'ASC',
+		)
+	);
+
+	if ( ! $query->have_posts() ) {
+		return '';
+	}
+
+	$more_text = sanitize_text_field( $atts['more_text'] );
+	$more_url  = '';
+	if ( $more_text && ! empty( $atts['more_url'] ) ) {
+		$more_url = esc_url( $atts['more_url'] );
+	}
+
+	ob_start();
+	echo '<div class="mega-menu-grid ffw-child-pages-grid">';
+
+	while ( $query->have_posts() ) :
+		$query->the_post();
+
+		$page_id      = get_the_ID();
+		$url          = esc_url( get_permalink() );
+		$title        = esc_html( get_the_title() );
+		$is_current   = is_page( $page_id );
+		$card_classes = 'mega-menu-card' . ( $is_current ? ' mega-menu-card--active' : '' );
+
+		echo '<div class="' . $card_classes . '">';
+		echo '<a href="' . $url . '" class="mega-menu-card__link">';
+
+		if ( has_post_thumbnail( $page_id ) ) {
+			echo get_the_post_thumbnail(
+				$page_id,
+				'ffw-vehicle',
+				array(
+					'class'   => 'mega-menu-card__image',
+					'loading' => 'lazy',
+					'alt'     => $title,
+				)
+			);
+		} else {
+			echo '<div class="mega-menu-card__image mega-menu-card__image--placeholder" aria-hidden="true">';
+			echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 48" fill="none"'
+				. ' stroke="currentColor" stroke-width="2" stroke-linecap="round"'
+				. ' stroke-linejoin="round" class="mega-menu-card__placeholder-icon">'
+				. '<rect x="3" y="14" width="74" height="22" rx="3"/>'
+				. '<path d="M3 24h74M18 14V8h44v6"/>'
+				. '<path d="M8 36v4M72 36v4"/>'
+				. '<circle cx="18" cy="38" r="5"/>'
+				. '<circle cx="62" cy="38" r="5"/>'
+				. '</svg>';
+			echo '</div>';
+		}
+
+		echo '<span class="mega-menu-card__title">' . $title . '</span>';
+		echo '</a>';
+		echo '</div>';
+
+	endwhile;
+	wp_reset_postdata();
+
+	echo '</div>';
+
+	if ( $more_text && $more_url ) {
+		printf(
+			'<div class="section-cta"><a href="%s" class="btn btn--outline">%s</a></div>',
+			$more_url,
+			esc_html( $more_text )
+		);
+	}
+
+	return ob_get_clean();
+}
+add_shortcode( 'ffw_child_pages', 'ffw_child_pages_shortcode' );
