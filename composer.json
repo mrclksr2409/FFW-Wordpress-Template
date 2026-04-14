@@ -1,8 +1,14 @@
 {
     "name": "ffw/wordpress-theme",
-    "description": "FFW WordPress Theme für Feuerwehr Bad Salzig",
+    "description": "FFW WordPress Theme für Feuerwehrwebseiten",
     "type": "wordpress-theme",
     "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Marcel Kaiser",
+            "homepage": "https://github.com/mrclksr2409"
+        }
+    ],
     "require": {
         "yahnis-elsts/plugin-update-checker": "^5.5"
     },
