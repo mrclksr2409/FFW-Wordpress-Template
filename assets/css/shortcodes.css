@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Shortcode-Stile — [ffw_child_pages]
+   ========================================================================== */
+
+/*
+ * Child-Pages-Grid: 4 Karten pro Reihe, größere Darstellung als im Mega-Menü.
+ * Wird ausschließlich vom Shortcode [ffw_child_pages] verwendet.
+ */
+
+.child-pages-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--ffw-spacing-md);
+}
+
+/* Responsive: 2 Spalten auf Tablets */
+@media (max-width: 991px) {
+    .child-pages-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive: 1 Spalte auf Mobilgeräten */
+@media (max-width: 575px) {
+    .child-pages-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Karte */
+.child-page-card {
+    border-radius: var(--ffw-border-radius);
+    overflow: hidden;
+    background: var(--ffw-bg-card);
+    border: 1px solid var(--ffw-border-color);
+    transition: transform var(--ffw-transition), box-shadow var(--ffw-transition),
+        border-color var(--ffw-transition);
+}
+
+.child-page-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--ffw-shadow-hover);
+    border-color: var(--ffw-color-primary);
+}
+
+.child-page-card--active { border-color: var(--ffw-color-primary); }
+
+/* Link-Wrapper */
+.child-page-card__link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+.child-page-card__link:hover { text-decoration: none; }
+
+/* Vorschaubild */
+.child-page-card__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: opacity var(--ffw-transition);
+}
+
+.child-page-card:hover .child-page-card__image { opacity: 0.88; }
+
+/* Platzhalterbild */
+.child-page-card__image--placeholder {
+    aspect-ratio: 4 / 3;
+    background: var(--ffw-bg-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.child-page-card__placeholder-icon {
+    width: 64px;
+    height: auto;
+    opacity: 0.22;
+    color: var(--ffw-text-secondary);
+}
+
+/* Titel */
+.child-page-card__title {
+    display: block;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ffw-text-primary);
+    text-align: center;
+    line-height: 1.35;
+    transition: color var(--ffw-transition);
+}
+
+.child-page-card:hover .child-page-card__title,
+.child-page-card--active .child-page-card__title { color: var(--ffw-color-primary); }
+
+@media (prefers-reduced-motion: reduce) {
+    .child-page-card,
+    .child-page-card__image { transition: none; }
+    .child-page-card:hover { transform: none; }
+}
