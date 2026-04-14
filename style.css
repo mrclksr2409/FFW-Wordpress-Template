@@ -998,6 +998,11 @@ label {
     .mega-menu-card:hover { transform: none; }
 }
 
+/* Child Pages Shortcode — etwas breitere Karten als im Mega-Menü */
+.ffw-child-pages-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
 /* ==========================================================================
    17. Site Footer
    ========================================================================== */
