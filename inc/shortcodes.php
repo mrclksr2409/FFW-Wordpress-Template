@@ -156,7 +156,7 @@ function ffw_child_pages_shortcode( $atts ) {
 	}
 
 	ob_start();
-	echo '<div class="mega-menu-grid ffw-child-pages-grid">';
+	echo '<div class="child-pages-grid">';
 
 	while ( $query->have_posts() ) :
 		$query->the_post();
@@ -165,26 +165,26 @@ function ffw_child_pages_shortcode( $atts ) {
 		$url          = esc_url( get_permalink() );
 		$title        = esc_html( get_the_title() );
 		$is_current   = is_page( $page_id );
-		$card_classes = 'mega-menu-card' . ( $is_current ? ' mega-menu-card--active' : '' );
+		$card_classes = 'child-page-card' . ( $is_current ? ' child-page-card--active' : '' );
 
 		echo '<div class="' . $card_classes . '">';
-		echo '<a href="' . $url . '" class="mega-menu-card__link">';
+		echo '<a href="' . $url . '" class="child-page-card__link">';
 
 		if ( has_post_thumbnail( $page_id ) ) {
 			echo get_the_post_thumbnail(
 				$page_id,
 				'ffw-vehicle',
 				array(
-					'class'   => 'mega-menu-card__image',
+					'class'   => 'child-page-card__image',
 					'loading' => 'lazy',
 					'alt'     => $title,
 				)
 			);
 		} else {
-			echo '<div class="mega-menu-card__image mega-menu-card__image--placeholder" aria-hidden="true">';
+			echo '<div class="child-page-card__image child-page-card__image--placeholder" aria-hidden="true">';
 			echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 48" fill="none"'
 				. ' stroke="currentColor" stroke-width="2" stroke-linecap="round"'
-				. ' stroke-linejoin="round" class="mega-menu-card__placeholder-icon">'
+				. ' stroke-linejoin="round" class="child-page-card__placeholder-icon">'
 				. '<rect x="3" y="14" width="74" height="22" rx="3"/>'
 				. '<path d="M3 24h74M18 14V8h44v6"/>'
 				. '<path d="M8 36v4M72 36v4"/>'
@@ -194,7 +194,7 @@ function ffw_child_pages_shortcode( $atts ) {
 			echo '</div>';
 		}
 
-		echo '<span class="mega-menu-card__title">' . $title . '</span>';
+		echo '<span class="child-page-card__title">' . $title . '</span>';
 		echo '</a>';
 		echo '</div>';
 
