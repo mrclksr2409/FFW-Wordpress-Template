@@ -1,10 +1,18 @@
 <?php
 /**
- * FFW Theme — Automatische Updates via GitHub
+ * FFW Theme — Automatische Updates via GitHub Releases
  *
  * Nutzt das Plugin Update Checker (yahnis-elsts/plugin-update-checker),
- * um Theme-Updates direkt aus dem GitHub-Repository zu beziehen.
+ * um Theme-Updates direkt aus GitHub-Releases zu beziehen.
  * WordPress-Admins sehen verfügbare Updates unter Design → Themes.
+ *
+ * Ein neues Update wird automatisch erkannt, sobald ein neues Release
+ * auf GitHub erstellt wird. Die Version im Release-Tag (z. B. "v1.2.3")
+ * muss größer sein als die aktuelle Version in style.css.
+ *
+ * Pre-Releases und Drafts werden automatisch übersprungen.
+ *
+ * @author Marcel Kaiser
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,10 +28,16 @@ require_once $ffw_puc_autoload;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
+/**
+ * Konfiguration des GitHub Update Checkers.
+ *
+ * Ohne setBranch() wird automatisch der neueste stabile GitHub-Release
+ * als Updatequelle genutzt. Die Versionsnummer wird aus dem Release-Tag
+ * gelesen (z. B. "v1.2.3" → "1.2.3") und mit der Version in style.css
+ * verglichen.
+ */
 $ffw_update_checker = PucFactory::buildUpdateChecker(
-	'https://github.com/mrclksr2409/ffw-wordpress-template/',
+	'https://github.com/mrclksr2409/FFW-Wordpress-Template/',
 	FFW_THEME_DIR . '/style.css',
 	'ffw-theme'
 );
-
-// Updates auf Basis von GitHub-Releases beziehen (stabiles Release-Tag wird genutzt)
