@@ -18,8 +18,6 @@ get_header();
 if ( is_singular( 'tribe_events' ) ) :
 	if ( have_posts() ) : the_post();
 		$event_id         = get_the_ID();
-		$start_ts         = strtotime( tribe_get_start_date( $event_id, false, 'Y-m-d H:i:s' ) );
-		$venue_single     = function_exists( 'tribe_get_venue' ) ? tribe_get_venue( $event_id ) : '';
 		$ical_link        = function_exists( 'tribe_get_single_ical_link' ) ? tribe_get_single_ical_link() : '';
 		$gcal_link        = function_exists( 'tribe_get_gcal_link' ) ? tribe_get_gcal_link() : '';
 	?>
@@ -28,18 +26,6 @@ if ( is_singular( 'tribe_events' ) ) :
 		<header class="page-header">
 			<div class="container">
 				<h1 class="page-title"><?php the_title(); ?></h1>
-
-				<?php if ( $start_ts ) : ?>
-					<p class="page-description">
-						<time datetime="<?php echo esc_attr( date( DATE_W3C, $start_ts ) ); ?>">
-							<?php echo esc_html( date_i18n( get_option( 'date_format' ), $start_ts ) ); ?>
-						</time>
-						<?php if ( $venue_single ) : ?>
-							<span class="page-header__sep">·</span>
-							<?php echo esc_html( $venue_single ); ?>
-						<?php endif; ?>
-					</p>
-				<?php endif; ?>
 			</div>
 		</header>
 
