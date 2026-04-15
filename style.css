@@ -1484,6 +1484,56 @@ label {
 .einsatz-fahrzeuge__unit-label { font-size: 0.72rem; font-weight: 700; color: var(--ffw-text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin: var(--ffw-spacing-sm) 0 0.35rem; }
 .einsatz-fahrzeuge__group { margin-bottom: var(--ffw-spacing-sm); }
 
+/* --- 26b2. Fahrzeug-Info (Shortcode [ffw_fahrzeug_info]) ---------------- */
+
+.fahrzeug-info-wrapper {
+    background: var(--ffw-bg-raised);
+    border-radius: var(--ffw-border-radius-lg);
+    padding: var(--ffw-spacing-lg);
+    margin: var(--ffw-spacing-lg) 0;
+    border: 1px solid var(--ffw-border-color);
+}
+
+.fahrzeug-info__title {
+    font-family: var(--ffw-font-heading);
+    font-size: 1.25rem;
+    margin: 0 0 var(--ffw-spacing-md);
+    color: var(--ffw-text-primary);
+}
+
+.fahrzeug-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--ffw-spacing-md) var(--ffw-spacing-lg);
+    margin: 0;
+}
+
+.fahrzeug-info__item { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.fahrzeug-info dt {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ffw-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.fahrzeug-info__icon { color: var(--ffw-color-primary); flex-shrink: 0; }
+
+.fahrzeug-info dd {
+    font-size: 1rem;
+    color: var(--ffw-text-primary);
+    font-weight: 500;
+    margin: 0;
+}
+
+@media (max-width: 767px) {
+    .fahrzeug-info { grid-template-columns: 1fr; }
+}
+
 /* --- 26c. Einsatz-Archiv ------------------------------------------------- */
 
 .einsatz-archive__header { padding: var(--ffw-spacing-lg) 0 var(--ffw-spacing-md); }
