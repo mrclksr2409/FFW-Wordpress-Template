@@ -1066,6 +1066,30 @@ label {
 .entry-content .card__title a { color: inherit; text-decoration: none; }
 .entry-content .card__title a:hover { color: var(--ffw-color-primary); }
 
+/* Post-Grid-Karten erben keine Entry-Content-Margins, damit der
+   [ffw_posts]-Shortcode in Seiten identisch zur Startseite aussieht. */
+.entry-content .posts-grid img,
+.entry-content .card img {
+    margin: 0;
+}
+
+.entry-content .posts-grid h1,
+.entry-content .posts-grid h2,
+.entry-content .posts-grid h3,
+.entry-content .posts-grid h4,
+.entry-content .card h1,
+.entry-content .card h2,
+.entry-content .card h3,
+.entry-content .card h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Ursprünglichen margin-bottom von .card__title wiederherstellen. */
+.entry-content .card .card__title {
+    margin-bottom: var(--ffw-spacing-sm);
+}
+
 /* ==========================================================================
    20. Abschnittsüberschriften
    ========================================================================== */

@@ -12,10 +12,6 @@ $contact_phone   = get_theme_mod( 'ffw_contact_phone', '' );
 $contact_email   = get_theme_mod( 'ffw_contact_email', '' );
 ?>
 <div class="footer-widget footer-widget--contact">
-	<?php if ( has_custom_logo() ) : ?>
-		<div class="footer-logo"><?php the_custom_logo(); ?></div>
-	<?php endif; ?>
-
 	<h3 class="footer-widget-title">
 		<?php echo esc_html( get_bloginfo( 'name' ) ); ?>
 	</h3>
