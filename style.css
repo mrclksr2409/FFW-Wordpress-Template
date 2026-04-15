@@ -625,6 +625,20 @@ label {
     margin: 0;
 }
 
+/* Wenn ein Custom-Logo gesetzt ist, Seitenname & Tagline visuell ausblenden — nur das Logo wird angezeigt */
+.site-identity.has-logo .site-title,
+.site-identity.has-logo .site-description {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* Haupt-Navigation */
 .main-navigation {
     display: flex;
