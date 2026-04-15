@@ -22,6 +22,15 @@ $multi_day  = function_exists( 'tribe_event_is_multiday' ) ? tribe_event_is_mult
 $time_fmt   = get_option( 'time_format' );
 $date_fmt   = get_option( 'date_format' );
 
+// Ensure the "Datum" row never duplicates the time — strip any time-format
+// tokens (and leftover separators) so the time only appears in the "Uhrzeit" row.
+$date_fmt = preg_replace( '/[aAgGhHisu]/', '', $date_fmt );
+$date_fmt = preg_replace( '/[,;:\-]\s*$/', '', $date_fmt );
+$date_fmt = trim( preg_replace( '/\s{2,}/', ' ', $date_fmt ) );
+if ( '' === $date_fmt ) {
+	$date_fmt = 'j. F Y';
+}
+
 $venue_id       = function_exists( 'tribe_get_venue_id' ) ? tribe_get_venue_id( $event_id ) : 0;
 $venue          = $venue_id && function_exists( 'tribe_get_venue' ) ? tribe_get_venue( $event_id ) : '';
 $venue_address  = $venue_id && function_exists( 'tribe_get_full_address' ) ? tribe_get_full_address( $event_id ) : '';

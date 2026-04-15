@@ -19,10 +19,7 @@ if ( is_singular( 'tribe_events' ) ) :
 	if ( have_posts() ) : the_post();
 		$event_id         = get_the_ID();
 		$start_ts         = strtotime( tribe_get_start_date( $event_id, false, 'Y-m-d H:i:s' ) );
-		$end_ts           = strtotime( tribe_get_end_date( $event_id, false, 'Y-m-d H:i:s' ) );
-		$all_day          = function_exists( 'tribe_event_is_all_day' ) ? tribe_event_is_all_day( $event_id ) : false;
 		$venue_single     = function_exists( 'tribe_get_venue' ) ? tribe_get_venue( $event_id ) : '';
-		$events_archive   = function_exists( 'tribe_get_events_link' ) ? tribe_get_events_link() : '';
 		$ical_link        = function_exists( 'tribe_get_single_ical_link' ) ? tribe_get_single_ical_link() : '';
 		$gcal_link        = function_exists( 'tribe_get_gcal_link' ) ? tribe_get_gcal_link() : '';
 	?>
@@ -30,13 +27,6 @@ if ( is_singular( 'tribe_events' ) ) :
 
 		<header class="page-header">
 			<div class="container">
-				<?php if ( $events_archive ) : ?>
-					<a href="<?php echo esc_url( $events_archive ); ?>" class="ffw-event-single__back">
-						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-						<?php esc_html_e( 'Zurück zu allen Terminen', 'ffw-theme' ); ?>
-					</a>
-				<?php endif; ?>
-
 				<h1 class="page-title"><?php the_title(); ?></h1>
 
 				<?php if ( $start_ts ) : ?>
@@ -44,15 +34,6 @@ if ( is_singular( 'tribe_events' ) ) :
 						<time datetime="<?php echo esc_attr( date( DATE_W3C, $start_ts ) ); ?>">
 							<?php echo esc_html( date_i18n( get_option( 'date_format' ), $start_ts ) ); ?>
 						</time>
-						<?php if ( ! $all_day ) : ?>
-							<span class="page-header__sep">·</span>
-							<?php
-							echo esc_html( date_i18n( get_option( 'time_format' ), $start_ts ) );
-							if ( $end_ts && $end_ts !== $start_ts ) {
-								echo ' – ' . esc_html( date_i18n( get_option( 'time_format' ), $end_ts ) );
-							}
-							?> <?php esc_html_e( 'Uhr', 'ffw-theme' ); ?>
-						<?php endif; ?>
 						<?php if ( $venue_single ) : ?>
 							<span class="page-header__sep">·</span>
 							<?php echo esc_html( $venue_single ); ?>
