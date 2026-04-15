@@ -214,3 +214,183 @@ function ffw_child_pages_shortcode( $atts ) {
 	return ob_get_clean();
 }
 add_shortcode( 'ffw_child_pages', 'ffw_child_pages_shortcode' );
+
+/**
+ * Interner Sammler für Zusatzfelder innerhalb von [ffw_fahrzeug_info].
+ *
+ * Wird von [ffw_fi] befüllt und von der äußeren Shortcode-Funktion ausgelesen.
+ * Die Funktion ist ein statischer Container, damit wir nicht auf globale
+ * Variablen zurückgreifen müssen.
+ *
+ * @param string $action 'reset' | 'add' | 'get'
+ * @param array  $item   Bei 'add': [ 'label' => string, 'value' => string ]
+ * @return array
+ */
+function ffw_fahrzeug_info_extras( $action = 'get', $item = array() ) {
+	static $extras = array();
+
+	if ( 'reset' === $action ) {
+		$extras = array();
+		return $extras;
+	}
+
+	if ( 'add' === $action && ! empty( $item ) ) {
+		$extras[] = $item;
+		return $extras;
+	}
+
+	return $extras;
+}
+
+/**
+ * Shortcode: Fahrzeuginformationen
+ *
+ * Zeigt eine Info-Box im Stil der Einsatz-Meta-Box mit Fahrzeugdaten.
+ * Alle Attribute sind optional — leere Felder werden nicht gerendert.
+ * Zusätzliche, frei benennbare Felder lassen sich über verschachtelte
+ * [ffw_fi]-Tags im Inhalt ergänzen.
+ *
+ * Verwendung:
+ *   [ffw_fahrzeug_info
+ *       title="Löschgruppenfahrzeug LF 10"
+ *       rufname="Florian 1-42-1"
+ *       baujahr="2020"
+ *       indienststellung="01.03.2020"
+ *       fahrgestell="MAN TGM 13.290"
+ *       motorleistung="213 kW / 290 PS"
+ *       gesamtgewicht="14.500 kg"
+ *       aufbau="Schlingmann"
+ *       besatzung="1/8"]
+ *       [ffw_fi label="Funkkennung"]Florian 1-42-1[/ffw_fi]
+ *       [ffw_fi label="Tankinhalt"]1.000 l Wasser / 120 l Schaum[/ffw_fi]
+ *   [/ffw_fahrzeug_info]
+ *
+ * Attribute:
+ *   title            — optionale Überschrift über der Liste
+ *   rufname          — Funk-/Rufname des Fahrzeugs
+ *   baujahr          — Baujahr
+ *   indienststellung — Datum der Indienststellung
+ *   fahrgestell      — Fahrgestellhersteller/-typ
+ *   motorleistung    — Motorleistung (kW / PS)
+ *   gesamtgewicht    — Zulässiges Gesamtgewicht
+ *   aufbau           — Aufbauhersteller
+ *   besatzung        — Besatzungsstärke (z. B. 1/8)
+ */
+function ffw_fahrzeug_info_shortcode( $atts, $content = '' ) {
+	$atts = shortcode_atts(
+		array(
+			'title'            => '',
+			'rufname'          => '',
+			'baujahr'          => '',
+			'indienststellung' => '',
+			'fahrgestell'      => '',
+			'motorleistung'    => '',
+			'gesamtgewicht'    => '',
+			'aufbau'           => '',
+			'besatzung'        => '',
+		),
+		$atts,
+		'ffw_fahrzeug_info'
+	);
+
+	// Sammler für [ffw_fi]-Extras zurücksetzen und Inhalt parsen
+	ffw_fahrzeug_info_extras( 'reset' );
+	if ( ! empty( $content ) ) {
+		do_shortcode( $content );
+	}
+	$extras = ffw_fahrzeug_info_extras( 'get' );
+
+	// SVG-Icons (14×14, currentColor) — konsistent zu .einsatz-meta__icon
+	$icons = array(
+		'rufname'          => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>',
+		'baujahr'          => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+		'indienststellung' => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>',
+		'fahrgestell'      => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+		'motorleistung'    => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+		'gesamtgewicht'    => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5 17.5 17.5"/><path d="M3 12l9-9 9 9"/><path d="M12 3v18"/><path d="M3 21h18"/></svg>',
+		'aufbau'           => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+		'besatzung'        => '<svg class="fahrzeug-info__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+	);
+
+	$labels = array(
+		'rufname'          => __( 'Rufname', 'ffw-theme' ),
+		'baujahr'          => __( 'Baujahr', 'ffw-theme' ),
+		'indienststellung' => __( 'Indienststellung', 'ffw-theme' ),
+		'fahrgestell'      => __( 'Fahrgestell', 'ffw-theme' ),
+		'motorleistung'    => __( 'Motorleistung', 'ffw-theme' ),
+		'gesamtgewicht'    => __( 'Zulässiges Gesamtgewicht', 'ffw-theme' ),
+		'aufbau'           => __( 'Aufbau', 'ffw-theme' ),
+		'besatzung'        => __( 'Besatzung', 'ffw-theme' ),
+	);
+
+	ob_start();
+	echo '<div class="fahrzeug-info-wrapper">';
+
+	if ( '' !== trim( (string) $atts['title'] ) ) {
+		echo '<h3 class="fahrzeug-info__title">' . esc_html( $atts['title'] ) . '</h3>';
+	}
+
+	echo '<dl class="fahrzeug-info">';
+
+	foreach ( $labels as $key => $label ) {
+		$value = trim( (string) $atts[ $key ] );
+		if ( '' === $value ) {
+			continue;
+		}
+		echo '<div class="fahrzeug-info__item">';
+		echo '<dt>' . $icons[ $key ] . esc_html( $label ) . '</dt>';
+		echo '<dd>' . esc_html( $value ) . '</dd>';
+		echo '</div>';
+	}
+
+	foreach ( $extras as $extra ) {
+		$label = trim( (string) ( $extra['label'] ?? '' ) );
+		$value = trim( (string) ( $extra['value'] ?? '' ) );
+		if ( '' === $value ) {
+			continue;
+		}
+		echo '<div class="fahrzeug-info__item fahrzeug-info__item--extra">';
+		echo '<dt>' . esc_html( $label ) . '</dt>';
+		echo '<dd>' . esc_html( $value ) . '</dd>';
+		echo '</div>';
+	}
+
+	echo '</dl>';
+	echo '</div>';
+
+	// Sammler aufräumen, damit mehrere Instanzen auf derselben Seite funktionieren
+	ffw_fahrzeug_info_extras( 'reset' );
+
+	return ob_get_clean();
+}
+add_shortcode( 'ffw_fahrzeug_info', 'ffw_fahrzeug_info_shortcode' );
+
+/**
+ * Shortcode: Einzelnes Zusatzfeld innerhalb von [ffw_fahrzeug_info].
+ *
+ * Schreibt das Label/Wert-Paar in den Sammler und gibt selbst nichts aus —
+ * das Rendering übernimmt der äußere Shortcode.
+ *
+ * Verwendung:
+ *   [ffw_fi label="Funkkennung"]Florian 1-42-1[/ffw_fi]
+ */
+function ffw_fi_shortcode( $atts, $content = '' ) {
+	$atts = shortcode_atts(
+		array(
+			'label' => '',
+		),
+		$atts,
+		'ffw_fi'
+	);
+
+	ffw_fahrzeug_info_extras(
+		'add',
+		array(
+			'label' => sanitize_text_field( $atts['label'] ),
+			'value' => wp_strip_all_tags( (string) $content ),
+		)
+	);
+
+	return '';
+}
+add_shortcode( 'ffw_fi', 'ffw_fi_shortcode' );
