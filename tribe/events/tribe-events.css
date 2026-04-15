@@ -287,9 +287,143 @@
 }
 
 /* ==========================================================================
-   Single Event page
+   Single Event page — FFW custom layout (tribe/events/v2/default-template.php)
+   Uses the same visual language as single-einsatz.php.
    ========================================================================== */
 
+.ffw-event-single {
+	background: var(--ffw-bg-base);
+	color: var(--ffw-text-primary);
+}
+
+.ffw-event-single > .container {
+	padding-bottom: var(--ffw-spacing-xl);
+}
+
+/* Back-link im page-header */
+.ffw-event-single__back {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	font-size: 0.85rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--ffw-text-muted);
+	text-decoration: none;
+	margin-bottom: var(--ffw-spacing-sm);
+	transition: color var(--ffw-transition);
+}
+
+.ffw-event-single__back:hover {
+	color: var(--ffw-color-primary);
+}
+
+/* Hero-Bild */
+.ffw-event-report__image {
+	margin-bottom: var(--ffw-spacing-lg);
+}
+
+.ffw-event-report__image img {
+	width: 100%;
+	max-height: 500px;
+	object-fit: cover;
+	border-radius: var(--ffw-border-radius-lg);
+	display: block;
+}
+
+/* Content-Bereich */
+.ffw-event-report__content {
+	margin-top: var(--ffw-spacing-lg);
+}
+
+/* Event-Badges (vergangen / wiederkehrend) */
+.ffw-event-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: var(--ffw-spacing-md);
+}
+
+.ffw-event-badge {
+	display: inline-block;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	padding: 0.35em 0.9em;
+	border-radius: 4px;
+}
+
+.ffw-event-badge--past {
+	background: var(--ffw-color-neutral-bg);
+	color: var(--ffw-color-neutral-text);
+}
+
+.ffw-event-badge--recurring {
+	background: var(--ffw-color-primary-alpha);
+	color: var(--ffw-color-primary);
+}
+
+/* Event-Meta: wide-item für Venue mit Adresse */
+.ffw-event-meta .einsatz-meta__item--wide {
+	grid-column: 1 / -1;
+}
+
+.ffw-event-meta__address {
+	display: block;
+	color: var(--ffw-text-secondary);
+	font-weight: 400;
+	font-size: 0.95rem;
+	margin-top: 0.2rem;
+	line-height: 1.5;
+}
+
+.ffw-event-meta__address br {
+	display: block;
+	content: "";
+	margin-top: 0.1rem;
+}
+
+.ffw-event-meta__map-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	margin-top: 0.35rem;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var(--ffw-color-primary);
+	text-decoration: none;
+}
+
+.ffw-event-meta__map-link:hover {
+	color: var(--ffw-color-primary-dark);
+	text-decoration: underline;
+}
+
+/* Footer mit Kalender-Aktionen */
+.ffw-event-report__footer {
+	margin-top: var(--ffw-spacing-xl);
+	padding-top: var(--ffw-spacing-lg);
+	border-top: 1px solid var(--ffw-border-color);
+}
+
+.ffw-event-report__footer-label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: var(--ffw-text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	margin-bottom: var(--ffw-spacing-sm);
+}
+
+.ffw-event-report__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--ffw-spacing-sm);
+}
+
+/* Fallback für ungenutzte TEC-Standard-Detail-Ansicht (falls aktiv) */
 .tribe-events-single {
 	background: var(--ffw-bg-base) !important;
 	color: var(--ffw-text-primary) !important;
@@ -312,6 +446,17 @@
 	border-radius: var(--ffw-border-radius) !important;
 	color: var(--ffw-text-secondary) !important;
 	padding: var(--ffw-spacing-md) !important;
+}
+
+@media (max-width: 767px) {
+	.ffw-event-report__actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.ffw-event-report__actions .btn {
+		justify-content: center;
+	}
 }
 
 /* ==========================================================================

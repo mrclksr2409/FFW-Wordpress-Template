@@ -2,7 +2,8 @@
 /**
  * FFW Theme — The Events Calendar default template override.
  * Custom events list with month groupings and ffw-event-card layout.
- * Single event pages are rendered via TEC's own view to preserve detail pages.
+ * Single event pages use a custom FFW layout (analog zu single-einsatz.php)
+ * mit Hero-Bild, Meta-Box, Content und Kalender-Export-Aktionen.
  *
  * @package FFW Theme
  */
@@ -13,19 +14,92 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-// Einzelne Terminseite → TEC's eigenes Rendering nutzen (Detail-Ansicht)
+// Einzelne Terminseite → individuelles FFW-Layout (analog zu single-einsatz.php)
 if ( is_singular( 'tribe_events' ) ) :
-	if ( have_posts() ) : the_post(); ?>
-	<main id="primary" class="site-main tribe-events-wrapper">
+	if ( have_posts() ) : the_post();
+		$event_id         = get_the_ID();
+		$start_ts         = strtotime( tribe_get_start_date( $event_id, false, 'Y-m-d H:i:s' ) );
+		$end_ts           = strtotime( tribe_get_end_date( $event_id, false, 'Y-m-d H:i:s' ) );
+		$all_day          = function_exists( 'tribe_event_is_all_day' ) ? tribe_event_is_all_day( $event_id ) : false;
+		$venue_single     = function_exists( 'tribe_get_venue' ) ? tribe_get_venue( $event_id ) : '';
+		$events_archive   = function_exists( 'tribe_get_events_link' ) ? tribe_get_events_link() : '';
+		$ical_link        = function_exists( 'tribe_get_single_ical_link' ) ? tribe_get_single_ical_link() : '';
+		$gcal_link        = function_exists( 'tribe_get_gcal_link' ) ? tribe_get_gcal_link() : '';
+	?>
+	<main id="primary" class="site-main tribe-events-wrapper ffw-event-single">
+
 		<header class="page-header">
 			<div class="container">
+				<?php if ( $events_archive ) : ?>
+					<a href="<?php echo esc_url( $events_archive ); ?>" class="ffw-event-single__back">
+						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+						<?php esc_html_e( 'Zurück zu allen Terminen', 'ffw-theme' ); ?>
+					</a>
+				<?php endif; ?>
+
 				<h1 class="page-title"><?php the_title(); ?></h1>
+
+				<?php if ( $start_ts ) : ?>
+					<p class="page-description">
+						<time datetime="<?php echo esc_attr( date( DATE_W3C, $start_ts ) ); ?>">
+							<?php echo esc_html( date_i18n( get_option( 'date_format' ), $start_ts ) ); ?>
+						</time>
+						<?php if ( ! $all_day ) : ?>
+							<span class="page-header__sep">·</span>
+							<?php
+							echo esc_html( date_i18n( get_option( 'time_format' ), $start_ts ) );
+							if ( $end_ts && $end_ts !== $start_ts ) {
+								echo ' – ' . esc_html( date_i18n( get_option( 'time_format' ), $end_ts ) );
+							}
+							?> <?php esc_html_e( 'Uhr', 'ffw-theme' ); ?>
+						<?php endif; ?>
+						<?php if ( $venue_single ) : ?>
+							<span class="page-header__sep">·</span>
+							<?php echo esc_html( $venue_single ); ?>
+						<?php endif; ?>
+					</p>
+				<?php endif; ?>
 			</div>
 		</header>
+
 		<div class="container">
-			<?php tribe_events_before_html(); ?>
-			<?php tribe_get_view(); ?>
-			<?php tribe_events_after_html(); ?>
+			<article id="post-<?php echo esc_attr( $event_id ); ?>" <?php post_class( 'ffw-event-report' ); ?>>
+
+				<?php if ( has_post_thumbnail() ) : ?>
+					<div class="ffw-event-report__image">
+						<?php the_post_thumbnail( 'ffw-hero' ); ?>
+					</div>
+				<?php endif; ?>
+
+				<?php get_template_part( 'template-parts/event/event-meta' ); ?>
+
+				<?php if ( get_the_content() ) : ?>
+					<div class="ffw-event-report__content entry-content">
+						<?php the_content(); ?>
+					</div>
+				<?php endif; ?>
+
+				<?php if ( $ical_link || $gcal_link ) : ?>
+				<footer class="ffw-event-report__footer">
+					<p class="ffw-event-report__footer-label"><?php esc_html_e( 'Termin speichern', 'ffw-theme' ); ?></p>
+					<div class="ffw-event-report__actions">
+						<?php if ( $gcal_link ) : ?>
+							<a href="<?php echo esc_url( $gcal_link ); ?>" class="btn btn--primary btn--sm" target="_blank" rel="noopener">
+								<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+								<?php esc_html_e( 'Google Kalender', 'ffw-theme' ); ?>
+							</a>
+						<?php endif; ?>
+						<?php if ( $ical_link ) : ?>
+							<a href="<?php echo esc_url( $ical_link ); ?>" class="btn btn--outline btn--sm" download>
+								<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+								<?php esc_html_e( 'iCal-Datei', 'ffw-theme' ); ?>
+							</a>
+						<?php endif; ?>
+					</div>
+				</footer>
+				<?php endif; ?>
+
+			</article>
 		</div>
 	</main>
 	<?php endif;
