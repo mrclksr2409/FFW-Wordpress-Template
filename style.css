@@ -819,7 +819,8 @@ label {
     outline: none;
 }
 
-.search-toggle__icon--close { display: none; }
+.search-toggle .search-toggle__icon--open  { display: block; }
+.search-toggle .search-toggle__icon--close { display: none; }
 .search-toggle.is-open .search-toggle__icon--open  { display: none; }
 .search-toggle.is-open .search-toggle__icon--close { display: block; }
 .search-toggle.is-open {
