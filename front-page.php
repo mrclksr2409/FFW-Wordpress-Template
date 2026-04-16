@@ -40,18 +40,17 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 	<!-- ===== STATS BAR ===== -->
 	<?php
 	// Auto: Einsätze im aktuellen Jahr zählen (Einsatzverwaltung CPT 'einsatz')
+	$current_year    = (int) current_time( 'Y' );
 	$auto_year_count = 0;
 	if ( post_type_exists( 'einsatz' ) ) {
 		$year_query = new WP_Query( array(
 			'post_type'      => 'einsatz',
 			'post_status'    => 'publish',
-			'posts_per_page' => -1,
+			'posts_per_page' => 1,
 			'fields'         => 'ids',
-			'no_found_rows'  => false,
-			'date_query'     => array( array( 'year' => (int) date( 'Y' ) ) ),
+			'date_query'     => array( array( 'year' => $current_year ) ),
 		) );
-		$auto_year_count = $year_query->found_posts;
-		wp_reset_postdata();
+		$auto_year_count = (int) $year_query->found_posts;
 	}
 	?>
 	<section class="stats-bar" aria-label="<?php esc_attr_e( 'Kurzübersicht', 'ffw-theme' ); ?>">
@@ -67,7 +66,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				</div>
 				<div class="stat-item">
 					<span class="stat-number"><?php echo $auto_year_count > 0 ? esc_html( $auto_year_count ) : esc_html( get_theme_mod( 'ffw_stat_operations', '100+' ) ); ?></span>
-					<span class="stat-label"><?php echo esc_html( sprintf( __( 'Einsätze %d', 'ffw-theme' ), (int) date( 'Y' ) ) ); ?></span>
+					<span class="stat-label"><?php echo esc_html( sprintf( __( 'Einsätze %d', 'ffw-theme' ), $current_year ) ); ?></span>
 				</div>
 				<div class="stat-item">
 					<span class="stat-number">24/7</span>
@@ -115,7 +114,7 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 					// Farbe der Einsatzart aus Term-Meta (Einsatzverwaltung: input name="typecolor")
 					$keyword_color = '';
 					if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) {
-						$keyword_color = get_term_meta( $einsatzarten[0]->term_id, 'typecolor', true );
+						$keyword_color = sanitize_hex_color( get_term_meta( $einsatzarten[0]->term_id, 'typecolor', true ) );
 					}
 				?>
 				<article class="ffw-event-card ffw-event-card--einsatz">
@@ -257,8 +256,12 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 						<div class="ffw-event-card__meta">
 							<span class="ffw-event-card__time">
 								<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.5V8l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-								<?php echo esc_html( $event_time );
-								if ( $event_end && $event_end !== $event_time ) echo ' – ' . esc_html( $event_end ); ?>
+								<?php
+								echo esc_html( $event_time );
+								if ( $event_end && $event_end !== $event_time ) {
+									echo ' – ' . esc_html( $event_end );
+								}
+								?>
 							</span>
 							<?php if ( $event_venue ) : ?>
 							<span class="ffw-event-card__venue">

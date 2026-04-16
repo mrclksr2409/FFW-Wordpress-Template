@@ -68,11 +68,11 @@ function ffw_posts_shortcode( $atts ) {
 	$more_url  = '';
 	if ( $more_text ) {
 		if ( ! empty( $atts['more_url'] ) ) {
-			$more_url = esc_url( $atts['more_url'] );
+			$more_url = $atts['more_url'];
 		} else {
 			$posts_page_id = (int) get_option( 'page_for_posts' );
 			if ( $posts_page_id ) {
-				$more_url = esc_url( get_permalink( $posts_page_id ) );
+				$more_url = get_permalink( $posts_page_id );
 			}
 		}
 	}
@@ -89,7 +89,7 @@ function ffw_posts_shortcode( $atts ) {
 	if ( $more_text && $more_url ) {
 		printf(
 			'<div class="section-cta"><a href="%s" class="btn btn--outline">%s</a></div>',
-			$more_url,
+			esc_url( $more_url ),
 			esc_html( $more_text )
 		);
 	}
@@ -151,8 +151,13 @@ function ffw_child_pages_shortcode( $atts ) {
 
 	$more_text = sanitize_text_field( $atts['more_text'] );
 	$more_url  = '';
-	if ( $more_text && ! empty( $atts['more_url'] ) ) {
-		$more_url = esc_url( $atts['more_url'] );
+	if ( $more_text ) {
+		if ( ! empty( $atts['more_url'] ) ) {
+			$more_url = $atts['more_url'];
+		} else {
+			// Fallback: parent page permalink — consistent with ffw_posts_shortcode.
+			$more_url = get_permalink( $parent_id );
+		}
 	}
 
 	ob_start();
@@ -162,13 +167,13 @@ function ffw_child_pages_shortcode( $atts ) {
 		$query->the_post();
 
 		$page_id      = get_the_ID();
-		$url          = esc_url( get_permalink() );
-		$title        = esc_html( get_the_title() );
+		$url          = get_permalink();
+		$title        = get_the_title();
 		$is_current   = is_page( $page_id );
 		$card_classes = 'child-page-card' . ( $is_current ? ' child-page-card--active' : '' );
 
-		echo '<div class="' . $card_classes . '">';
-		echo '<a href="' . $url . '" class="child-page-card__link">';
+		echo '<div class="' . esc_attr( $card_classes ) . '">';
+		echo '<a href="' . esc_url( $url ) . '" class="child-page-card__link">';
 
 		if ( has_post_thumbnail( $page_id ) ) {
 			echo get_the_post_thumbnail(
@@ -194,7 +199,7 @@ function ffw_child_pages_shortcode( $atts ) {
 			echo '</div>';
 		}
 
-		echo '<span class="child-page-card__title">' . $title . '</span>';
+		echo '<span class="child-page-card__title">' . esc_html( $title ) . '</span>';
 		echo '</a>';
 		echo '</div>';
 
@@ -206,7 +211,7 @@ function ffw_child_pages_shortcode( $atts ) {
 	if ( $more_text && $more_url ) {
 		printf(
 			'<div class="section-cta"><a href="%s" class="btn btn--outline">%s</a></div>',
-			$more_url,
+			esc_url( $more_url ),
 			esc_html( $more_text )
 		);
 	}

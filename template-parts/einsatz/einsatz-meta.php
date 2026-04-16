@@ -45,12 +45,15 @@ if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) {
 // ------------------------------------------------------------------
 // Group vehicles by evw_unit
 //
-// Strategy: reverse lookup — for each evw_unit term on this post,
-// query which of the post's fahrzeug terms have that unit's term_id
-// stored in their term meta (tries the most common Einsatzverwaltung
-// meta keys). Unmatched vehicles go into bucket 0 (ungrouped).
+// Strategy: prime the term-meta cache for all fahrzeug terms on this post
+// with a single bulk fetch, then read each fahrzeug's unit reference from
+// one of several possible meta keys. Avoids issuing a separate get_terms()
+// query per unit × meta-key combination.
+//
+// Unmatched vehicles (no unit meta, or unit not on this post) go into
+// bucket 0 (ungrouped).
 // ------------------------------------------------------------------
-$einheiten    = get_the_terms( $post_id, 'evw_unit' );
+$einheiten     = get_the_terms( $post_id, 'evw_unit' );
 $units_on_post = array();
 if ( ! empty( $einheiten ) && ! is_wp_error( $einheiten ) ) {
 	foreach ( $einheiten as $unit ) {
@@ -60,62 +63,47 @@ if ( ! empty( $einheiten ) && ! is_wp_error( $einheiten ) ) {
 
 $vehicles_by_unit = array();
 $unit_labels      = array();
-$assigned_ids     = array();
 
 if ( ! empty( $fahrzeuge ) && ! is_wp_error( $fahrzeuge ) ) {
 	$fahrzeug_ids = wp_list_pluck( $fahrzeuge, 'term_id' );
 
-	// For each unit on this post, find which of the post's vehicles belong to it
-	foreach ( $units_on_post as $unit_term ) {
-		$matched = array();
+	// Prime the term-meta cache once for all of this post's vehicles.
+	update_termmeta_cache( $fahrzeug_ids );
 
-		foreach ( array( 'unit', 'evw_unit', 'fahrzeug_unit', 'einheit' ) as $meta_key ) {
-			$result = get_terms( array(
-				'taxonomy'   => 'fahrzeug',
-				'include'    => $fahrzeug_ids,
-				'hide_empty' => false,
-				'meta_query' => array(
-					array(
-						'key'     => $meta_key,
-						'value'   => $unit_term->term_id,
-						'compare' => '=',
-					),
-				),
-			) );
+	$meta_keys = array( 'unit', 'evw_unit', 'fahrzeug_unit', 'einheit' );
 
-			if ( ! is_wp_error( $result ) && ! empty( $result ) ) {
-				$matched = $result;
-				break; // found a working meta key for this unit
-			}
-		}
-
-		if ( ! empty( $matched ) ) {
-			$uid                       = $unit_term->term_id;
-			$unit_labels[ $uid ]       = $unit_term->name;
-			$vehicles_by_unit[ $uid ]  = $matched;
-			foreach ( $matched as $m ) {
-				$assigned_ids[] = $m->term_id;
-			}
-		}
-	}
-
-	// Vehicles not assigned to any unit → ungrouped bucket
 	foreach ( $fahrzeuge as $fahrzeug ) {
-		if ( ! in_array( $fahrzeug->term_id, $assigned_ids, true ) ) {
+		$unit_id = 0;
+		foreach ( $meta_keys as $meta_key ) {
+			$value = get_term_meta( $fahrzeug->term_id, $meta_key, true );
+			if ( $value ) {
+				$unit_id = (int) $value;
+				break;
+			}
+		}
+
+		if ( $unit_id && isset( $units_on_post[ $unit_id ] ) ) {
+			$vehicles_by_unit[ $unit_id ][] = $fahrzeug;
+			$unit_labels[ $unit_id ]        = $units_on_post[ $unit_id ]->name;
+		} else {
 			$vehicles_by_unit[0][] = $fahrzeug;
 		}
 	}
 
 	// Sort: named units alphabetically, ungrouped (0) last
 	uksort( $vehicles_by_unit, function ( $a, $b ) use ( $unit_labels ) {
-		if ( $a === 0 ) return 1;
-		if ( $b === 0 ) return -1;
+		if ( 0 === $a ) {
+			return 1;
+		}
+		if ( 0 === $b ) {
+			return -1;
+		}
 		return strcmp( $unit_labels[ $a ] ?? '', $unit_labels[ $b ] ?? '' );
 	} );
 }
 
 // Show unit headings only when at least one unit was successfully matched
-$has_unit_grouping = ! empty( array_filter( array_keys( $vehicles_by_unit ), fn( $k ) => $k !== 0 ) );
+$has_unit_grouping = ! empty( array_filter( array_keys( $vehicles_by_unit ), fn( $k ) => 0 !== $k ) );
 ?>
 <div class="einsatz-meta-wrapper">
 

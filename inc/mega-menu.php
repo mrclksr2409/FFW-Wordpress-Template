@@ -102,26 +102,47 @@ class FFW_Mega_Menu_Walker extends Walker_Nav_Menu {
 			return;
 		}
 
-		// Default rendering for everything else.
+		// Append chevron SVG to the title of top-level mega-menu links via filter,
+		// so it ends up inside <a> naturally — no post-hoc string surgery needed.
+		$add_chevron = ( 0 === $depth && $this->is_mega_menu() );
+		if ( $add_chevron ) {
+			add_filter( 'nav_menu_item_title', array( $this, 'append_mega_menu_chevron' ), 10, 4 );
+		}
+
 		parent::start_el( $output, $item, $depth, $args, $id );
 
-		// Append chevron SVG to top-level mega-menu link (inject before </a>).
-		if ( 0 === $depth && $this->is_mega_menu() ) {
-			// The parent already closed the tag — re-open by replacing the last </a>
-			// occurrence with the chevron + </a>.
-			$chevron = ' <svg class="mega-menu-chevron" xmlns="http://www.w3.org/2000/svg"'
-				. ' width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"'
-				. ' focusable="false">'
-				. '<path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5"'
-				. ' stroke-linecap="round" stroke-linejoin="round" fill="none"/>'
-				. '</svg>';
-
-			// Insert chevron right before the closing </a> of the top-level link.
-			$pos = strrpos( $output, '</a>' );
-			if ( false !== $pos ) {
-				$output = substr_replace( $output, $chevron . '</a>', $pos, 4 );
-			}
+		if ( $add_chevron ) {
+			remove_filter( 'nav_menu_item_title', array( $this, 'append_mega_menu_chevron' ), 10 );
 		}
+	}
+
+	/**
+	 * Append the mega-menu chevron to top-level mega-menu item titles.
+	 *
+	 * Hooked conditionally from start_el() — only active for the one render.
+	 *
+	 * @param string   $title  Item title as currently filtered.
+	 * @param WP_Post  $item   Menu item data object.
+	 * @param stdClass $args   Walker args.
+	 * @param int      $depth  Depth of the menu item.
+	 * @return string
+	 */
+	public function append_mega_menu_chevron( $title, $item, $args, $depth ) {
+		if ( 0 !== (int) $depth ) {
+			return $title;
+		}
+		if ( ! in_array( 'mega-menu', (array) $item->classes, true ) ) {
+			return $title;
+		}
+
+		$chevron = ' <svg class="mega-menu-chevron" xmlns="http://www.w3.org/2000/svg"'
+			. ' width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"'
+			. ' focusable="false">'
+			. '<path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5"'
+			. ' stroke-linecap="round" stroke-linejoin="round" fill="none"/>'
+			. '</svg>';
+
+		return $title . $chevron;
 	}
 
 	/**

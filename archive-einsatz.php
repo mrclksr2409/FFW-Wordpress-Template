@@ -7,7 +7,7 @@
 get_header();
 
 if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'archive' ) ) :
-	$current_year = get_query_var( 'year' ) ? intval( get_query_var( 'year' ) ) : intval( date( 'Y' ) );
+	$current_year = get_query_var( 'year' ) ? intval( get_query_var( 'year' ) ) : (int) current_time( 'Y' );
 ?>
 <main id="primary" class="site-main einsatz-archive">
 
@@ -37,12 +37,11 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 			<div class="einsatz-archive__stats">
 				<p class="einsatz-archive__count">
 					<?php
-					printf(
-						/* translators: %d: number of operations */
-						esc_html( _n( '%d Einsatz', '%d Einsätze', $wp_query->found_posts, 'ffw-theme' ) ),
-						intval( $wp_query->found_posts )
-					);
+					/* translators: %s: number of operations */
+					$count_template = _n( '%s Einsatz', '%s Einsätze', $wp_query->found_posts, 'ffw-theme' );
+					echo esc_html( sprintf( $count_template, number_format_i18n( $wp_query->found_posts ) ) );
 					if ( get_query_var( 'year' ) ) :
+						/* translators: %d: year number */
 						echo ' ' . esc_html( sprintf( __( 'im Jahr %d', 'ffw-theme' ), $current_year ) );
 					endif;
 					?>
@@ -66,11 +65,11 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 				}
 				$keyword_color = '';
 				if ( ! empty( $einsatzarten ) && ! is_wp_error( $einsatzarten ) ) {
-					$keyword_color = get_term_meta( $einsatzarten[0]->term_id, 'typecolor', true );
+					$keyword_color = sanitize_hex_color( get_term_meta( $einsatzarten[0]->term_id, 'typecolor', true ) );
 				}
 
 				// Monats-Gruppierung: neue Überschrift wenn sich der Monat ändert
-				$month_key = date( 'Y-m', $ts );
+				$month_key = wp_date( 'Y-m', $ts );
 				if ( $month_key !== $active_month ) {
 					if ( null !== $active_month ) {
 						echo '</div>'; // vorherigen Monatsblock schließen

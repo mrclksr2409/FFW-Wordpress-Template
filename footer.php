@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="footer-bottom">
 			<div class="container">
 				<p class="footer-copy">
-					&copy; <?php echo esc_html( date( 'Y' ) ); ?>
+					&copy; <?php echo esc_html( current_time( 'Y' ) ); ?>
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
 					&mdash; <?php esc_html_e( 'Freiwillige Feuerwehr', 'ffw-theme' ); ?>
 				</p>

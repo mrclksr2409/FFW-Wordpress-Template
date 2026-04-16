@@ -165,7 +165,7 @@ add_filter( 'navigation_markup_template', 'ffw_navigation_markup_template' );
  * Priority 20 ensures this runs after the plugin has registered its filters.
  * The check uses the class namespace so it works regardless of exact method name.
  */
-add_action( 'template_redirect', function() {
+function ffw_remove_einsatzverwaltung_content_filter() {
 	if ( ! is_singular( 'einsatz' ) ) {
 		return;
 	}
@@ -173,6 +173,9 @@ add_action( 'template_redirect', function() {
 	if ( ! isset( $wp_filter['the_content'] ) ) {
 		return;
 	}
+
+	// Collect targets first; never mutate the callbacks array while iterating it.
+	$to_remove = array();
 	foreach ( $wp_filter['the_content']->callbacks as $priority => $callbacks ) {
 		foreach ( $callbacks as $callback ) {
 			$fn = $callback['function'];
@@ -182,8 +185,14 @@ add_action( 'template_redirect', function() {
 			$class = get_class( $fn[0] );
 			if ( false !== stripos( $class, 'einsatzverwaltung' )
 				|| method_exists( $fn[0], 'filterSingleEinsatz' ) ) {
-				remove_filter( 'the_content', $fn, $priority );
+				$to_remove[] = array( $priority, $fn );
 			}
 		}
 	}
-}, 20 );
+
+	foreach ( $to_remove as $target ) {
+		list( $priority, $fn ) = $target;
+		remove_filter( 'the_content', $fn, $priority );
+	}
+}
+add_action( 'template_redirect', 'ffw_remove_einsatzverwaltung_content_filter', 20 );
