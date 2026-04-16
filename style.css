@@ -792,11 +792,112 @@ label {
 .menu-toggle.is-open .hamburger-inner::after  { bottom: 0; transform: rotate(-45deg); }
 
 /* ==========================================================================
+   13b. Search Toggle & Search Form
+   ========================================================================== */
+
+/* Lupen-Button im Header (Desktop) */
+.search-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--ffw-border-color);
+    border-radius: var(--ffw-border-radius);
+    color: var(--ffw-text-secondary);
+    cursor: pointer;
+    transition: border-color var(--ffw-transition), color var(--ffw-transition),
+                background-color var(--ffw-transition);
+}
+
+.search-toggle:hover,
+.search-toggle:focus-visible {
+    border-color: var(--ffw-color-primary);
+    color: var(--ffw-color-primary);
+    outline: none;
+}
+
+.search-toggle__icon--close { display: none; }
+.search-toggle.is-open .search-toggle__icon--open  { display: none; }
+.search-toggle.is-open .search-toggle__icon--close { display: block; }
+.search-toggle.is-open {
+    border-color: var(--ffw-color-primary);
+    color: var(--ffw-color-primary);
+}
+
+/* Header-Search-Dropdown (Desktop) */
+.header-search {
+    position: absolute;
+    top: calc(var(--ffw-header-height) - 8px);
+    right: var(--ffw-spacing-lg);
+    min-width: 340px;
+    max-width: calc(100vw - 2 * var(--ffw-spacing-lg));
+    padding: var(--ffw-spacing-md);
+    background: var(--ffw-bg-card);
+    border: 1px solid var(--ffw-border-color);
+    border-radius: var(--ffw-border-radius-lg);
+    box-shadow: var(--ffw-shadow-header);
+    z-index: calc(var(--ffw-z-mobile-menu) - 1);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity var(--ffw-transition), transform var(--ffw-transition);
+    pointer-events: none;
+}
+
+.header-search.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.header-search[hidden] { display: none; }
+
+/* Such-Formular (überall dort, wo get_search_form() rendert) */
+.search-form {
+    display: flex;
+    align-items: stretch;
+    gap: var(--ffw-spacing-sm);
+    width: 100%;
+    margin: 0;
+}
+
+.search-form__input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.search-form__submit {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1rem;
+}
+
+.search-form__icon { display: block; }
+
+/* Mobile-Search (steckt oben im ausgeklappten Hamburger-Menü) */
+.mobile-search {
+    display: none;
+    width: 100%;
+    margin-bottom: var(--ffw-spacing-md);
+    padding-bottom: var(--ffw-spacing-md);
+    border-bottom: 1px solid var(--ffw-border-color);
+}
+
+/* ==========================================================================
    14. Mobile Navigation (≤991px)
    ========================================================================== */
 
 @media (max-width: 991px) {
     .menu-toggle { display: flex; }
+
+    /* Auf Mobile steckt die Suche im ausgeklappten Menü, nicht im Header. */
+    .search-toggle { display: none; }
+    .header-search { display: none; }
+    .mobile-search { display: block; }
 
     .primary-menu-container {
         position: fixed;
@@ -844,6 +945,10 @@ label {
 
 @media (min-width: 992px) {
     .menu-toggle { display: none; }
+
+    /* Lupen-Icon ist nur auf Desktop sichtbar. */
+    .search-toggle { display: inline-flex; }
+    .mobile-search { display: none; }
 }
 
 /* ==========================================================================

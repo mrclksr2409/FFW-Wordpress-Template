@@ -5,11 +5,35 @@
 (function () {
 	'use strict';
 
-	var header  = document.getElementById( 'masthead' );
-	var toggle  = document.querySelector( '.menu-toggle' );
-	var navMenu = document.querySelector( '.primary-menu-container' );
+	var header       = document.getElementById( 'masthead' );
+	var toggle       = document.querySelector( '.menu-toggle' );
+	var navMenu      = document.querySelector( '.primary-menu-container' );
+	var searchToggle = document.querySelector( '.search-toggle' );
+	var headerSearch = document.getElementById( 'header-search' );
 	var ACTIVE   = 'is-open';
 	var SCROLLED = 'is-scrolled';
+
+	// Helpers for header search dropdown
+	function closeSearch() {
+		if ( !searchToggle || !headerSearch ) return;
+		searchToggle.setAttribute( 'aria-expanded', 'false' );
+		searchToggle.classList.remove( ACTIVE );
+		headerSearch.classList.remove( ACTIVE );
+		headerSearch.setAttribute( 'hidden', '' );
+	}
+
+	function openSearch() {
+		if ( !searchToggle || !headerSearch ) return;
+		searchToggle.setAttribute( 'aria-expanded', 'true' );
+		searchToggle.classList.add( ACTIVE );
+		headerSearch.classList.add( ACTIVE );
+		headerSearch.removeAttribute( 'hidden' );
+		var input = headerSearch.querySelector( 'input[type="search"]' );
+		if ( input ) {
+			// Defer focus so layout/transition settles.
+			window.requestAnimationFrame( function () { input.focus(); } );
+		}
+	}
 
 	// -------------------------------------------------------------------------
 	// Hamburger toggle
@@ -21,6 +45,8 @@
 			toggle.classList.toggle( ACTIVE );
 			navMenu.classList.toggle( ACTIVE );
 			document.body.classList.toggle( 'menu-open' );
+			// Opening the mobile menu should close the header search.
+			closeSearch();
 		} );
 
 		// Close on outside click
@@ -30,17 +56,45 @@
 				toggle.classList.remove( ACTIVE );
 				navMenu.classList.remove( ACTIVE );
 				document.body.classList.remove( 'menu-open' );
+				closeSearch();
 			}
 		} );
 
 		// Close on Escape key
 		document.addEventListener( 'keyup', function ( e ) {
-			if ( e.key === 'Escape' && navMenu.classList.contains( ACTIVE ) ) {
+			if ( e.key !== 'Escape' ) return;
+			if ( navMenu.classList.contains( ACTIVE ) ) {
 				toggle.setAttribute( 'aria-expanded', 'false' );
 				toggle.classList.remove( ACTIVE );
 				navMenu.classList.remove( ACTIVE );
 				document.body.classList.remove( 'menu-open' );
 				toggle.focus();
+			}
+			if ( headerSearch && headerSearch.classList.contains( ACTIVE ) ) {
+				closeSearch();
+				if ( searchToggle ) searchToggle.focus();
+			}
+		} );
+	}
+
+	// -------------------------------------------------------------------------
+	// Header search toggle (desktop dropdown)
+	// -------------------------------------------------------------------------
+	if ( searchToggle && headerSearch ) {
+		searchToggle.addEventListener( 'click', function ( e ) {
+			e.stopPropagation();
+			var expanded = searchToggle.getAttribute( 'aria-expanded' ) === 'true';
+			if ( expanded ) {
+				closeSearch();
+			} else {
+				openSearch();
+				// Close the mobile menu if it happens to be open.
+				if ( toggle && navMenu && navMenu.classList.contains( ACTIVE ) ) {
+					toggle.setAttribute( 'aria-expanded', 'false' );
+					toggle.classList.remove( ACTIVE );
+					navMenu.classList.remove( ACTIVE );
+					document.body.classList.remove( 'menu-open' );
+				}
 			}
 		} );
 	}
