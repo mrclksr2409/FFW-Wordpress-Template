@@ -21,7 +21,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $ffw_puc_autoload = FFW_THEME_DIR . '/inc/lib/autoload.php';
 if ( ! file_exists( $ffw_puc_autoload ) ) {
-	return; // Graceful degradation: Library nicht vorhanden → kein Update-Check
+	// Graceful degradation: library missing → skip auto-updates, but warn in debug mode
+	// so operators notice a broken deploy rather than silently never receiving updates.
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		_doing_it_wrong(
+			'ffw_update_checker',
+			esc_html__( 'Plugin Update Checker library not found at /inc/lib/autoload.php — theme auto-updates are disabled.', 'ffw-theme' ),
+			esc_html( FFW_THEME_VERSION )
+		);
+	}
+	return;
 }
 
 require_once $ffw_puc_autoload;
