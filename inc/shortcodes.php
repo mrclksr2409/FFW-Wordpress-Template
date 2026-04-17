@@ -107,10 +107,12 @@ add_shortcode( 'ffw_posts', 'ffw_posts_shortcode' );
  * Verwendung:
  *   [ffw_child_pages]
  *   [ffw_child_pages parent="42"]
+ *   [ffw_child_pages exclude="42,77"]
  *   [ffw_child_pages more_text="Alle Fahrzeuge" more_url="/fahrzeuge/"]
  *
  * Parameter:
  *   parent    — ID der Elternseite (0 = aktuelle Seite)
+ *   exclude   — Kommaseparierte IDs, die nicht angezeigt werden sollen
  *   more_text — Text des optionalen Buttons unter dem Grid (leer = kein Button)
  *   more_url  — URL des Buttons
  */
@@ -118,6 +120,7 @@ function ffw_child_pages_shortcode( $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'parent'    => 0,
+			'exclude'   => '',
 			'more_text' => '',
 			'more_url'  => '',
 		),
@@ -134,16 +137,27 @@ function ffw_child_pages_shortcode( $atts ) {
 		return '';
 	}
 
-	$query = new WP_Query(
-		array(
-			'post_type'      => 'page',
-			'post_status'    => 'publish',
-			'post_parent'    => $parent_id,
-			'posts_per_page' => -1,
-			'orderby'        => 'menu_order title',
-			'order'          => 'ASC',
-		)
+	$exclude_ids = array();
+	if ( ! empty( $atts['exclude'] ) ) {
+		$exclude_ids = array_filter(
+			array_map( 'absint', explode( ',', (string) $atts['exclude'] ) )
+		);
+	}
+
+	$query_args = array(
+		'post_type'      => 'page',
+		'post_status'    => 'publish',
+		'post_parent'    => $parent_id,
+		'posts_per_page' => -1,
+		'orderby'        => 'menu_order title',
+		'order'          => 'ASC',
 	);
+
+	if ( ! empty( $exclude_ids ) ) {
+		$query_args['post__not_in'] = $exclude_ids;
+	}
+
+	$query = new WP_Query( $query_args );
 
 	if ( ! $query->have_posts() ) {
 		return '';

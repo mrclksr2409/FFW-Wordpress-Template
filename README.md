@@ -162,6 +162,24 @@ Zeigt eine Liste der letzten Beiträge an — einsetzbar auf jeder Seite oder in
 [ffw_posts limit="4" category="news" more_text="Alle Neuigkeiten" more_url="/neuigkeiten/"]
 ```
 
+### `[ffw_child_pages]`
+
+Listet alle direkten Unterseiten der aktuellen (oder angegebenen) Seite als Karten-Grid auf.
+
+**Parameter:**
+
+| Parameter | Standard | Beschreibung |
+|---|---|---|
+| `parent` | *(aktuelle Seite)* | ID der Elternseite |
+| `exclude` | *(leer)* | Kommaseparierte Seiten-IDs, die nicht angezeigt werden sollen |
+| `more_text` | *(leer)* | Beschriftung des optionalen Buttons unter dem Grid |
+| `more_url` | *(Elternseite)* | Ziel-URL des Buttons |
+
+**Beispiel:**
+```
+[ffw_child_pages exclude="42,77" more_text="Alle Fahrzeuge" more_url="/fahrzeuge/"]
+```
+
 ---
 
 ## Seiten-Templates
