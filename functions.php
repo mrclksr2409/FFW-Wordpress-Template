@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FFW_THEME_VERSION', '1.0.1' );
+define( 'FFW_THEME_VERSION', '1.1.0' );
 define( 'FFW_THEME_DIR', get_template_directory() );
 define( 'FFW_THEME_URI', get_template_directory_uri() );
 

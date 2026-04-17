@@ -148,6 +148,25 @@ function ffw_wrap_oembed( $html ) {
 add_filter( 'embed_oembed_html', 'ffw_wrap_oembed', 10 );
 
 /**
+ * Add performance-friendly attributes to all attachment images by default.
+ * Callers that need above-the-fold behavior pass explicit loading="eager" /
+ * fetchpriority="high" and those wins through because we only fill in blanks.
+ *
+ * @param array $attr Existing attributes.
+ * @return array
+ */
+function ffw_image_attrs( $attr ) {
+	if ( empty( $attr['loading'] ) ) {
+		$attr['loading'] = 'lazy';
+	}
+	if ( empty( $attr['decoding'] ) ) {
+		$attr['decoding'] = 'async';
+	}
+	return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'ffw_image_attrs' );
+
+/**
  * Modify the posts navigation markup template to use theme classes.
  *
  * @param string $template Default navigation markup template.
