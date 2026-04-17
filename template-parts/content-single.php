@@ -11,7 +11,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php if ( has_post_thumbnail() ) : ?>
 		<div class="post-report__image">
-			<?php the_post_thumbnail( 'ffw-hero' ); ?>
+			<?php
+			the_post_thumbnail( 'ffw-hero', array(
+				'loading'       => 'eager',
+				'fetchpriority' => 'high',
+				'decoding'      => 'async',
+			) );
+			?>
 		</div>
 	<?php endif; ?>
 
