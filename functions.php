@@ -21,3 +21,7 @@ require FFW_THEME_DIR . '/inc/customizer.php';
 require FFW_THEME_DIR . '/inc/template-functions.php';
 require FFW_THEME_DIR . '/inc/shortcodes.php';
 require FFW_THEME_DIR . '/inc/update-checker.php';
+
+if ( defined( 'WPB_VC_VERSION' ) ) {
+	require FFW_THEME_DIR . '/inc/wpbakery/class-ffw-vc-addons.php';
+}
