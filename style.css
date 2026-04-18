@@ -1187,8 +1187,9 @@ label {
 .entry-content .card__title a:hover { color: var(--ffw-color-primary); }
 
 /* Post-Grid-Karten erben keine Entry-Content-Margins, damit der
-   [ffw_posts]-Shortcode in Seiten identisch zur Startseite aussieht. */
+   [ffw_posts]- und [ffw_child_pages]-Shortcode in Seiten identisch zur Startseite aussieht. */
 .entry-content .posts-grid img,
+.entry-content .child-pages-grid img,
 .entry-content .card img {
     margin: 0;
 }
