@@ -104,3 +104,124 @@
     .child-page-card__image { transition: none; }
     .child-page-card:hover { transform: none; }
 }
+
+/* =========================================================================
+ * [ffw_carousel] — Image Carousel (Swiper.js)
+ * ========================================================================= */
+
+.ffw-carousel {
+    position: relative;
+    width: 100%;
+    margin: var(--ffw-spacing-md) 0;
+}
+
+.ffw-carousel__viewport {
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--ffw-border-radius);
+}
+
+.ffw-carousel--partial .ffw-carousel__viewport {
+    overflow: visible;
+    clip-path: inset(-8px -8px -8px -8px);
+}
+
+.ffw-carousel__slide {
+    height: auto;
+    display: flex;
+}
+
+.ffw-carousel__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: var(--ffw-border-radius);
+    background: var(--ffw-bg-deep);
+}
+
+/* Prev/Next Buttons */
+.ffw-carousel__button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--ffw-color-primary);
+    color: var(--ffw-text-on-red);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    transition: background var(--ffw-transition), transform var(--ffw-transition), opacity var(--ffw-transition);
+}
+
+.ffw-carousel__button:hover {
+    background: var(--ffw-color-primary-dark);
+}
+
+.ffw-carousel__button:focus-visible {
+    outline: 3px solid var(--ffw-color-primary-light);
+    outline-offset: 2px;
+}
+
+.ffw-carousel__button--prev { left: var(--ffw-spacing-sm); }
+.ffw-carousel__button--next { right: var(--ffw-spacing-sm); }
+
+.ffw-carousel__button.swiper-button-disabled {
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
+}
+
+.ffw-carousel__button svg { display: block; }
+
+.ffw-carousel--no-nav .ffw-carousel__button { display: none; }
+
+/* Pagination */
+.ffw-carousel__pagination.swiper-pagination {
+    position: static;
+    margin-top: var(--ffw-spacing-sm);
+    text-align: center;
+    line-height: 1;
+}
+
+.ffw-carousel__pagination .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: var(--ffw-text-muted);
+    opacity: 0.5;
+    margin: 0 4px;
+    transition: background var(--ffw-transition), opacity var(--ffw-transition), transform var(--ffw-transition);
+}
+
+.ffw-carousel__pagination .swiper-pagination-bullet-active {
+    background: var(--ffw-color-primary);
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+.ffw-carousel--no-pagination .ffw-carousel__pagination { display: none; }
+
+/* Mobile: Buttons etwas kleiner und weiter innen, damit sie das Slide nicht
+   überdecken. */
+@media (max-width: 575px) {
+    .ffw-carousel__button {
+        width: 36px;
+        height: 36px;
+    }
+    .ffw-carousel__button--prev { left: var(--ffw-spacing-xs); }
+    .ffw-carousel__button--next { right: var(--ffw-spacing-xs); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ffw-carousel__button,
+    .ffw-carousel__pagination .swiper-pagination-bullet { transition: none; }
+    .ffw-carousel .swiper-wrapper { transition-duration: 0ms !important; }
+}
