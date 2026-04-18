@@ -413,3 +413,152 @@ function ffw_fi_shortcode( $atts, $content = '' ) {
 	return '';
 }
 add_shortcode( 'ffw_fi', 'ffw_fi_shortcode' );
+
+/**
+ * Shortcode: Bilder-Karussell
+ *
+ * Zeigt Bilder aus der Mediathek als Slider. Nutzt die Swiper-Library
+ * (lokal gebündelt) und lädt JS/CSS nur dann, wenn der Shortcode auf der
+ * Seite tatsächlich gerendert wird.
+ *
+ * Verwendung:
+ *   [ffw_carousel ids="12,34,56,78"]
+ *   [ffw_carousel ids="12,34,56,78" slides_per_view="3" autoplay="5" loop="true"]
+ *   [ffw_carousel ids="12,34,56" partial_view="true" hide_pagination="true"]
+ *
+ * Attribute:
+ *   ids              — kommaseparierte Liste von Attachment-IDs (Pflicht)
+ *   image_size       — registrierte WP-Bildgröße (Standard: ffw-card)
+ *   slides_per_view  — sichtbare Slides auf Desktop: 1–6 oder "auto" (Standard: 1)
+ *   speed            — Übergangsgeschwindigkeit in ms (Standard: 600)
+ *   autoplay         — Auto-Advance in Sekunden, 0 = aus (Standard: 0)
+ *   hide_pagination  — Pagination-Dots ausblenden (Standard: false)
+ *   hide_nav         — Prev/Next-Buttons ausblenden (Standard: false)
+ *   partial_view     — Nachbar-Slides angeschnitten zeigen (Standard: false)
+ *   loop             — Endlosschleife (Standard: false)
+ */
+function ffw_carousel_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		array(
+			'ids'             => '',
+			'image_size'      => 'ffw-card',
+			'slides_per_view' => '1',
+			'speed'           => 600,
+			'autoplay'        => 0,
+			'hide_pagination' => 'false',
+			'hide_nav'        => 'false',
+			'partial_view'    => 'false',
+			'loop'            => 'false',
+		),
+		$atts,
+		'ffw_carousel'
+	);
+
+	// Attachment-IDs parsen und validieren.
+	$ids = array_values( array_filter( array_map( 'absint', explode( ',', (string) $atts['ids'] ) ) ) );
+	if ( empty( $ids ) ) {
+		return '';
+	}
+
+	// Nur Einträge behalten, die wirklich Attachments sind.
+	$ids = array_values( array_filter( $ids, static function ( $id ) {
+		return 'attachment' === get_post_type( $id );
+	} ) );
+	if ( empty( $ids ) ) {
+		return '';
+	}
+
+	$image_size      = sanitize_key( $atts['image_size'] );
+	$slides_raw      = strtolower( sanitize_text_field( (string) $atts['slides_per_view'] ) );
+	$slides_per_view = ( 'auto' === $slides_raw ) ? 'auto' : max( 1, min( 6, (int) $slides_raw ) );
+	$speed           = max( 100, (int) $atts['speed'] );
+	$autoplay        = max( 0, (int) $atts['autoplay'] );
+	$hide_pagination = filter_var( $atts['hide_pagination'], FILTER_VALIDATE_BOOLEAN );
+	$hide_nav        = filter_var( $atts['hide_nav'], FILTER_VALIDATE_BOOLEAN );
+	$partial_view    = filter_var( $atts['partial_view'], FILTER_VALIDATE_BOOLEAN );
+	$loop            = filter_var( $atts['loop'], FILTER_VALIDATE_BOOLEAN );
+
+	// Loop nur sinnvoll, wenn genügend Slides vorhanden sind.
+	$numeric_spv = is_numeric( $slides_per_view ) ? (int) $slides_per_view : 1;
+	if ( $loop && count( $ids ) <= $numeric_spv ) {
+		$loop = false;
+	}
+
+	// Assets für diese Instanz laden (register-then-enqueue-on-demand).
+	wp_enqueue_style( 'ffw-swiper' );
+	wp_enqueue_script( 'ffw-swiper' );
+	wp_enqueue_script( 'ffw-carousel' );
+
+	$instance_id = wp_unique_id( 'ffw-carousel-' );
+
+	$config = array(
+		'speed'          => $speed,
+		'loop'           => $loop,
+		'slidesPerView'  => $slides_per_view,
+		'partialView'    => $partial_view,
+		'autoplay'       => $autoplay,
+		'hidePagination' => $hide_pagination,
+		'hideNav'        => $hide_nav,
+	);
+
+	$classes = array( 'ffw-carousel' );
+	if ( $partial_view ) {
+		$classes[] = 'ffw-carousel--partial';
+	}
+	if ( $hide_pagination ) {
+		$classes[] = 'ffw-carousel--no-pagination';
+	}
+	if ( $hide_nav ) {
+		$classes[] = 'ffw-carousel--no-nav';
+	}
+
+	ob_start();
+	?>
+	<div
+		id="<?php echo esc_attr( $instance_id ); ?>"
+		class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>"
+		data-ffw-carousel="<?php echo esc_attr( wp_json_encode( $config ) ); ?>"
+	>
+		<div class="swiper ffw-carousel__viewport">
+			<div class="swiper-wrapper">
+				<?php foreach ( $ids as $id ) : ?>
+					<div class="swiper-slide ffw-carousel__slide">
+						<?php
+						echo wp_get_attachment_image(
+							$id,
+							$image_size,
+							false,
+							array(
+								'class'   => 'ffw-carousel__image',
+								'loading' => 'lazy',
+							)
+						);
+						?>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<?php if ( ! $hide_pagination ) : ?>
+				<div class="ffw-carousel__pagination swiper-pagination" aria-hidden="true"></div>
+			<?php endif; ?>
+		</div>
+		<?php if ( ! $hide_nav ) : ?>
+			<button
+				type="button"
+				class="ffw-carousel__button ffw-carousel__button--prev"
+				aria-label="<?php esc_attr_e( 'Vorheriges Bild', 'ffw-theme' ); ?>"
+			>
+				<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+			</button>
+			<button
+				type="button"
+				class="ffw-carousel__button ffw-carousel__button--next"
+				aria-label="<?php esc_attr_e( 'Nächstes Bild', 'ffw-theme' ); ?>"
+			>
+				<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+			</button>
+		<?php endif; ?>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'ffw_carousel', 'ffw_carousel_shortcode' );

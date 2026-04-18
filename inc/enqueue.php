@@ -76,6 +76,28 @@ function ffw_enqueue_assets() {
 		true
 	);
 
+	// Swiper-Library für [ffw_carousel] — nur registrieren, enqueued wird im Shortcode.
+	wp_register_style(
+		'ffw-swiper',
+		FFW_THEME_URI . '/assets/lib/swiper/swiper-bundle.min.css',
+		array(),
+		'11.1.15'
+	);
+	wp_register_script(
+		'ffw-swiper',
+		FFW_THEME_URI . '/assets/lib/swiper/swiper-bundle.min.js',
+		array(),
+		'11.1.15',
+		true
+	);
+	wp_register_script(
+		'ffw-carousel',
+		FFW_THEME_URI . '/assets/js/carousel' . $min . '.js',
+		array( 'ffw-swiper' ),
+		FFW_THEME_VERSION,
+		true
+	);
+
 	// Kommentar-Reply-Script.
 	if ( is_singular() && comments_open() ) {
 		wp_enqueue_script( 'comment-reply' );
