@@ -113,6 +113,10 @@
     position: relative;
     width: 100%;
     margin: var(--ffw-spacing-md) 0;
+    /* Hält Swiper-Slides strikt innerhalb der Content-Box und verhindert
+       den horizontalen Page-Scrollbalken. `clip` erzeugt keinen neuen
+       Scroll-Container und bricht daher keine sticky-Eltern. */
+    overflow-x: clip;
 }
 
 .ffw-carousel__viewport {
@@ -122,8 +126,24 @@
 }
 
 .ffw-carousel--partial .ffw-carousel__viewport {
-    overflow: visible;
-    clip-path: inset(-8px -8px -8px -8px);
+    /* Weicher Fade-Out statt hartem Clip: angeschnittener Slide läuft
+       zur Seite aus. Linker Fade bewusst schmal, damit die aktive Slide
+       nicht ausbleicht, aber ein von links hereinkommender Partial-Slide
+       ebenfalls sauber verblasst. */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0) 0,
+        rgba(0, 0, 0, 1) 16px,
+        rgba(0, 0, 0, 1) calc(100% - 48px),
+        rgba(0, 0, 0, 0) 100%
+    );
+            mask-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0) 0,
+        rgba(0, 0, 0, 1) 16px,
+        rgba(0, 0, 0, 1) calc(100% - 48px),
+        rgba(0, 0, 0, 0) 100%
+    );
 }
 
 .ffw-carousel__slide {
