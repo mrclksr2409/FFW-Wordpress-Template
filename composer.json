@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "yahnis-elsts/plugin-update-checker": "^5.5"
+        "yahnis-elsts/plugin-update-checker": "^5.5",
+        "erusev/parsedown": "^1.7"
     },
     "config": {
         "vendor-dir": "inc/lib"

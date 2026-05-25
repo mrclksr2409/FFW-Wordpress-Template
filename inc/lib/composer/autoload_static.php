@@ -10,6 +10,16 @@ class ComposerStaticInitacb3f0e607fd86e4eb637109799c0152
         'f6d4f6bcee7247df6b777884c3e22f98' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v5p6.php',
     );
 
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Parsedown' => 
+            array (
+                0 => __DIR__ . '/..' . '/erusev/parsedown',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -17,6 +27,7 @@ class ComposerStaticInitacb3f0e607fd86e4eb637109799c0152
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixesPsr0 = ComposerStaticInitacb3f0e607fd86e4eb637109799c0152::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitacb3f0e607fd86e4eb637109799c0152::$classMap;
 
         }, null, ClassLoader::class);
