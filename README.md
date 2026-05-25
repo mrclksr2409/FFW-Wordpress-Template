@@ -109,6 +109,7 @@ Das Theme nutzt die WordPress-Template-Hierarchie für den Custom Post Type `ein
 | `einsatz_mannschaft` | Mannschaftsstärke |
 | `einsatz_fehlalarm` | Fehlalarm-Flag |
 | `einsatz_lrn` | Laufende Nummer |
+| `einsatz_weight` | Anzahl Einsätze, die der Bericht abbildet (Standard 1) — fließt in den Jahres-Zähler auf der Startseite ein |
 
 **Taxonomien:** `einsatzart`, `fahrzeug`, `alarmierungsart`, `exteinsatzmittel`, `evw_unit`
 

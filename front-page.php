@@ -39,18 +39,27 @@ if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_
 
 	<!-- ===== STATS BAR ===== -->
 	<?php
-	// Auto: Einsätze im aktuellen Jahr zählen (Einsatzverwaltung CPT 'einsatz')
+	// Auto: Einsätze im aktuellen Jahr zählen (Einsatzverwaltung CPT 'einsatz').
+	// Ein Bericht kann mehrere Einsätze abbilden — die Anzahl steht im Meta
+	// 'einsatz_weight' (Standard 1), daher Gewichte summieren statt Berichte zählen.
 	$current_year    = (int) current_time( 'Y' );
 	$auto_year_count = 0;
 	if ( post_type_exists( 'einsatz' ) ) {
 		$year_query = new WP_Query( array(
 			'post_type'      => 'einsatz',
 			'post_status'    => 'publish',
-			'posts_per_page' => 1,
+			'posts_per_page' => -1,
 			'fields'         => 'ids',
+			'no_found_rows'  => true,
 			'date_query'     => array( array( 'year' => $current_year ) ),
 		) );
-		$auto_year_count = (int) $year_query->found_posts;
+		if ( ! empty( $year_query->posts ) ) {
+			update_meta_cache( 'post', $year_query->posts );
+			foreach ( $year_query->posts as $e_id ) {
+				$weight           = (int) get_post_meta( $e_id, 'einsatz_weight', true );
+				$auto_year_count += $weight > 0 ? $weight : 1;
+			}
+		}
 	}
 	?>
 	<section class="stats-bar" aria-label="<?php esc_attr_e( 'Kurzübersicht', 'ffw-theme' ); ?>">
