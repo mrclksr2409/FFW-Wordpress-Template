@@ -17,10 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'FFW_VC_CATEGORY' ) ) {
-	define( 'FFW_VC_CATEGORY', __( 'FFW Theme', 'ffw-theme' ) );
-}
-
 if ( ! defined( 'FFW_VC_ADDONS_DIR' ) ) {
 	define( 'FFW_VC_ADDONS_DIR', FFW_THEME_DIR . '/inc/wpbakery' );
 }
@@ -50,6 +46,13 @@ if ( ! class_exists( 'FFW_VC_Addons' ) ) {
 		}
 
 		public function register_elements() {
+			// Defined here (on vc_before_init, which runs during `init`) rather than
+			// at file load, so the translation is not requested before `init` —
+			// which would trigger the _load_textdomain_just_in_time notice (WP 6.7+).
+			if ( ! defined( 'FFW_VC_CATEGORY' ) ) {
+				define( 'FFW_VC_CATEGORY', __( 'FFW Theme', 'ffw-theme' ) );
+			}
+
 			$this->load_shortcode_classes();
 			$this->load_addons();
 		}
