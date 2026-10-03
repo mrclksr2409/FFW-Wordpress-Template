@@ -40,13 +40,19 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 /**
  * Konfiguration des GitHub Update Checkers.
  *
- * Ohne setBranch() wird automatisch der neueste stabile GitHub-Release
- * als Updatequelle genutzt. Die Versionsnummer wird aus dem Release-Tag
- * gelesen (z. B. "v1.2.3" → "1.2.3") und mit der Version in style.css
- * verglichen.
+ * Updatequelle ist der Branch "main". PUC nutzt dort zuerst den neuesten
+ * stabilen GitHub-Release, dann den neuesten Tag und als Fallback den
+ * aktuellen Stand von main. Die Versionsnummer wird aus dem Release-Tag
+ * bzw. aus style.css auf main gelesen (z. B. "v1.2.3" → "1.2.3") und mit
+ * der installierten Version verglichen.
+ *
+ * Entwickelt wird auf "beta"; erst nach dem Merge nach "main" werden
+ * Updates an installierte Seiten ausgeliefert.
  */
 $ffw_update_checker = PucFactory::buildUpdateChecker(
 	'https://github.com/mrclksr2409/FFW-Wordpress-Template/',
 	FFW_THEME_DIR . '/style.css',
 	'ffw-theme'
 );
+
+$ffw_update_checker->setBranch( 'main' );
