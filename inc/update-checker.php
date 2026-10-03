@@ -1,16 +1,14 @@
 <?php
 /**
- * FFW Theme — Automatische Updates via GitHub Releases
+ * FFW Theme — Automatische Updates via GitHub (Branch main)
  *
  * Nutzt das Plugin Update Checker (yahnis-elsts/plugin-update-checker),
- * um Theme-Updates direkt aus GitHub-Releases zu beziehen.
+ * um Theme-Updates direkt vom GitHub-Branch "main" zu beziehen.
  * WordPress-Admins sehen verfügbare Updates unter Design → Themes.
  *
- * Ein neues Update wird automatisch erkannt, sobald ein neues Release
- * auf GitHub erstellt wird. Die Version im Release-Tag (z. B. "v1.2.3")
- * muss größer sein als die aktuelle Version in style.css.
- *
- * Pre-Releases und Drafts werden automatisch übersprungen.
+ * Ein neues Update wird automatisch erkannt, sobald auf dem Branch "main"
+ * eine höhere Version in style.css steht. GitHub-Releases und Tags werden
+ * dabei nicht berücksichtigt.
  *
  * @author Marcel Kaiser
  */
@@ -40,11 +38,9 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 /**
  * Konfiguration des GitHub Update Checkers.
  *
- * Updatequelle ist der Branch "main". PUC nutzt dort zuerst den neuesten
- * stabilen GitHub-Release, dann den neuesten Tag und als Fallback den
- * aktuellen Stand von main. Die Versionsnummer wird aus dem Release-Tag
- * bzw. aus style.css auf main gelesen (z. B. "v1.2.3" → "1.2.3") und mit
- * der installierten Version verglichen.
+ * Updatequelle ist ausschließlich der aktuelle Stand des Branches "main".
+ * Die Versionsnummer wird aus style.css auf main gelesen und mit der
+ * installierten Version verglichen.
  *
  * Entwickelt wird auf "beta"; erst nach dem Merge nach "main" werden
  * Updates an installierte Seiten ausgeliefert.
@@ -56,3 +52,12 @@ $ffw_update_checker = PucFactory::buildUpdateChecker(
 );
 
 $ffw_update_checker->setBranch( 'main' );
+
+// Releases und Tags ignorieren, nur der Branch-Stand zählt.
+add_filter(
+	$ffw_update_checker->getUniqueName( 'vcs_update_detection_strategies' ),
+	static function ( $strategies ) {
+		unset( $strategies['latest_release'], $strategies['latest_tag'] );
+		return $strategies;
+	}
+);
