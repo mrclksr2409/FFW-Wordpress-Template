@@ -33,7 +33,7 @@ if ( ! file_exists( $ffw_puc_autoload ) ) {
 
 require_once $ffw_puc_autoload;
 
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+use YahnisElsts\PluginUpdateChecker\v6\PucFactory;
 
 /**
  * Konfiguration des GitHub Update Checkers.
